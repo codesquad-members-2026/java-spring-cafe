@@ -42,15 +42,32 @@
             padding: 1rem;
             border: 1px solid #efebe9;
             border-radius: 8px;
-            font-weight: 500;
             display: flex;
             align-items: center;
         }
         .user-item::before {
             content: '☕';
-            margin-right: 12px;
-            font-size: 1.2rem;
+            margin-right: 15px;
+            font-size: 1.4rem;
         }
+
+        /* --- NEW CSS FOR ID AND EMAIL --- */
+        .user-info {
+            display: flex;
+            flex-direction: column; /* Stacks the text vertically */
+        }
+        .user-id {
+            font-weight: 600;
+            color: #4e342e;
+            font-size: 1.05rem;
+        }
+        .user-email {
+            font-size: 0.85rem;
+            color: #8d6e63; /* Lighter brown so it doesn't compete with the ID */
+            margin-top: 0.15rem;
+        }
+        /* -------------------------------- */
+
         a.btn-return {
             text-decoration: none;
             background-color: #8d6e63;
@@ -70,7 +87,10 @@
 
     <div class="user-list">
         <div class="user-item" th:each="user : ${users}">
-            <span th:text="${user.id}"></span>
+            <div class="user-info">
+                <span class="user-id" th:text="${user.id}"></span>
+                <span class="user-email" th:text="${user.email}"></span>
+            </div>
         </div>
 
         <div th:if="${#lists.isEmpty(users)}" class="user-item" style="color: #9e9e9e;">
