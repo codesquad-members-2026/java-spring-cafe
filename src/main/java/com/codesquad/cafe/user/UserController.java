@@ -15,10 +15,9 @@ public class UserController {
     public String requestMembership(User input) {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
-            userService.saveUserInFile(input);
+            userService.add(input);
         }
 
         return "redirect:/";
     }
-
 }
