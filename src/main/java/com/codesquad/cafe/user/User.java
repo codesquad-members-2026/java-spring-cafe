@@ -19,7 +19,12 @@ public class User {
 
     // verifyUser
     public boolean verifyUser() {
-        return true;
+        return !(getId().isEmpty() || getId().isBlank())
+                && !(getPassword().isEmpty() || getPassword().isBlank())
+                && !(getFirstName().isEmpty() || getFirstName().isBlank())
+                && !(getLastName().isEmpty() || getLastName().isBlank())
+                && !(getEmail().isEmpty() || getEmail().isBlank())
+                && !(getPhoneNumber().isEmpty() || getPhoneNumber().isBlank());
     }
 
     // getter, setter
