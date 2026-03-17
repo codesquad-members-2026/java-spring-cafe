@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class UserRepo {
-    private Map<String, User> idToUserMap = new HashMap<>();
+    private final Map<String, User> idToUserMap = new HashMap<>();
 
     public void putUser(User user){
         this.idToUserMap.put(user.getId(), user);
@@ -22,5 +22,9 @@ public class UserRepo {
 
     public List<User> userList(){
         return this.idToUserMap.values().stream().toList();
+    }
+
+    public void clear(){
+        this.idToUserMap.clear();
     }
 }
