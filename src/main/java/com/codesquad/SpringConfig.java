@@ -17,6 +17,4 @@ public class SpringConfig {
         return new UserService(userRepo());
      }
 
-
-
 }

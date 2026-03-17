@@ -7,24 +7,24 @@ import java.util.List;
 import java.util.Map;
 
 public class UserRepo {
-    private final Map<String, User> idToUserMap = new HashMap<>();
+    private final Map<String, User> emailToUserMap = new HashMap<>();
 
     public void putUser(User user){
-        this.idToUserMap.put(user.getId(), user);
+        this.emailToUserMap.put(user.getEmail(), user);
     }
 
-    public User getUser(String id){
-        if(this.idToUserMap.containsKey(id)){
-            return this.idToUserMap.get(id);
+    public User getUser(String email){
+        if(this.emailToUserMap.containsKey(email)){
+            return this.emailToUserMap.get(email);
         }
         return null;
     }
 
     public List<User> userList(){
-        return this.idToUserMap.values().stream().toList();
+        return this.emailToUserMap.values().stream().toList();
     }
 
     public void clear(){
-        this.idToUserMap.clear();
+        this.emailToUserMap.clear();
     }
 }

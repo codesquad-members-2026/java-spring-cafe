@@ -2,6 +2,7 @@ package com.codesquad.service;
 
 import com.codesquad.cafeRepo.UserRepo;
 import com.codesquad.user.User;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -9,6 +10,7 @@ public class UserService {
 
     private final UserRepo repo;
 
+    @Autowired
     public UserService(UserRepo repo){
         this.repo = repo;
     }
@@ -17,8 +19,8 @@ public class UserService {
         this.repo.putUser(newUser);
     }
 
-    public User findUser(String id){
-        return this.repo.getUser(id);
+    public User findUser(String email){
+        return this.repo.getUser(email);
     }
 
 

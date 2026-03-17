@@ -32,15 +32,32 @@ public class UserServiceTest {
         softTests.assertAll();
     }
 
-    @ParameterizedTest
-    @CsvSource({
-            "user1",
-            "user1",
-            "user1",
-            "user1"
-    })
+    @Test
     @DisplayName("Test All users added are returned from list")
-    void userListTest()
+    void userListTest(){
+        SoftAssertions softTests = new SoftAssertions();
+        User newUser = new User();
+        newUser.setId("id1");
+        testService.addUser(newUser);
+        newUser = new User();
+        newUser.setId("id2");
+        testService.addUser(newUser);
+        newUser = new User();
+        newUser.setId("id3");
+        testService.addUser(newUser);
+        newUser = new User();
+        newUser.setId("id4");
+        testService.addUser(newUser);
+        newUser = new User();
+        newUser.setId("id5");
+        testService.addUser(newUser);
+        softTests.assertThat(testService.allUsers().size()).isEqualTo(5);
+        softTests.assertThat(testService.allUsers().stream().filter(u->u.getId().equals("id1")).findFirst()).isNotNull();
+        softTests.assertThat(testService.allUsers().stream().filter(u->u.getId().equals("id2")).findFirst()).isNotNull();
+        softTests.assertThat(testService.allUsers().stream().filter(u->u.getId().equals("id3")).findFirst()).isNotNull();
+        softTests.assertThat(testService.allUsers().stream().filter(u->u.getId().equals("id4")).findFirst()).isNotNull();
+        softTests.assertThat(testService.allUsers().stream().filter(u->u.getId().equals("id5")).findFirst()).isNotNull();
+    }
 
 
 }

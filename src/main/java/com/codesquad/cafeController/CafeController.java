@@ -9,7 +9,7 @@ public class CafeController {
 
     @GetMapping("/")
     public String mainPage(){
-        return "/";
+        return "frontPage";
     }
 
 }
