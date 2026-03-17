@@ -31,7 +31,7 @@ public class UserControllerWebTest {
                         .param("email", "nvidia@gmail.com")
                         .param("phoneNumber", "01049291779"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/users"));
+                .andExpect(view().name("redirect:/list"));
 
         Mockito.verify(userService, Mockito.times(1)).add(Mockito.any(User.class));
     }

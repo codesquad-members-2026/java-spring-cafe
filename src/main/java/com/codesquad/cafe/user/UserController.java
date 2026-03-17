@@ -16,12 +16,18 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/membership")
+    public String form(Model model) {
+
+        return "user/form";
+    }
+
     @PostMapping("/form")
     public String requestMembership(@ModelAttribute User input) {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
             userService.add(input);
-            return "redirect:/users";
+            return "redirect:/list";
         }
 
         return "redirect:/";
@@ -32,6 +38,6 @@ public class UserController {
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
 
-        return "user/users";
+        return "user/list";
     }
 }

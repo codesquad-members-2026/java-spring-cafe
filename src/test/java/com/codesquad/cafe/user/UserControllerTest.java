@@ -21,7 +21,7 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("Post 방식으로 들어온 회원 정보가 유효하면 saveUserInFile()을 실행한다.")
+    @DisplayName("Post 방식으로 온전한 회원 정보가 들어오면 UserService의 add()을 실행한다.")
     public void requestMembership_WithCorrectInfo() {
         User testUser = new User("admin", "admin", "재완", "이",
                 "jjjkuul@naver.com", "phoneNumber");
@@ -29,12 +29,12 @@ public class UserControllerTest {
 
         String requestResult = userController.requestMembership(testUser);
 
-        assertEquals("redirect:/users", requestResult);
+        assertEquals("redirect:/list", requestResult);
         verify(userService, Mockito.times(1)).add(testUser);
     }
 
     @Test
-    @DisplayName("Post 방식으로 들어온 잘못된 회원 정보는 saveUserInFile()을 실행하지 않는다.")
+    @DisplayName("Post 방식으로 잘못된 회원 정보가 들어오면 UserService의 add()을 실행하지 않는다.")
     public void requestMembership_WithIncorrectInfo() {
         User testUser = new User("admin", "", "재완", "이",
                 "jjjkuul@naver.com", "   ");
@@ -45,4 +45,6 @@ public class UserControllerTest {
         assertEquals("redirect:/", requestResult);
         verify(userService, never()).add(testUser);
     }
+
+
 }
