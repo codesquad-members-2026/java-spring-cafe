@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -26,8 +27,9 @@ public class UserControllerTest {
                 "jjjkuul@naver.com", "phoneNumber");
         UserController userController = new UserController(userService);
 
-        userController.requestMembership(testUser);
+        String requestResult = userController.requestMembership(testUser);
 
+        assertEquals("redirect:/users", requestResult);
         verify(userService, Mockito.times(1)).add(testUser);
     }
 
@@ -38,8 +40,9 @@ public class UserControllerTest {
                 "jjjkuul@naver.com", "   ");
         UserController userController = new UserController(userService);
 
-        userController.requestMembership(testUser);
+        String requestResult = userController.requestMembership(testUser);
 
+        assertEquals("redirect:/", requestResult);
         verify(userService, never()).add(testUser);
     }
 }

@@ -1,7 +1,7 @@
 package com.codesquad.cafe.user;
 
-import ch.qos.logback.core.model.Model;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +21,17 @@ public class UserController {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
             userService.add(input);
+            return "redirect:/users";
         }
 
-        return "redirect:/users";
+        return "redirect:/";
+    }
+
+    @GetMapping("/users")
+    public String showUserList(Model model) {
+        List<User> users = userService.getUsers();
+        model.addAttribute("users", users);
+
+        return "user/users";
     }
 }

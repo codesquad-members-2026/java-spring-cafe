@@ -20,4 +20,8 @@ public class UserService {
     int count(){
         return users.size();
     }
+
+    List<User> getUsers(){
+        return users;
+    }
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 목록</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 50px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #007BFF;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .btn-home {
+            display: block;
+            width: 120px;
+            margin: 20px auto;
+            padding: 10px;
+            text-align: center;
+            background-color: #28a745;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📋 전체 회원 목록</h1>
+
+<table>
+    <thead>
+    <tr>
+        <th>아이디</th>
+        <th>이름</th>
+        <th>이메일</th>
+        <th>전화번호</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#users}}
+        <tr>
+            <td>{{id}}</td>
+            <td>{{lastName}}{{firstName}}</td>
+            <td>{{email}}</td>
+            <td>{{phoneNumber}}</td>
+        </tr>
+    {{/users}}
+    </tbody>
+</table>
+
+<a href="/" class="btn-home">홈으로 돌아가기</a>
+
+</body>
+</html>
