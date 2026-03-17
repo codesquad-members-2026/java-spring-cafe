@@ -3,8 +3,8 @@ package com.codesquad.cafe.user;
 public class User {
     private String id;
     private String password;
-    private String firstName;
     private String lastName;
+    private String firstName;
     private String email;
     private String phoneNumber;
 
