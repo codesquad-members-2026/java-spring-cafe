@@ -1,4 +1,4 @@
-package com.codesquad.cafe;
+package com.codesquad.cafe.user;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,8 +1,9 @@
 package com.codesquad.cafe;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
+import com.codesquad.cafe.user.User;
+import com.codesquad.cafe.user.UserService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

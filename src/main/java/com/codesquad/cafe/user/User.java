@@ -1,4 +1,4 @@
-package com.codesquad.cafe;
+package com.codesquad.cafe.user;
 
 public class User {
     private long id;
