@@ -16,13 +16,20 @@ class CafeApplicationTests {
 	void createUser() {
 		String userId =("stojum");
 		String name = "송원재";
+		String password = "1234";
+		String email = "a@a";
 
 		User user = new User();
 		user.setUserId(userId);
 		user.setName(name);
+		user.setPassword(password);
+		user.setEmail(email);
+
 
 		assertEquals(userId, user.getUserId());
 		assertEquals(name, user.getName());
+		assertEquals(password, user.getPassword());
+		assertEquals(email, user.getEmail());
 	}
 
 }
