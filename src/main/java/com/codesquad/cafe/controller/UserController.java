@@ -33,8 +33,14 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public String modify(@PathVariable("userId")) {
-
+    public String profile(@PathVariable("userId") String userId, Model model) {
+        for (User user : users) {
+            if(user.getUserId().equals(userId)) {
+                model.addAttribute("user", user);
+                break;
+            }
+        }
+        return "user/profile";
     }
 
 
