@@ -32,6 +32,10 @@ public class ArticleRepo {
         return null;
     }
 
+    public Article[] getAllArticles(){
+        return this.idToArticleMap.values().toArray(new Article[0]);
+    }
+
     public void clear(){
         this.titleToArticleMap.clear();
         this.idToArticleMap.clear();
