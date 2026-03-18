@@ -1,6 +1,8 @@
 package com.codesquad;
 
+import com.codesquad.cafeRepo.ArticleRepo;
 import com.codesquad.cafeRepo.UserRepo;
+import com.codesquad.service.ArticleService;
 import com.codesquad.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,6 +17,16 @@ public class SpringConfig {
      @Bean
     public UserService userService(){
         return new UserService(userRepo());
+     }
+
+     @Bean
+    public ArticleRepo articleRepo(){
+        return new ArticleRepo();
+     }
+
+     @Bean
+    public ArticleService articleService(){
+        return new ArticleService();
      }
 
 

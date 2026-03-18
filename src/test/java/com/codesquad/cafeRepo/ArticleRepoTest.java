@@ -1,6 +1,6 @@
-package com.codesquad.article;
+package com.codesquad.cafeRepo;
 
-import com.codesquad.cafeRepo.ArticleRepo;
+import com.codesquad.article.Article;
 import org.junit.jupiter.api.*;
 
 import java.util.Arrays;
