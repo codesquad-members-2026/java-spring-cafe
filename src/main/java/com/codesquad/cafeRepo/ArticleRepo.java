@@ -32,4 +32,9 @@ public class ArticleRepo {
         return null;
     }
 
+    public void clear(){
+        this.titleToArticleMap.clear();
+        this.idToArticleMap.clear();
+    }
+
 }

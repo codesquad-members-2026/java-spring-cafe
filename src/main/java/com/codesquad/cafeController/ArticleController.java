@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/qna")
 public class ArticleController {
-
-    @GetMapping("/")
-    public String getQna(){
-
-    }
+//
+//    @GetMapping("/")
+//    public String getQna(){
+//
+//    }
 
 
 }
