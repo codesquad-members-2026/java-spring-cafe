@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cafe - Sign Up</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfaf6;
+            color: #3e2723;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(109, 76, 65, 0.1);
+            width: 100%;
+            max-width: 320px;
+            text-align: center;
+        }
+        h1 { margin-top: 0; font-size: 1.8rem; color: #4e342e; }
+
+        .form-group { margin-bottom: 1.5rem; text-align: left; }
+
+        label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
+
+        /* Added email and password to this block */
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d7ccc8;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        /* Added email and password to the focus block */
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #8d6e63;
+        }
+
+        button {
+            width: 100%;
+            background-color: #6d4c41;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover { background-color: #5d4037; }
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #8d6e63;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .back-link:hover { color: #5d4037; text-decoration: underline; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>Sign Up</h1>
+    <form action="/user/signup" method="post">
+        <div class="form-group">
+            <label for="name">Enter your name</label>
+            <input type="text" id="name" name="name" placeholder="John Doe" required>
+        </div>
+        <div class="form-group">
+            <label for="id">Choose your ID</label>
+            <input type="text" id="id" name="id" placeholder="e.g., coffeelover99" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Choose your password</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="email">Enter your email</label>
+            <input type="email" id="email" name="email" placeholder="e.g., coffeelover99@gmail.com" required>
+        </div>
+
+        <button type="submit">SIGN UP</button>
+    </form>
+    <a href="/" class="back-link">← Return Home</a>
+</div>
+</body>
+</html>

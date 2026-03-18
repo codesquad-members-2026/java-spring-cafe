@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Cafe</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfaf6; /* Warm cream background */
+            color: #3e2723;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #4e342e;
+        }
+        .btn-container {
+            display: flex;
+            gap: 1.5rem;
+        }
+        a.btn {
+            text-decoration: none;
+            background-color: #6d4c41; /* Coffee brown */
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        a.btn:hover {
+            background-color: #5d4037;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to Cafe</h1>
+<div class="btn-container">
+    <a href="/user/signup" class="btn">Sign Up</a>
+    <a href="/user/users" class="btn">See User List</a>
+</div>
+</body>
+</html>
