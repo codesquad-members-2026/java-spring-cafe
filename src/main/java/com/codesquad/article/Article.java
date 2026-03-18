@@ -2,14 +2,17 @@ package com.codesquad.article;
 
 public class Article {
 
-    private final int id;
+    private int id;
     private final String title;
     private final String content;
 
-    public Article(int id, String title, String content){
-        this.id = id;
+    public Article(String title, String content){
         this.title = title;
         this.content=content;
+    }
+
+    public void setId(int id){
+        this.id = id;
     }
 
     public int getId() {

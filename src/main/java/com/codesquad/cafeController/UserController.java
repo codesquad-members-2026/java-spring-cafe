@@ -1,6 +1,5 @@
 package com.codesquad.cafeController;
 
-import com.codesquad.cafeRepo.UserRepo;
 import com.codesquad.service.UserService;
 import com.codesquad.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class UserController {
 
     @GetMapping("/signup")
     public String getSignUp(){
-        return "signup";
+        return "user/signup";
     }
 
     @PostMapping("/signup")
@@ -36,6 +35,6 @@ public class UserController {
     @GetMapping("/users")
     public String getUsersList(Model model){
         model.addAttribute("users", service.allUsers());
-        return "users";
+        return "user/users";
     }
 }
