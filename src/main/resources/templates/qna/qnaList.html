@@ -35,7 +35,10 @@
             border-radius: 12px;
             box-shadow: 0 4px 16px rgba(109, 76, 65, 0.08);
             text-align: left;
-            transition: transform 0.2s;
+            transition: transform 0.2s, box-shadow 0.2s; /* Made the shadow transition smooth too! */
+            text-decoration: none;
+            color: inherit;
+            display: block;
         }
         .article-card:hover {
             transform: translateY(-2px);
@@ -84,7 +87,7 @@
         h1 {
             font-size: 2.2rem;
             color: #4e342e;
-            margin: 0; /* Removed bottom margin since the container handles it */
+            margin: 0;
         }
         .btn-primary {
             background-color: #6d4c41;
@@ -108,7 +111,6 @@
     <a href="/qna/question" class="btn-primary">Ask a Question</a>
 </div>
 
-<div class="article-container">
 
 <div class="article-container">
 
@@ -116,11 +118,11 @@
         <p>No questions have been asked yet. Be the first!</p>
     </div>
 
-    <div th:each="article : ${articles}" class="article-card">
+    <a th:href="@{/qna/{id}(id=${article.id})}"  class="article-card" th:each="article : ${articles}" >
         <div class="article-meta" th:text="'Question #' + ${article.id}">Question #ID</div>
         <h2 class="article-title" th:text="${article.title}">Sample Title</h2>
         <p class="article-content" th:text="${article.content}">Sample content goes here...</p>
-    </div>
+    </a>
 
 </div>
 

@@ -6,10 +6,7 @@ import com.codesquad.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/qna")
@@ -33,6 +30,12 @@ public class ArticleController {
     public String postQuestionForm(@ModelAttribute Article article){
         service.putNewArticle(article);
         return "redirect:";
+    }
+
+    @GetMapping("/{articleId}")
+    public String getArticleDetail(@PathVariable int articleId, Model model){
+        model.addAttribute("article", service.findArticleById(articleId));
+        return "qna/questionDetail";
     }
 
 }

@@ -19,10 +19,13 @@ public class UserService {
         this.repo.putUser(newUser);
     }
 
-    public User findUser(String email){
-        return this.repo.getUser(email);
+    public User findUserById(String id){
+        return this.repo.getUserById(id);
     }
 
+    public User findUserByEmail(String email){
+        return this.repo.getUserByEmail(email);
+    }
 
     public List<User> allUsers(){
         return this.repo.userList();

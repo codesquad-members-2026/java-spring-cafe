@@ -16,4 +16,8 @@ public class ArticleService {
         repo.putNewArticle(newArticle);
     }
 
+    public Article findArticleById(int id){
+        return this.repo.getArticleWithId(id);
+    }
+
 }

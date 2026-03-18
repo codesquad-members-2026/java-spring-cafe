@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cafe - Question Detail</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfaf6;
+            color: #3e2723;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1rem;
+            margin: 0;
+        }
+        .article-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(109, 76, 65, 0.1);
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+        }
+        .article-meta {
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #8d6e63;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        h1 {
+            margin: 0 0 1.5rem 0;
+            color: #4e342e;
+            font-size: 2rem;
+            line-height: 1.3;
+            border-bottom: 2px solid #efebe9;
+            padding-bottom: 1rem;
+        }
+        .article-content {
+            font-size: 1.1rem;
+            color: #5d4037;
+            line-height: 1.6;
+            margin-bottom: 2.5rem;
+            white-space: pre-wrap;
+        }
+        .btn-return {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #8d6e63;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .btn-return:hover {
+            background-color: #6d4c41;
+        }
+    </style>
+</head>
+<body>
+
+<div class="article-card">
+    <div class="article-meta">Question #<span th:text="${article.id}">1</span></div>
+
+    <h1 th:text="${article.title}">Sample Question Title</h1>
+
+    <div class="article-content" th:text="${article.content}">
+        Here is where the detailed explanation of the question will go.
+    </div>
+
+    <a href="/qna/" class="btn-return">← Back to Q&A Board</a>
+</div>
+
+</body>
+</html>

@@ -28,8 +28,8 @@ public class ArticleControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockitoBean
-    private Article
+//
+//    @MockitoBean
+//    private Article
 
 }

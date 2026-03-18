@@ -37,6 +37,7 @@
             margin-bottom: 2rem;
             margin-top: 1.5rem;
         }
+
         .user-item {
             background-color: #fafafa;
             padding: 1rem;
@@ -44,17 +45,26 @@
             border-radius: 8px;
             display: flex;
             align-items: center;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; /* Smooth animations */
         }
+
+        .user-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(109, 76, 65, 0.08);
+            border-color: #d7ccc8;
+        }
+
         .user-item::before {
             content: '☕';
             margin-right: 15px;
             font-size: 1.4rem;
         }
 
-        /* --- NEW CSS FOR ID AND EMAIL --- */
         .user-info {
             display: flex;
-            flex-direction: column; /* Stacks the text vertically */
+            flex-direction: column;
         }
         .user-id {
             font-weight: 600;
@@ -63,10 +73,9 @@
         }
         .user-email {
             font-size: 0.85rem;
-            color: #8d6e63; /* Lighter brown so it doesn't compete with the ID */
+            color: #8d6e63;
             margin-top: 0.15rem;
         }
-        /* -------------------------------- */
 
         a.btn-return {
             text-decoration: none;
@@ -86,14 +95,14 @@
     <h3>Cafe Members</h3>
 
     <div class="user-list">
-        <div class="user-item" th:each="user : ${users}">
+        <a th:href="@{/user/{id}(id=${user.id})}" class="user-item" th:each="user : ${users}">
             <div class="user-info">
                 <span class="user-id" th:text="${user.id}"></span>
                 <span class="user-email" th:text="${user.email}"></span>
             </div>
-        </div>
+        </a>
 
-        <div th:if="${#lists.isEmpty(users)}" class="user-item" style="color: #9e9e9e;">
+        <div th:if="${#lists.isEmpty(users)}" class="user-item" style="color: #9e9e9e; pointer-events: none;">
             No members yet. Be the first!
         </div>
     </div>
