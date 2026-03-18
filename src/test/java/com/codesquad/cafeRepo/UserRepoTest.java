@@ -31,9 +31,9 @@ public class UserRepoTest {
         newUser.setId(id);
         newUser.setEmail(email);
         repo.putUser(newUser);
-        assertThat(repo.getUser(email).getId()).isEqualTo(id);
-        assertThat(repo.getUser(email).getEmail()).isEqualTo(email);
-        assertThat(repo.getUser(email)).isEqualTo(newUser);
+        assertThat(repo.getUserByEmail(email).getId()).isEqualTo(id);
+        assertThat(repo.getUserByEmail(email).getEmail()).isEqualTo(email);
+        assertThat(repo.getUserByEmail(email)).isEqualTo(newUser);
     }
 
 }
