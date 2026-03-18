@@ -172,14 +172,14 @@
             </thead>
             <tbody>
                 {{#users}}
-                <tr>
-                    <td>
-                        <div class="name-cell">
-                            {{name}}
-                        </div>
-                    </td>
-                    <td class="td-secondary">{{email}}</td>
-                </tr>
+                    <tr>
+                        <td>
+                            <a href="/users/{{id}}" class="name-cell">{{name}}</a>
+                        </td>
+                        <td>
+                            <a href="/users/{{id}}" class="td-secondary">{{email}}</a>
+                        </td>
+                    </tr>
                 {{/users}}
 
                 {{^users}}

@@ -1,12 +1,21 @@
 package com.codesquad.cafe;
 
 public class User {
+    private long id;
     private String name;
     private String email;
     private String password;
 
     public String getName() {
         return name;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setName(String name) {

@@ -39,4 +39,22 @@ class UserServiceTest {
         //then
         assertThat(users).containsExactlyInAnyOrderElementsOf(List.of(user1, user2));
     }
+
+    @Test
+    @DisplayName("아이디로 특정 회원을 조회할 수 있다.")
+    public void getById() throws Exception {
+        //given
+        User user = new User();
+        user.setName("gabi");
+        user.setEmail("gabi@example.com");
+        user.setPassword("gabigabi");
+
+        userService.save(user);
+
+        //when
+        User findUser = userService.get(1);
+
+        //then
+        assertThat(user).isEqualTo(findUser);
+    }
 }
