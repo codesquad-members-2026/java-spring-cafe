@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 프로필 - Java 카페</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { background-color: #f8f9fa; }
+        .profile-container { max-width: 500px; margin-top: 80px; }
+        .card { border: none; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .profile-header { background-color: #007bff; color: white; border-radius: 15px 15px 0 0; padding: 20px; text-align: center; }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container profile-container">
+    <div class="card">
+        <div class="profile-header">
+            <h3 class="mb-0" th:text="${user.name}">송원재</h3>
+            <p class="mb-0 opacity-75" th:text="${user.email}">user@example.com</p>
+        </div>
+
+        <div class="card-body p-4">
+            <div class="mb-3">
+                <label class="text-muted small fw-bold">사용자 아이디</label>
+                <div class="fs-5 fw-semibold" th:text="${user.userId}">wonjae</div>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="text-muted small fw-bold">비밀번호</label>
+                <div class="fs-5" th:text="${user.password}">1234</div>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="text-muted small fw-bold">이름</label>
+                <div class="fs-5" th:text="${user.name}">송원재</div>
+            </div>
+            <hr>
+            <div class="mb-3">
+                <label class="text-muted small fw-bold">이메일 주소</label>
+                <div class="fs-5" th:text="${user.email}">user@example.com</div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <a href="/users" class="btn btn-outline-primary">목록으로 돌아가기</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
