@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 목록</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-page: #f5f5f3;
+            --bg-card: #ffffff;
+            --bg-input: #f9f9f8;
+            --bg-row-hover: #fafaf9;
+            --border-color: #e0e0dc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-hint: #b0b0aa;
+            --radius-md: 8px;
+            --radius-xl: 16px;
+        }
+
+        body {
+            background: var(--bg-page);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 2.5rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            margin-bottom: 1.75rem;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+        }
+
+        .page-header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .page-header p {
+            font-size: 13px;
+            color: var(--text-hint);
+            margin-top: 4px;
+        }
+
+        .signup-btn {
+            height: 36px;
+            padding: 0 16px;
+            background: var(--text-primary);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: opacity 0.15s;
+        }
+
+        .signup-btn:hover { opacity: 0.85; }
+
+        .card {
+            background: var(--bg-card);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead th {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-hint);
+            letter-spacing: 0.04em;
+            text-align: left;
+            padding: 14px 20px;
+            border-bottom: 0.5px solid var(--border-color);
+        }
+
+        tbody tr {
+            border-bottom: 0.5px solid var(--border-color);
+            transition: background 0.1s;
+        }
+
+        tbody tr:last-child {
+            border-bottom: none;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-row-hover);
+        }
+
+        tbody td {
+            padding: 16px 20px;
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        .td-secondary {
+            color: var(--text-secondary);
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e8e8e4;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        .name-cell {
+            display: flex;
+            align-items: center;
+        }
+
+        .empty-state {
+            padding: 3rem 1rem;
+            text-align: center;
+            color: var(--text-hint);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>전체 회원</h1>
+            <p>가입된 모든 회원을 확인합니다</p>
+        </div>
+        <a href="/user/form.html" class="signup-btn">회원가입</a>
+    </div>
+
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>이메일</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#users}}
+                <tr>
+                    <td>
+                        <div class="name-cell">
+                            {{name}}
+                        </div>
+                    </td>
+                    <td class="td-secondary">{{email}}</td>
+                </tr>
+                {{/users}}
+
+                {{^users}}
+                <tr>
+                    <td colspan="2">
+                        <div class="empty-state">가입된 회원이 없습니다</div>
+                    </td>
+                </tr>
+                {{/users}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
