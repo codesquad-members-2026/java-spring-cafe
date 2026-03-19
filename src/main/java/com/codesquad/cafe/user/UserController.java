@@ -60,8 +60,15 @@ public class UserController {
             session.setAttribute("sessionUser", user);
             return "redirect:/";
         } catch(NoUserInListException e) {
-            // TODO: 이후 로그로 작성 필요
             return "redirect:/login";
         }
+    }
+
+    // 로그아웃
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("sessionUser");
+
+        return "redirect:/";
     }
 }
