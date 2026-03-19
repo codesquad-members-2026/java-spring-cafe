@@ -17,14 +17,13 @@ public class UserController {
     }
 
     // 회원가입 창으로 이동
-    @GetMapping("/membership")
+    @GetMapping("/signup")
     public String signupForm(Model model) {
 
-        return "user/form";
+        return "user/signup";
     }
-
     // 회원가입 폼 제출
-    @PostMapping("/form")
+    @PostMapping("/join")
     public String join(@ModelAttribute User input) {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
@@ -36,7 +35,7 @@ public class UserController {
     }
 
     // 유저 리스트 창으로 이동
-    @GetMapping("/users")
+    @GetMapping("/list")
     public String list(Model model) {
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
@@ -49,5 +48,14 @@ public class UserController {
     public String loginForm(Model model) {
 
         return "user/login";
+    }
+    // 로그인 폼 제출
+    @PostMapping("/login")
+    public String login(@ModelAttribute User input) {
+        // userService의 users 안에 아이디와 비밀번호가 존재하는지 매핑
+
+        // 존재한다면
+
+        return "redirect:/login";
     }
 }
