@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 작성</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-page: #f5f5f3;
+            --bg-card: #ffffff;
+            --bg-input: #f9f9f8;
+            --border-color: #e0e0dc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-hint: #b0b0aa;
+            --radius-md: 8px;
+            --radius-xl: 16px;
+        }
+
+        body {
+            background: var(--bg-page);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .wrap {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1rem;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 560px;
+            background: var(--bg-card);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            letter-spacing: 0.02em;
+        }
+
+        .form-group input {
+            width: 100%;
+            height: 44px;
+            padding: 0 14px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-input);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+        .form-group input:focus {
+            border-color: #888;
+            box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.08);
+        }
+
+        .form-group input::placeholder {
+            color: var(--text-hint);
+        }
+
+        .form-group textarea {
+            width: 100%;
+            height: 200px;
+            padding: 12px 14px;
+            font-size: 14px;
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-input);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            outline: none;
+            transition: border-color 0.15s;
+            resize: vertical;
+            line-height: 1.6;
+        }
+
+        .form-group textarea:focus {
+            border-color: #888;
+            box-shadow: 0 0 0 3px rgba(128, 128, 128, 0.08);
+        }
+
+        .form-group textarea::placeholder {
+            color: var(--text-hint);
+        }
+
+        .divider {
+            height: 0.5px;
+            background: var(--border-color);
+            margin: 1.75rem 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .submit-btn {
+            flex: 1;
+            height: 44px;
+            background: var(--text-primary);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            letter-spacing: 0.02em;
+            transition: opacity 0.15s;
+        }
+
+        .submit-btn:hover { opacity: 0.85; }
+        .submit-btn:active { opacity: 0.7; }
+
+        .cancel-btn {
+            height: 44px;
+            padding: 0 20px;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 14px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: border-color 0.15s;
+        }
+
+        .cancel-btn:hover {
+            border-color: #888;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrap">
+    <div class="card">
+        <div class="header">
+            <h1>게시글 작성</h1>
+            <p>새로운 게시글을 작성합니다</p>
+        </div>
+
+        <form action="/questions" method="post">
+            <div class="form-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" placeholder="제목을 입력하세요">
+            </div>
+
+            <div class="form-group">
+                <label for="contents">내용</label>
+                <textarea id="contents" name="contents" placeholder="내용을 입력하세요"></textarea>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="btn-group">
+                <a href="/questions" class="cancel-btn">취소</a>
+                <button type="submit" class="submit-btn">작성하기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
