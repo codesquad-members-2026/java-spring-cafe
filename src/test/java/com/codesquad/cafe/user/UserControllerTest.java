@@ -1,5 +1,7 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.NoUserInListException;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,11 +16,16 @@ public class UserControllerTest {
 
     @Mock
     UserService userService;
+
+    @Mock
+    HttpSession httpSession;
+
     UserController userController;
 
     @BeforeEach
     void setUp() {
         userService = Mockito.mock(UserService.class);
+        httpSession = Mockito.mock(HttpSession.class);
         userController = new UserController(userService);
     }
 
@@ -49,16 +56,17 @@ public class UserControllerTest {
     @Test
     @DisplayName("회원가입되어 있다면 홈 화면으로 이동한다.")
     public void login_WithCorrectInfo() {
-        when(userService.isExist("admin", "admin")).thenReturn(true);
+        when(userService.findUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
-        assertThat(userController.login("admin", "admin")).isEqualTo("redirect:/");
+        assertThat(userController.login("admin", "admin", httpSession)).isEqualTo("redirect:/");
     }
 
     @Test
     @DisplayName("회원가입되어 있지 않다면 로그인 창으로 이동한다")
     public void login_WithIncorrectInfo() {
-        when(userService.isExist("admin", "admin")).thenReturn(false);
+        when(userService.findUser("wrongId", "wrongPassword")).thenThrow(NoUserInListException.class);
 
-        assertThat(userController.login("admin", "admin")).isEqualTo("redirect:/login");
+        assertThat(userController.login("wrongId", "wrongPassword", httpSession))
+                .isEqualTo("redirect:/login");
     }
 }

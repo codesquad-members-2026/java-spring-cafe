@@ -1,5 +1,6 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.NoUserInListException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,14 +22,14 @@ public class UserService {
         return users.size();
     }
 
-    boolean isExist(String id, String pw){
+    User findUser(String id, String password){
         for(User user : users){
-            if(user.getId().equals(id) && user.getPassword().equals(pw)){
-                return true;
+            if(user.getId().equals(id) && user.getPassword().equals(password)){
+                return user;
             }
         }
 
-        return false;
+        throw new NoUserInListException("해당 유저가 존재하지 않습니다.");
     }
 
     List<User> getUsers(){

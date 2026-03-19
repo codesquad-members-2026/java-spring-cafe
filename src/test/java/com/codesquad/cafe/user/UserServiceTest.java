@@ -1,5 +1,6 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.NoUserInListException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,7 +33,7 @@ public class UserServiceTest {
                 "nvidia@gmail.com", "01049291779");
         userService.add(user);
 
-        assertTrue(userService.isExist("admin", "admin"));
+        assertEquals(userService.findUser("admin", "admin"), user);
     }
 
     @Test
@@ -42,6 +43,6 @@ public class UserServiceTest {
                 "nvidia@gmail.com", "01049291779");
         userService.add(user);
 
-        assertFalse(userService.isExist("admin", "admin"));
+        assertThrows(NoUserInListException.class, () -> userService.findUser("admin", "admin"));
     }
 }

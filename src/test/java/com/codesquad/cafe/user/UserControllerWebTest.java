@@ -1,6 +1,6 @@
 package com.codesquad.cafe.user;
 
-import org.junit.jupiter.api.BeforeEach;
+import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -22,6 +22,9 @@ public class UserControllerWebTest {
     @MockitoBean
     private UserService userService;
 
+    @MockitoBean
+    private HttpSession httpSession;
+
     @Test
     @DisplayName("유효한 회원가입 폼 데이터를 받으면 로그인 창으로 리다이렉트한다.")
     public void join_HttpPostTest() throws Exception{
@@ -41,7 +44,7 @@ public class UserControllerWebTest {
     @Test
     @DisplayName("유효한 로그인 폼 데이터를 받으면 홈 화면으로 리다이렉트한다.")
     public void login_HttpPostTest() throws Exception{
-        when(userService.isExist("admin", "admin")).thenReturn(true);
+        when(userService.findUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
         mockMvc.perform(post("/login")
                 .param("id", "admin")
@@ -49,6 +52,6 @@ public class UserControllerWebTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        Mockito.verify(userService, Mockito.times(1)).isExist("admin", "admin");
+        Mockito.verify(userService, Mockito.times(1)).findUser("admin", "admin");
     }
 }
