@@ -28,7 +28,7 @@ public class UserController {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
             userService.add(input);
-            return "redirect:/list";
+            return "redirect:/login";
         }
 
         return "redirect:/";
@@ -46,15 +46,14 @@ public class UserController {
     // 로그인 창으로 이동
     @GetMapping("/login")
     public String loginForm(Model model) {
-
         return "user/login";
     }
     // 로그인 폼 제출
     @PostMapping("/login")
-    public String login(@ModelAttribute User input) {
-        // userService의 users 안에 아이디와 비밀번호가 존재하는지 매핑
-
-        // 존재한다면
+    public String login(String id, String password) {
+        if(userService.isExist(id, password)){
+            return "redirect:/";
+        }
 
         return "redirect:/login";
     }

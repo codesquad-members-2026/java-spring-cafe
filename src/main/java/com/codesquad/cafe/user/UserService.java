@@ -21,6 +21,16 @@ public class UserService {
         return users.size();
     }
 
+    boolean isExist(String id, String pw){
+        for(User user : users){
+            if(user.getId().equals(id) && user.getPassword().equals(pw)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     List<User> getUsers(){
         return users;
     }
