@@ -37,11 +37,36 @@
             margin: 0 auto 1.5rem auto;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
+
+        /* --- NEW STYLES FOR THE NAME & EDIT BUTTON --- */
+        .name-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.8rem; /* Adds space between the name and the button */
+            margin-bottom: 0.5rem;
+        }
         h2 {
-            margin: 0 0 0.5rem 0;
+            margin: 0; /* Removed the bottom margin since the wrapper handles it now */
             color: #4e342e;
             font-size: 1.8rem;
         }
+        .btn-edit {
+            text-decoration: none;
+            background-color: #efebe9;
+            color: #8d6e63;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .btn-edit:hover {
+            background-color: #d7ccc8;
+            color: #5d4037;
+        }
+        /* --------------------------------------------- */
+
         .user-id {
             color: #8d6e63;
             font-size: 1.1rem;
@@ -92,15 +117,24 @@
 <div class="profile-card">
     <div class="avatar">☕</div>
 
-    <h2 th:text="${user.name}">John Doe</h2>
+    <div class="name-wrapper">
+        <h2 th:text="${user.name}">John Doe</h2>
+        <a th:href="@{/user/users/{id}/edit(id=${user.id})}" class="btn-edit">Edit</a>
+    </div>
+
     <p class="user-id">@<span th:text="${user.id}">coffeelover99</span></p>
 
     <div class="info-group">
         <span class="info-label">Email Address</span>
         <span class="info-value" th:text="${user.email}">john.doe@example.com</span>
     </div>
+    <div class="info-group">
+        <span class="info-label">Name</span>
+        <span class="info-value" th:text="${user.name}">John Doe</span>
+    </div>
 
     <a href="/user/users" class="btn-return">← Back to Member List</a>
+
 </div>
 
 </body>

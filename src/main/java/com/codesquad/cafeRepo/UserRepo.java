@@ -1,6 +1,7 @@
 package com.codesquad.cafeRepo;
 
 import com.codesquad.user.User;
+import com.codesquad.user.UserUpdateForm;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,21 @@ public class UserRepo {
             return this.idToUserMap.get(id);
         }
         return null;
+    }
+
+    public boolean validateFormWithUser(User user, UserUpdateForm form){
+        return user.getPassword().equals(form.getPassword());
+    }
+
+    public void updateUserProfile(User user, UserUpdateForm form){
+        if(user == null){
+            return;
+        }
+
+        user.setEmail(form.getEmail());
+        user.setName(form.getName());
+        user.setPassword(form.getNewPassword());
+
     }
 
     public List<User> userList(){

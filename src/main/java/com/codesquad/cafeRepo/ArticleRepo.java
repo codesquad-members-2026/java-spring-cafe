@@ -9,11 +9,10 @@ public class ArticleRepo {
 
     private final Map<Integer, Article> idToArticleMap = new HashMap<>();
     private final Map<String, Article> titleToArticleMap = new HashMap<>();
-    private int nextId = 1;
+
 
     public void putNewArticle(Article newArticle){
-        newArticle.setId(nextId);
-        nextId++;
+        newArticle.setId(idToArticleMap.size()+1);
         this.idToArticleMap.put(newArticle.getId(), newArticle);
         this.titleToArticleMap.put(newArticle.getTitle(), newArticle);
     }

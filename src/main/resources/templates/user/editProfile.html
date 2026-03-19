@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cafe - Edit Profile</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fdfaf6;
+            color: #3e2723;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(109, 76, 65, 0.1);
+            width: 100%;
+            max-width: 350px;
+            text-align: center;
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 1.8rem;
+            color: #4e342e;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #5d4037;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #d7ccc8;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+            color: #3e2723;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #8d6e63;
+        }
+
+        /* Special styling for the un-editable ID field */
+        input[readonly] {
+            background-color: #efebe9;
+            color: #8d6e63;
+            border-color: #efebe9;
+            cursor: not-allowed;
+        }
+        input[readonly]:focus {
+            border-color: #efebe9; /* Prevents the focus ring on readonly */
+        }
+
+        /* A little helper text for the password field */
+        .help-text {
+            display: block;
+            font-size: 0.8rem;
+            color: #8d6e63;
+            margin-top: 0.3rem;
+        }
+
+        button {
+            width: 100%;
+            background-color: #6d4c41;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 1rem;
+        }
+        button:hover {
+            background-color: #5d4037;
+        }
+
+        .cancel-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: #8d6e63;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        .error-banner {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid #ef9a9a;
+            text-align: left;
+        }
+        .cancel-link:hover {
+            color: #5d4037;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h2>Edit Profile</h2>
+
+    <form th:action="@{/user/users/{id}/edit(id=${user.id})}" method="post">
+
+        <div th:if="${errorMessage}" class="error-banner">
+            <span th:text="${errorMessage}"> ERROR MESSAGE</span>
+        </div>
+
+        <input type="hidden" name="_method" value="put" />
+
+        <div class="form-group">
+            <label for="id">User ID</label>
+            <input th:value="${user.id}" type="text" id="id" name="id" readonly>
+        </div>
+
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input th:value="${user.name}" type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input th:value="${user.email}" type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+            <label for="newPassword">New Password</label>
+            <input type="password" id="newPassword" name="newPassword" value="" required>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #efebe9; margin: 1.5rem 0;">
+
+        <div class="form-group">
+            <label for="password">Confirm Password</label>
+            <input type="password" id="password" name="password" placeholder="Enter current password" required>
+            <span class="help-text">Required to save your changes.</span>
+        </div>
+
+        <button type="submit">SAVE CHANGES</button>
+    </form>
+
+    <a href="/user/users" class="cancel-link">Cancel</a>
+</div>
+</body>
+</html>
