@@ -27,7 +27,7 @@ public class UserControllerTest {
                 "jjjkuul@naver.com", "phoneNumber");
         UserController userController = new UserController(userService);
 
-        String requestResult = userController.requestMembership(testUser);
+        String requestResult = userController.join(testUser);
 
         assertEquals("redirect:/list", requestResult);
         verify(userService, Mockito.times(1)).add(testUser);
@@ -40,7 +40,7 @@ public class UserControllerTest {
                 "jjjkuul@naver.com", "   ");
         UserController userController = new UserController(userService);
 
-        String requestResult = userController.requestMembership(testUser);
+        String requestResult = userController.join(testUser);
 
         assertEquals("redirect:/", requestResult);
         verify(userService, never()).add(testUser);

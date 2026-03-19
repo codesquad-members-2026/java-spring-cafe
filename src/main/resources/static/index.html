@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>홈 화면</title>
 
     <style>
         * {
@@ -28,93 +28,64 @@
             display: flex;
         }
 
-        .login-box{
+        .welcome-box {
             width: 60%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: start;
-            padding-left: 20px;
+            padding-left: 30px;
             box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
             border-top: 5px solid #4668CF;
         }
 
-        .info-box{
-            display: flex;
-            flex-direction: column;
-        }
-
-        #inputId{
-            margin-top: 40px;
-            margin-bottom: 10px;
-            font-size: 15px;
-            border-radius: 5px;
-            padding: 5px;
-        }
-
-        #inputPw{
-            font-size: 15px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            padding: 5px;
-        }
-
-         #loginBtn{
-            background-color: #4668CF;
-            color: white;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
-            width: 100%;
-            cursor: pointer;
-            font-size: large;
-        }
-
-        #loginBtn:hover{
-            filter: contrast(80%);
-        }
-
-        #listBtn{
-            background-color: #4668CF;
-            color: white;
-            border-radius: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 5px;
-            width: 100%;
-            cursor: pointer;
-            font-size: large;
-        }
-
-        .sign-box{
+        .nav-box {
             width: 40%;
             box-shadow: 0 0px 20px rgba(0, 0, 0, 0.03);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            gap: 15px; /* 버튼 사이 간격 */
         }
 
-        .signBtn{
-            margin-top: 10px;
-            border: 2px solid rgb(191, 191, 191);
-            padding: 5px;
-            border-radius: 10px;
+        .btn-primary {
+            background-color: #4668CF;
+            color: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            width: 70%;
             cursor: pointer;
-        }
-
-        .signBtn a{
-            text-align: center;
-            font-weight: 100;
-            font-size: 18px;
-            color: rgb(73, 73, 73);
+            font-size: 16px;
+            font-weight: bold;
             text-decoration: none;
+            box-sizing: border-box;
         }
 
-        .signBtn:hover{
+        .btn-primary:hover {
+            filter: contrast(80%);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: rgb(73, 73, 73);
+            border: 2px solid rgb(191, 191, 191);
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 8px;
+            width: 70%;
+            cursor: pointer;
+            font-size: 15px;
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+
+        .btn-secondary:hover {
             filter: opacity(0.6);
         }
 
@@ -124,22 +95,20 @@
 <body>
 <div class="container">
     <div class="box">
-        <div class="login-box">
-            <div class="info-box">
-                <h2 style="color: #4668CF; font-size: 30px;">Log in</h2>
-                <input id="inputId" type="id" placeholder="아이디">
-                <input id="inputPw" type="password" placeholder="비밀번호">
-                <div><button id="loginBtn">Login</button></div>
-            </div>
+        <div class="welcome-box">
+            <h1 style="color: #4668CF; font-size: 32px; margin-bottom: 10px;">Cafe Spring</h1>
+            <p style="color:#656464; font-size: 18px; line-height: 1.6;">
+                환영합니다!<br>
+                나만의 첫 번째<br>
+                스프링 부트 애플리케이션
+            </p>
         </div>
 
-        <div class="sign-box">
-            <p style="color:#656464; font-size: 15px;">Don't have an account?</p>
-            <div class="signBtn"><a href="/membership">Sign Up</a></div>
-            <div class="signBtn"><a href="/users">User List</a></div>
+        <div class="nav-box">
+            <a href="/login" class="btn-primary">Log in</a>
+            <a href="/membership" class="btn-secondary">Sign Up</a>
+            <a href="/users" class="btn-secondary">User List</a>
         </div>
     </div>
 </div>
 </body>
-
-</html>
