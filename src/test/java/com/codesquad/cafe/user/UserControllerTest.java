@@ -7,6 +7,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.ui.Model;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,9 +17,10 @@ public class UserControllerTest {
 
     @Mock
     UserService userService;
-
     @Mock
     HttpSession httpSession;
+    @Mock
+    Model model;
 
     UserController userController;
 
@@ -26,6 +28,7 @@ public class UserControllerTest {
     void setUp() {
         userService = Mockito.mock(UserService.class);
         httpSession = Mockito.mock(HttpSession.class);
+        model = Mockito.mock(Model.class);
         userController = new UserController(userService);
     }
 
@@ -68,5 +71,23 @@ public class UserControllerTest {
 
         assertThat(userController.login("wrongId", "wrongPassword", httpSession))
                 .isEqualTo("redirect:/login");
+    }
+
+    @Test
+    @DisplayName("로그인 상태에 있다면 회원수정창으로 이동한다.")
+    public void modifyForm_WithLoginStatus() {
+        User testUser = Mockito.mock(User.class);
+
+        assertEquals("user/modify", userController.modifyForm(testUser, model));
+        verify(model, Mockito.times(1)).addAttribute("user", testUser);
+    }
+
+    @Test
+    @DisplayName("로그인 상태에 있지 않다면 홈으로 이동한다.")
+    public void modifyForm_WithLogoutStatus() {
+        User testUser = null;
+
+        assertEquals("redirect:/", userController.modifyForm(testUser, model));
+        verify(model, Mockito.never()).addAttribute("user", testUser);
     }
 }

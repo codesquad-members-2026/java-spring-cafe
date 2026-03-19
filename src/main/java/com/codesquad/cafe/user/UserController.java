@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -68,6 +69,26 @@ public class UserController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("sessionUser");
+
+        return "redirect:/";
+    }
+
+    // 회원정보수정 창으로 이동
+    @GetMapping("/modify")
+    public String modifyForm(
+            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
+            Model model) {
+
+        if(loginUser != null){
+            model.addAttribute("user", loginUser);
+            return "user/modify";
+        }
+
+        return "redirect:/";
+    }
+    // 회원정보수정
+    @PostMapping("/update")
+    public String update(User user){
 
         return "redirect:/";
     }

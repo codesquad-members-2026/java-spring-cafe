@@ -95,7 +95,7 @@
 <body>
 <div class="container">
     <div class="box">
-        {{#sessionUser}}
+        {{#user}}
             <div class="welcome-box">
                 <h1 style="color: #4668CF; font-size: 32px; margin-bottom: 10px;">Cafe Spring</h1>
                 <h3 style="color: #5770bb; font-size: 16px; margin-top: 20px;">{{firstName}}님 안녕하세요!</h3>
@@ -106,9 +106,9 @@
                 <a href="/modify" class="btn-secondary">Modify Info</a>
                 <a href="/list" class="btn-secondary">User List</a>
             </div>
-        {{/sessionUser}}
+        {{/user}}
 
-        {{^sessionUser}}
+        {{^user}}
         <div class="welcome-box">
             <h1 style="color: #4668CF; font-size: 32px; margin-bottom: 10px;">Cafe Spring</h1>
         </div>
@@ -118,7 +118,7 @@
             <a href="/signup" class="btn-secondary">Sign Up</a>
             <a href="/list" class="btn-secondary">User List</a>
         </div>
-        {{/sessionUser}}
+        {{/user}}
     </div>
 </div>
 </body>

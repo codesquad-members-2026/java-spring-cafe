@@ -13,7 +13,7 @@ public class HomeController {
     public String home(@SessionAttribute(name = "sessionUser", required = false) User loginUser, Model model) {
 
         if(loginUser != null){
-            model.addAttribute("sessionUser", loginUser);
+            model.addAttribute("user", loginUser);
         }
 
         return "index";
