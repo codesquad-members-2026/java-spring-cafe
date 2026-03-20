@@ -26,9 +26,9 @@ public class UserServiceTest {
         User newUser = new User();
         newUser.setId("user1");
         testService.addUser(newUser);
-        softTests.assertThat(testService.findUser("user1")).isNotNull();
-        softTests.assertThat((testService.findUser("user1")).getId()).isEqualTo("user1");
-        softTests.assertThat(testService.findUser("user1")).isEqualTo(newUser);
+        softTests.assertThat(testService.findUserById("user1")).isNotNull();
+        softTests.assertThat((testService.findUserById("user1")).getId()).isEqualTo("user1");
+        softTests.assertThat(testService.findUserById("user1")).isEqualTo(newUser);
         softTests.assertAll();
     }
 
