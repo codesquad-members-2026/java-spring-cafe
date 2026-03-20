@@ -2,14 +2,12 @@ package com.codesquad.cafe.user;
 
 import com.codesquad.cafe.exception.NoUserInListException;
 import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.session.StandardSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -76,8 +74,7 @@ public class UserController {
     // 회원정보수정 창으로 이동
     @GetMapping("/modify")
     public String modifyForm(
-            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
-            Model model) {
+            @SessionAttribute(name = "sessionUser", required = false) User loginUser, Model model) {
 
         if(loginUser != null){
             model.addAttribute("user", loginUser);
@@ -88,8 +85,15 @@ public class UserController {
     }
     // 회원정보수정
     @PostMapping("/update")
-    public String update(User user){
+    public String update(
+            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
+            HttpSession session, @ModelAttribute User modifiedUser) {
 
-        return "redirect:/";
+        if(loginUser.updateUser(modifiedUser)){
+            session.setAttribute("sessionUser", loginUser);
+            return "redirect:/";
+        }
+
+        return "redirect:/modify";
     }
 }

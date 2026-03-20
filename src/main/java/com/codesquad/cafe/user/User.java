@@ -1,5 +1,7 @@
 package com.codesquad.cafe.user;
 
+import java.util.Objects;
+
 public class User {
     private String id;
     private String password;
@@ -25,6 +27,30 @@ public class User {
                 && !(getLastName().isEmpty() || getLastName().isBlank())
                 && !(getEmail().isEmpty() || getEmail().isBlank())
                 && !(getPhoneNumber().isEmpty() || getPhoneNumber().isBlank());
+    }
+
+    // User 정보 수정
+    public boolean updateUser(User modifiedUser) {
+        if(!checkModifiedUser(modifiedUser))
+            return false;
+
+        setField(modifiedUser);
+        return true;
+    }
+    private boolean checkModifiedUser(User modifiedUser) {
+        return !modifiedUser.getPassword().contains(" ") && !modifiedUser.getEmail().contains(" ") &&
+                !modifiedUser.getFirstName().contains(" ") && !modifiedUser.getLastName().contains(" ")
+                && !modifiedUser.getPhoneNumber().contains(" ");
+    }
+    private void setField(User modifiedUser) {
+        this.password = isEmpty(modifiedUser.getPassword()) ? password : modifiedUser.getPassword();
+        this.firstName = isEmpty(modifiedUser.getFirstName()) ? firstName : modifiedUser.getFirstName();
+        this.lastName = isEmpty(modifiedUser.getLastName()) ? lastName : modifiedUser.getLastName();
+        this.email = isEmpty(modifiedUser.getEmail()) ? email : modifiedUser.getEmail();
+        this.phoneNumber = isEmpty(modifiedUser.getPhoneNumber()) ? phoneNumber : modifiedUser.getPhoneNumber();
+    }
+    private boolean isEmpty(String string) {
+        return string.isEmpty();
     }
 
     // getter, setter
@@ -74,5 +100,19 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (object == null || getClass() != object.getClass()) return false;
+        User user = (User) object;
+        return Objects.equals(id, user.id) && Objects.equals(password, user.password)
+                && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName)
+                && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, password, lastName, firstName, email, phoneNumber);
     }
 }

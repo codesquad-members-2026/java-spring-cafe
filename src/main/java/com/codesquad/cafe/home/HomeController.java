@@ -11,7 +11,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(@SessionAttribute(name = "sessionUser", required = false) User loginUser, Model model) {
-
         if(loginUser != null){
             model.addAttribute("user", loginUser);
         }

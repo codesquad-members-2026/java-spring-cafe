@@ -2,17 +2,20 @@ package com.codesquad.cafe.user;
 
 import com.codesquad.cafe.exception.NoUserInListException;
 import jakarta.servlet.http.HttpSession;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class UserControllerTest {
 
     @Mock
@@ -22,15 +25,8 @@ public class UserControllerTest {
     @Mock
     Model model;
 
+    @InjectMocks
     UserController userController;
-
-    @BeforeEach
-    void setUp() {
-        userService = Mockito.mock(UserService.class);
-        httpSession = Mockito.mock(HttpSession.class);
-        model = Mockito.mock(Model.class);
-        userController = new UserController(userService);
-    }
 
     @Test
     @DisplayName("Post 방식으로 온전한 회원정보가 들어오면 UserService의 add()을 실행한다.")
@@ -89,5 +85,27 @@ public class UserControllerTest {
 
         assertEquals("redirect:/", userController.modifyForm(testUser, model));
         verify(model, Mockito.never()).addAttribute("user", testUser);
+    }
+
+    @Test
+    @DisplayName("회원수정에 성공하면 홈 화면으로 돌아간다.")
+    public void update_SuccessModifyUserInfo_RedirectHome(){
+        User originUser = Mockito.mock(User.class);
+        User updateUser = Mockito.mock(User.class);
+        when(originUser.updateUser(updateUser)).thenReturn(true);
+
+        assertEquals("redirect:/", userController.update(originUser, httpSession, updateUser));
+        verify(httpSession, Mockito.times(1)).setAttribute("sessionUser", originUser);
+    }
+
+    @Test
+    @DisplayName("회원수정에 실패하면 수정 화면으로 돌아간다.")
+    public void update_FailureModifyUserInfo_RedirectList(){
+        User originUser = Mockito.mock(User.class);
+        User updateUser = Mockito.mock(User.class);
+        when(originUser.updateUser(updateUser)).thenReturn(false);
+
+        assertEquals("redirect:/modify", userController.update(originUser, httpSession, updateUser));
+        verify(httpSession, Mockito.times(0)).setAttribute("sessionUser", originUser);
     }
 }
