@@ -36,7 +36,7 @@ public class UserControllerTest {
 
         String requestResult = userController.join(testUser);
 
-        assertEquals("redirect:/login", requestResult);
+        assertEquals("redirect:/user/list", requestResult);
         verify(userService, Mockito.times(1)).add(testUser);
     }
 
@@ -48,12 +48,12 @@ public class UserControllerTest {
 
         String requestResult = userController.join(testUser);
 
-        assertEquals("redirect:/", requestResult);
+        assertEquals("redirect:/user/join", requestResult);
         verify(userService, never()).add(testUser);
     }
     
     @Test
-    @DisplayName("회원가입되어 있다면 홈 화면으로 이동한다.")
+    @DisplayName("로그인을 성공적으로 마치면 홈 화면으로 이동한다.")
     public void login_WithCorrectInfo() {
         when(userService.findUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
@@ -61,17 +61,17 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("회원가입되어 있지 않다면 로그인 창으로 이동한다")
+    @DisplayName("로그인을 실패하면 로그인 창으로 이동한다")
     public void login_WithIncorrectInfo() {
         when(userService.findUser("wrongId", "wrongPassword")).thenThrow(NoUserInListException.class);
 
         assertThat(userController.login("wrongId", "wrongPassword", httpSession))
-                .isEqualTo("redirect:/login");
+                .isEqualTo("redirect:/user/login");
     }
 
     @Test
-    @DisplayName("로그인 상태에 있다면 회원수정창으로 이동한다.")
-    public void modifyForm_WithLoginStatus() {
+    @DisplayName("로그인 상태에 있다면 회원수정창으로 이동할 수 있다.")
+    public void modifyForm_WithLoginStatus_CanMove() {
         User testUser = Mockito.mock(User.class);
 
         assertEquals("user/modify", userController.modifyForm(testUser, model));
@@ -79,8 +79,8 @@ public class UserControllerTest {
     }
 
     @Test
-    @DisplayName("로그인 상태에 있지 않다면 홈으로 이동한다.")
-    public void modifyForm_WithLogoutStatus() {
+    @DisplayName("로그인 상태에 있지 않다면 회원수정창으로 이동할 수 없다.")
+    public void modifyForm_WithLogoutStatus_CantMove() {
         User testUser = null;
 
         assertEquals("redirect:/", userController.modifyForm(testUser, model));
