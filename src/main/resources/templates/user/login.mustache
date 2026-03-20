@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fcfcfc;
+            font-family: sans-serif;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+        }
+
+        .box {
+            width: 600px;
+            height: 350px;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            display: flex;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .login-box {
+            width: 60%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            border-top: 5px solid #4668CF;
+            border-radius: 10px 0 0 10px; /* 왼쪽 모서리만 둥글게 */
+        }
+
+        .info-form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .info-form h2 {
+            color: #4668CF;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .info-form input {
+            font-size: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            padding: 12px;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .info-form input:focus {
+            border-color: #4668CF;
+        }
+
+        .btn-login {
+            background-color: #4668CF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: filter 0.2s;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            filter: contrast(80%);
+        }
+
+        /* 오른쪽: 안내 및 링크 영역 */
+        .sign-box {
+            width: 40%;
+            background-color: #f9f9fc; /* 왼쪽 폼과 대비되도록 아주 연한 파란/회색 배경 */
+            border-radius: 0 10px 10px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .sign-box p {
+            color: #656464;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .btn-link {
+            width: 100%;
+            margin-bottom: 10px;
+            border: 2px solid #ddd;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 15px;
+            font-weight: bold;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .btn-link:hover {
+            background-color: #f0f0f0;
+            border-color: #ccc;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="box">
+
+        <div class="login-box">
+            <form action="login" method="post" class="info-form">
+                <h2>Log in</h2>
+                <input id="inputId" name="id" type="text" placeholder="아이디" required>
+                <input id="inputPw" name="password" type="password" placeholder="비밀번호" required>
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+        </div>
+
+        <div class="sign-box">
+            <p>Don't have an account?</p>
+            <a href="/signup" class="btn-link">Sign Up</a>
+            <a href="/list" class="btn-link">User List</a>
+        </div>
+
+    </div>
+</div>
+</body>
+
+</html>

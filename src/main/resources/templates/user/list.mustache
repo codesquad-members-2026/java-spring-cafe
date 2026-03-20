@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 목록</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: #fcfcfc;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 50px 0;
+        }
+
+        .list-box {
+            width: 800px;
+            background-color: white;
+            box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #4668CF;
+            border-radius: 10px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .list-header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .list-header h2 {
+            color: #4668CF;
+            font-size: 28px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            color: #656464;
+            font-weight: bold;
+            background-color: #f4f6fd;
+        }
+
+        tr:hover {
+            background-color: #fafafa;
+        }
+
+        .btn-home {
+            background-color: #4668CF;
+            color: white;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: bold;
+            transition: filter 0.2s;
+        }
+
+        .btn-home:hover {
+            filter: contrast(80%);
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="list-box">
+        <div class="list-header">
+            <h2>User List</h2>
+            <a href="/" class="btn-home">Home</a>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>아이디</th>
+                <th>이름</th>
+                <th>이메일</th>
+                <th>전화번호</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#users}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{lastName}}{{firstName}}</td>
+                    <td>{{email}}</td>
+                    <td>{{phoneNumber}}</td>
+                </tr>
+            {{/users}}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

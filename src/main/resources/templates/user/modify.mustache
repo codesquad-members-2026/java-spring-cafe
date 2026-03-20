@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>정보 수정</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #fcfcfc;
+            font-family: sans-serif;
+        }
+
+        .container {
+            position: relative;
+            height: 100vh;
+        }
+
+        .box {
+            width: 700px;
+            height: 650px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+            display: flex;
+            background-color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .edit-box {
+            width: 65%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-bottom: 20px;
+            border-top: 5px solid #4668CF;
+            border-radius: 10px 0 0 10px;
+        }
+
+        .info-form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .info-form h2 {
+            color: #4668CF;
+            font-size: 28px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            width: 90%;
+        }
+
+        .input-group label {
+            font-size: 13px;
+            color: #656464;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .info-form input {
+            font-size: 15px;
+            border-radius: 5px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .info-form input:focus {
+            border-color: #4668CF;
+        }
+
+        .info-form input[readonly] {
+            background-color: #f0f0f0;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .btn-update {
+            background-color: #4668CF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: filter 0.2s;
+            margin-top: 15px;
+        }
+
+        .btn-update:hover {
+            filter: contrast(80%);
+        }
+
+        .nav-box {
+            width: 35%;
+            background-color: #f9f9fc;
+            border-radius: 0 10px 10px 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .nav-box p {
+            color: #656464;
+            font-size: 15px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .btn-link {
+            width: 100%;
+            margin-bottom: 12px;
+            border: 2px solid #ddd;
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            color: #555;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .btn-link:hover {
+            background-color: #f0f0f0;
+            border-color: #ccc;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="box">
+
+        <div class="edit-box">
+            <form action="/update" method="post" class="info-form">
+                {{#user}}
+                    <div style="text-align: center;"><h2>Edit Profile</h2></div>
+                    <div class="input-group">
+                        <label>아이디 (변경 불가)</label>
+                        <input type="text" name="id" value={{id}} readonly>
+                    </div>
+
+                    <div class="input-group">
+                        <label>비밀번호 확인</label>
+                        <input type="password" name="password" placeholder="비밀번호를 입력해주세요">
+                    </div>
+
+                    <div class="input-group">
+                        <label>이름 (First Name)</label>
+                        <input type="text" name="firstName" placeholder={{firstName}} value={{firstName}}>
+                    </div>
+
+                    <div class="input-group">
+                        <label>성 (Last Name)</label>
+                        <input type="text" name="lastName" placeholder={{lastName}} value={{lastName}}>
+                    </div>
+
+                    <div class="input-group">
+                        <label>이메일</label>
+                        <input type="email" name="email" placeholder={{email}} value={{email}}>
+                    </div>
+
+                    <div class="input-group">
+                        <label>전화번호</label>
+                        <input type="text" name="phoneNumber" placeholder={{phoneNumber}} value={{phoneNumber}}>
+                    </div>
+
+                    <button style="width:90%;" type="submit" class="btn-update">수정 완료</button>
+                {{/user}}
+            </form>
+        </div>
+
+        <div class="nav-box">
+            <p>Menu</p>
+            <a href="/" class="btn-link">Home</a>
+            <a href="/list" class="btn-link">User List</a>
+        </div>
+
+    </div>
+</div>
+</body>
+
+</html>
