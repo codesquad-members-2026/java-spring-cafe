@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public String getUserById(@PathVariable int userId, Model model) {
+    public String getUserById(@PathVariable Long userId, Model model) {
         User user = userService.get(userId);
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());

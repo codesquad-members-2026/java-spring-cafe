@@ -1,23 +1,28 @@
 package com.codesquad.cafe.question;
 
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class QuestionService {
-    private final List<Question> questions = new ArrayList<>();
+    private final QuestionRepository repository;
+
+    public QuestionService(QuestionRepository repository) {
+        this.repository = repository;
+    }
 
     public void save(Question question) {
-        question.setId(questions.size() + 1);
-        questions.add(question);
+        repository.save(question);
     }
 
     public List<Question> getAll() {
-        return questions;
+        return repository.findAll();
     }
 
-    public Question get(int questionId) {
-        return questions.get(questionId - 1);
+    public Question get(Long questionId) {
+        return repository.findById(questionId).get();
     }
+
 }

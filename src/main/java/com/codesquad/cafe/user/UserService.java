@@ -6,18 +6,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final List<User> users = new ArrayList<>();
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void save(User user) {
-        user.setId(users.size() + 1);
-        users.add(user);
+        userRepository.save(user);
     }
 
     public List<User> getAll() {
-        return users;
+        return userRepository.findAll();
     }
 
-    public User get(int id) {
-        return users.get(id - 1);
+    public User get(Long id) {
+        return userRepository.findById(id).get();
     }
 }
