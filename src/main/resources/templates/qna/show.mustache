@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 보기</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: sans-serif;
+            background-color: #fcfcfc;
+        }
+
+        .container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 50px 0;
+        }
+
+        .article-box {
+            width: 800px;
+            background-color: white;
+            box-shadow: 0 0px 70px rgba(0, 0, 0, 0.1);
+            border-top: 5px solid #4668CF;
+            border-radius: 10px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .article-header {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .article-title {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #888;
+            font-size: 14px;
+        }
+
+        .article-writer {
+            font-weight: bold;
+            color: #4668CF;
+        }
+
+        .article-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #444;
+            min-height: 300px;
+            white-space: pre-wrap;
+            margin-bottom: 40px;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .left-btns, .right-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            border: none;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: filter 0.2s;
+        }
+
+        .btn:hover {
+            filter: contrast(80%);
+        }
+
+        .btn-list {
+            background-color: #eee;
+            color: #656464;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="article-box">
+
+        <div class="article-header">
+            <h2 class="article-title">{{article.title}}</h2>
+            <div class="article-meta">
+                <span class="article-writer">익명</span>
+                <span class="article-date">No. {{article.id}}</span>
+            </div>
+        </div>
+
+        <div class="article-content">{{article.contents}}</div>
+
+        <div class="button-group">
+            <div class="left-btns">
+                <a href="/qna/list" class="btn btn-list">목록으로</a>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
