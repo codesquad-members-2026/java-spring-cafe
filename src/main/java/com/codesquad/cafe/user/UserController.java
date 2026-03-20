@@ -17,26 +17,26 @@ public class UserController {
     }
 
     // 회원가입 창으로 이동
-    @GetMapping("/signup")
+    @GetMapping("/user/signup")
     public String signupForm(Model model) {
 
         return "user/signup";
     }
     // 회원가입 폼 제출
-    @PostMapping("/join")
+    @PostMapping("/user/join")
     public String join(@ModelAttribute User input) {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
             userService.add(input);
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
 
         return "redirect:/";
     }
 
     // 유저 리스트 창으로 이동
-    @GetMapping("/list")
-    public String list(Model model) {
+    @GetMapping("/user/list")
+    public String listForm(Model model) {
         List<User> users = userService.getUsers();
         model.addAttribute("users", users);
 
@@ -51,29 +51,29 @@ public class UserController {
             model.addAttribute("user", user);
             return "user/profile";
         } catch (NoUserInListException e) {
-            return "redirect:/";
+            return "redirect:/user/list";
         }
     }
 
     // 로그인 창으로 이동
-    @GetMapping("/login")
+    @GetMapping("/user/login")
     public String loginForm(Model model) {
         return "user/login";
     }
     // 로그인 폼 제출
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public String login(String id, String password, HttpSession session) {
         try {
             User user = userService.findUser(id, password);
             session.setAttribute("sessionUser", user);
-            return "redirect:/";
+            return "redirect:/user/list";
         } catch(NoUserInListException e) {
-            return "redirect:/login";
+            return "redirect:/user/login";
         }
     }
 
     // 로그아웃
-    @GetMapping("/logout")
+    @GetMapping("/user/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("sessionUser");
 
@@ -81,7 +81,7 @@ public class UserController {
     }
 
     // 회원정보수정 창으로 이동
-    @GetMapping("/modify")
+    @GetMapping("/user/modify")
     public String modifyForm(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser, Model model) {
 
@@ -92,8 +92,8 @@ public class UserController {
 
         return "redirect:/";
     }
-    // 회원정보수정
-    @PostMapping("/update")
+    // 수정된 회원 정보 폼 제출
+    @PostMapping("/user/update")
     public String update(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser,
             HttpSession session, @ModelAttribute User modifiedUser) {
@@ -103,6 +103,6 @@ public class UserController {
             return "redirect:/";
         }
 
-        return "redirect:/modify";
+        return "redirect:/user/modify";
     }
 }
