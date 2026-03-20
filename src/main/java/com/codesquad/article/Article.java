@@ -1,15 +1,15 @@
 package com.codesquad.article;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "Articles")
 public class Article {
 
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private final String title;
-    private final String content;
-
-    public Article(String title, String content){
-        this.title = title;
-        this.content=content;
-    }
+    private String title;
+    private String content;
 
     public void setId(int id){
         this.id = id;
@@ -21,6 +21,14 @@ public class Article {
 
     public String getTitle() {
         return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public String getContent() {

@@ -53,8 +53,7 @@ public class UserController {
     @PutMapping("/users/{id}/edit")
     public String putUserInfoMod(@PathVariable String id, UserUpdateForm form, Model model, RedirectAttributes redirectAttrs){
         User existingUser = service.findUserById(id);
-        if(service.validateFormWithUser(existingUser, form)){
-            service.updateUserProfile(existingUser, form);
+        if(service.updateUserProfile(existingUser.getId(), form)){
             model.addAttribute("user", existingUser);
             return "user/userDetail";
         }

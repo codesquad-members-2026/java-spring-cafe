@@ -1,42 +1,48 @@
 package com.codesquad.service;
 
-import com.codesquad.cafeRepo.UserRepo;
+import com.codesquad.cafeRepo.InterfaceRepo;
+import com.codesquad.cafeRepo.JpaUserRepo;
 import com.codesquad.user.User;
 import com.codesquad.user.UserUpdateForm;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+
 public class UserService {
 
-    private final UserRepo repo;
+    private final JpaUserRepo repo;
 
     @Autowired
-    public UserService(UserRepo repo){
+    public UserService(JpaUserRepo repo){
         this.repo = repo;
     }
 
     public void addUser(User newUser){
-        this.repo.putUser(newUser);
+        this.repo.save(newUser);
     }
 
     public User findUserById(String id){
         return this.repo.getUserById(id);
     }
 
-    public User findUserByEmail(String email){
-        return this.repo.getUserByEmail(email);
-    }
-
     public List<User> allUsers(){
-        return this.repo.userList();
+        return this.repo.findAll();
     }
 
-    public void updateUserProfile(User user, UserUpdateForm form){
-        repo.updateUserProfile(user,form);
+    public boolean updateUserProfile(String userId, UserUpdateForm form){
+        User user = this.repo.getUserById(userId);
+        if(user.getPassword().equals(form.getPassword())){
+            user.setName(form.getName());
+            user.setEmail(form.getEmail());
+            user.setPassword(form.getNewPassword());
+            this.repo.save(user);
+            return true;
+        }
+        return false;
     }
 
-    public boolean validateFormWithUser(User user, UserUpdateForm form){
-        return repo.validateFormWithUser(user,form);
-    }
+
+
+
 }

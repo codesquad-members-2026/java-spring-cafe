@@ -2,22 +2,30 @@ package com.codesquad.service;
 
 import com.codesquad.article.Article;
 import com.codesquad.cafeRepo.ArticleRepo;
+import com.codesquad.cafeRepo.JpaArticleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class ArticleService {
-    @Autowired
-    ArticleRepo repo;
+import java.util.List;
 
-    public Article[] getAllArticles(){
-        return repo.getAllArticles();
+public class ArticleService {
+
+    private JpaArticleRepo repo;
+
+    @Autowired
+    public ArticleService(JpaArticleRepo repo){
+        this.repo = repo;
+    }
+
+    public List<Article> getAllArticles(){
+        return repo.findAll();
     }
 
     public void putNewArticle(Article newArticle){
-        repo.putNewArticle(newArticle);
+        repo.save(newArticle);
     }
 
     public Article findArticleById(int id){
-        return this.repo.getArticleWithId(id);
+        return this.repo.findArticleById(id);
     }
 
 }
