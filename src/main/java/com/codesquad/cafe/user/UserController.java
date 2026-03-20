@@ -4,10 +4,7 @@ import com.codesquad.cafe.exception.NoUserInListException;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -44,6 +41,18 @@ public class UserController {
         model.addAttribute("users", users);
 
         return "user/list";
+    }
+    
+    // 유저 프로필 창으로 이동 // TODO: 테스트 작성 필요
+    @GetMapping("/users/{id}")
+    public String profileForm(@PathVariable("id") String id, Model model){
+        try {
+            User user = userService.findUser(id);
+            model.addAttribute("user", user);
+            return "user/profile";
+        } catch (NoUserInListException e) {
+            return "redirect:/";
+        }
     }
 
     // 로그인 창으로 이동

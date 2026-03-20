@@ -108,4 +108,8 @@ public class UserControllerTest {
         assertEquals("redirect:/modify", userController.update(originUser, httpSession, updateUser));
         verify(httpSession, Mockito.times(0)).setAttribute("sessionUser", originUser);
     }
+
+    // TODO: UserController의 profileForm() 테스트 케이스 작성
+
+    // TODO:
 }

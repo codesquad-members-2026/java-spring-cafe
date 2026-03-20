@@ -32,6 +32,16 @@ public class UserService {
         throw new NoUserInListException("해당 유저가 존재하지 않습니다.");
     }
 
+    User findUser(String id){
+        for(User user : users){
+            if(user.getId().equals(id)){
+                return user;
+            }
+        }
+
+        throw new NoUserInListException("해당 유저가 존재하지 않습니다.");
+    }
+
     List<User> getUsers(){
         return users;
     }
