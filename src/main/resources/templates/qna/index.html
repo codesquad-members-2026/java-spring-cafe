@@ -41,12 +41,23 @@
             </tr>
             </thead>
             <tbody>
+            <!-- 반복문 시작 -->
             <tr th:each="article, status : ${articles}">
                 <td th:text="${status.count}">1</td>
-                <td th:text="${article.title}" class="text-center">질문 제목이 들어갈 자리입니다.</td>
+
+
+                <td class="text-center">
+                    <a th:href="@{/articles/{num}(num=${article.number})}"
+                       th:text="${article.title}"
+                       class="text-decoration-none text-dark fw-bold">
+                        질문 제목이 들어갈 자리입니다.
+                    </a>
+                </td>
+
                 <td th:text="${article.writer}">작성자</td>
                 <td>
-                    <a href="#" class="btn btn-sm btn-outline-secondary">보기</a>
+                    <!-- '보기' 버튼에도 링크를 걸어주면 더 좋겠죠? -->
+                    <a th:href="@{/articles/{num}(num=${article.number})}" class="btn btn-sm btn-outline-secondary">보기</a>
                 </td>
             </tr>
 
