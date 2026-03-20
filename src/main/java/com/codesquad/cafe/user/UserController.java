@@ -28,10 +28,10 @@ public class UserController {
         // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
         if(input.verifyUser()){
             userService.add(input);
-            return "redirect:/user/login";
+            return "redirect:/user/list";
         }
 
-        return "redirect:/";
+        return "redirect:/user/join";
     }
 
     // 유저 리스트 창으로 이동
@@ -66,7 +66,7 @@ public class UserController {
         try {
             User user = userService.findUser(id, password);
             session.setAttribute("sessionUser", user);
-            return "redirect:/user/list";
+            return "redirect:/";
         } catch(NoUserInListException e) {
             return "redirect:/user/login";
         }

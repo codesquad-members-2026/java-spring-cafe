@@ -21,8 +21,8 @@ public class HomeController {
 
     @GetMapping("/dev/login")
     public String login(HttpSession session) {
-        User devUser = new User("admin", "1234", "리자", "관",
-                "jjjkuul@naver.com", "01049291779");
+        User devUser = new User("admin", "admin", "리자", "관",
+                "admin@naver.com", "01011112222");
 
         session.setAttribute("sessionUser", devUser);
 
