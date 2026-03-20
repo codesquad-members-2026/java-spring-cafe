@@ -105,7 +105,7 @@ public class UserControllerTest {
         User updateUser = Mockito.mock(User.class);
         when(originUser.updateUser(updateUser)).thenReturn(false);
 
-        assertEquals("redirect:/modify", userController.update(originUser, httpSession, updateUser));
+        assertEquals("redirect:/user/modify", userController.update(originUser, httpSession, updateUser));
         verify(httpSession, Mockito.times(0)).setAttribute("sessionUser", originUser);
     }
 

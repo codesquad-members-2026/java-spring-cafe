@@ -26,9 +26,9 @@ public class UserControllerWebTest {
     private HttpSession httpSession;
 
     @Test
-    @DisplayName("유효한 회원가입 폼 데이터를 받으면 로그인 창으로 리다이렉트한다.")
+    @DisplayName("유효한 회원가입 폼 데이터를 받으면 회원 리스트 창으로 리다이렉트한다.")
     public void join_HttpPostTest() throws Exception{
-        mockMvc.perform(post("/join")
+        mockMvc.perform(post("/user/join")
                         .param("id", "admin")
                         .param("password", "admin")
                         .param("firstName", "젠슨")
@@ -36,7 +36,7 @@ public class UserControllerWebTest {
                         .param("email", "nvidia@gmail.com")
                         .param("phoneNumber", "01049291779"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/login"));
+                .andExpect(view().name("redirect:/user/list"));
 
         Mockito.verify(userService, Mockito.times(1)).add(Mockito.any(User.class));
     }
@@ -46,7 +46,7 @@ public class UserControllerWebTest {
     public void login_HttpPostTest() throws Exception{
         when(userService.findUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
-        mockMvc.perform(post("/login")
+        mockMvc.perform(post("/user/login")
                 .param("id", "admin")
                 .param("password", "admin"))
                 .andExpect(status().is3xxRedirection())
