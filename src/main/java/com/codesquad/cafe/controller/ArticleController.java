@@ -3,6 +3,7 @@ package com.codesquad.cafe.controller;
 import com.codesquad.cafe.domain.Article;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
@@ -17,7 +18,10 @@ public class ArticleController {
 
     @PostMapping("/questions")
     public String createArticle(Article article) {
+        long num = articles.size() + 1;
+        article.setNumber(num);
         articles.add(article);
+
         return "redirect:/";
     }
 
@@ -30,5 +34,13 @@ public class ArticleController {
     public String list(Model model) {
         model.addAttribute("articles", articles);
         return "qna/index";
+    }
+
+    @GetMapping("/articles/{number}")
+    public String show(@PathVariable("number") int number, Model model) {
+        Article article = articles.get(number - 1);
+        model.addAttribute("article", article);
+
+        return "qna/show";
     }
 }

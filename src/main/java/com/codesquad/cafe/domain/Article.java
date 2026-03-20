@@ -5,6 +5,16 @@ public class Article {
     private String writer;
     private String title;
     private String contents;
+    private Long number;
+
+
+    public Long getNumber() {
+        return number;
+    }
+
+    public void setNumber(Long number) {
+        this.number = number;
+    }
 
     public String getWriter() {
         return writer;
