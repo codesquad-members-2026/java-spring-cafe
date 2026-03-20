@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 상세</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-page: #f5f5f3;
+            --bg-card: #ffffff;
+            --bg-input: #f9f9f8;
+            --border-color: #e0e0dc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-hint: #b0b0aa;
+            --radius-md: 8px;
+            --radius-xl: 16px;
+        }
+
+        body {
+            background: var(--bg-page);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 2.5rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-hint);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            transition: color 0.15s;
+        }
+
+        .back-link:hover {
+            color: var(--text-secondary);
+        }
+
+        .back-arrow {
+            font-size: 16px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .post-header {
+            padding: 2rem 2rem 1.5rem;
+            border-bottom: 0.5px solid var(--border-color);
+        }
+
+        .post-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 26px;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-hint);
+        }
+
+        .post-author {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .post-body {
+            padding: 2rem;
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            min-height: 200px;
+        }
+
+        .post-footer {
+            padding: 1.25rem 2rem;
+            border-top: 0.5px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .btn {
+            height: 36px;
+            padding: 0 16px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: opacity 0.15s;
+        }
+
+        .btn-edit {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 0.5px solid var(--border-color);
+        }
+
+        .btn-edit:hover {
+            border-color: #888;
+        }
+
+        .btn-delete {
+            background: var(--text-primary);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-delete:hover {
+            opacity: 0.85;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <a href="/questions" class="back-link">
+        <span class="back-arrow">←</span>
+        목록으로
+    </a>
+
+    <div class="card">
+        <div class="post-header">
+            <h1 class="post-title">{{title}}</h1>
+            <div class="post-meta">
+                <span class="post-author">익명</span>
+                <span>2025.03.19</span>
+            </div>
+        </div>
+
+        <div class="post-body">
+            {{contents}}
+        </div>
+
+        <div class="post-footer">
+            <a href="/questions/1/edit" class="btn btn-edit">수정</a>
+            <button class="btn btn-delete">삭제</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -2,6 +2,8 @@ package com.codesquad.cafe;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -37,5 +39,18 @@ class UserControllerTest {
 
     }
 
+    @Test
+    @DisplayName("회원가입 후 목록으로 리다이렉트 된다")
+    void signup() throws Exception{
+        // given
+
+        // when & then
+        mockMvc.perform(post("/users")
+                        .param("name", "gabi")
+                        .param("email", "example@example.com")
+                        .param("password", "1234"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/users"));
+    }
 
 }

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시글 목록</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg-page: #f5f5f3;
+            --bg-card: #ffffff;
+            --bg-input: #f9f9f8;
+            --bg-row-hover: #fafaf9;
+            --border-color: #e0e0dc;
+            --text-primary: #1a1a1a;
+            --text-secondary: #6b6b6b;
+            --text-hint: #b0b0aa;
+            --radius-md: 8px;
+            --radius-xl: 16px;
+        }
+
+        body {
+            background: var(--bg-page);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 2.5rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 1.75rem;
+        }
+
+        .page-header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .page-header p {
+            font-size: 13px;
+            color: var(--text-hint);
+            margin-top: 4px;
+        }
+
+        .write-btn {
+            height: 36px;
+            padding: 0 16px;
+            background: var(--text-primary);
+            color: #ffffff;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: opacity 0.15s;
+        }
+
+        .write-btn:hover { opacity: 0.85; }
+
+        .card {
+            background: var(--bg-card);
+            border: 0.5px solid var(--border-color);
+            border-radius: var(--radius-xl);
+            overflow: hidden;
+        }
+
+        .post-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 24px;
+            border-bottom: 0.5px solid var(--border-color);
+            text-decoration: none;
+            transition: background 0.1s;
+            cursor: pointer;
+        }
+
+        .post-item:last-child {
+            border-bottom: none;
+        }
+
+        .post-item:hover {
+            background: var(--bg-row-hover);
+        }
+
+        .post-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .post-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .post-meta {
+            font-size: 13px;
+            color: var(--text-hint);
+            display: flex;
+            gap: 12px;
+        }
+
+        .post-date {
+            font-size: 13px;
+            color: var(--text-hint);
+            white-space: nowrap;
+            margin-left: 16px;
+        }
+
+        .empty-state {
+            padding: 3rem 1rem;
+            text-align: center;
+            color: var(--text-hint);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1>게시글</h1>
+            <p>전체 게시글을 확인합니다</p>
+        </div>
+        <a href="/question/form.html" class="write-btn">글쓰기</a>
+    </div>
+
+    <div class="card">
+        {{#questions}}
+            <a href="/questions/{{id}}" class="post-item">
+                <div class="post-main">
+                    <div class="post-title">{{title}}</div>
+                    <div class="post-meta">
+                        <span>익명</span>
+                    </div>
+                </div>
+                <div class="post-date">2025.03.19</div>
+            </a>
+        {{/questions}}
+
+        {{^questions}}
+            <tr>
+                <td colspan="2">
+                    <div class="empty-state">작성된 글이 없습니다</div>
+                </td>
+            </tr>
+        {{/questions}}
+    </div>
+</div>
+
+</body>
+</html>
