@@ -17,9 +17,6 @@ public class UserController {
         this.userService = userService;
     }
 
-    // 회원가입 창으로 이동
-    @GetMapping("/signup")
-    public void signupForm() {}
     // 회원가입 폼 제출
     @PostMapping("/join")
     public String join(@ModelAttribute User unregisUser) {
@@ -50,9 +47,6 @@ public class UserController {
         }
     }
 
-    // 로그인 창으로 이동
-    @GetMapping("/login")
-    public void loginForm(Model model) {}
     // 로그인 폼 제출
     @PostMapping("/login")
     public String login(String id, String password, HttpSession session) {
