@@ -8,11 +8,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-    private final List<User> users;
-
-    UserService(){
-        users = new ArrayList<>();
-    }
+    private final List<User> users = new ArrayList<>();
 
     void add(User user) {
         users.add(user);
@@ -22,7 +18,7 @@ public class UserService {
         return users.size();
     }
 
-    User findUser(String id, String password){
+    User findLoginUser(String id, String password){
         for(User user : users){
             if(user.getId().equals(id) && user.getPassword().equals(password)){
                 return user;

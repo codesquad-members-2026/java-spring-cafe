@@ -19,12 +19,13 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
+    // QnA 글쓰기 창으로 이동
     @GetMapping("/qna/form")
     public String qnaForm() {
 
         return "qna/form";
     }
-
+    // QnA 글 제출 -> 폼 전송
     @PostMapping("/questions")
     public String question(@ModelAttribute Article article) {
         articleService.add(article);
@@ -32,6 +33,7 @@ public class ArticleController {
         return "redirect:/qna/list";
     }
 
+    // QnA 글 목록 창으로 이동
     @GetMapping("qna/list")
     public String qnaListForm(Model model) {
         List<Article> articleList = articleService.getArticles();
@@ -40,6 +42,7 @@ public class ArticleController {
         return "qna/list";
     }
 
+    // 글 목록 중 특정 글로 이동
     @GetMapping("/articles/{id}")
     public String qnaArticleForm(@PathVariable Integer id, Model model) {
         try {

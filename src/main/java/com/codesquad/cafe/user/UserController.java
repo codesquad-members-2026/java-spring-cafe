@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
     private UserService userService;
 
@@ -17,17 +18,13 @@ public class UserController {
     }
 
     // 회원가입 창으로 이동
-    @GetMapping("/user/signup")
-    public String signupForm(Model model) {
-
-        return "user/signup";
-    }
+    @GetMapping("/signup")
+    public void signupForm() {}
     // 회원가입 폼 제출
-    @PostMapping("/user/join")
-    public String join(@ModelAttribute User input) {
-        // 파일에 저장 -> UserService의 saveUserInFile(user) 실행
-        if(input.verifyUser()){
-            userService.add(input);
+    @PostMapping("/join")
+    public String join(@ModelAttribute User unregisUser) {
+        if(unregisUser.verifyUser()){
+            userService.add(unregisUser);
             return "redirect:/user/list";
         }
 
@@ -35,36 +32,32 @@ public class UserController {
     }
 
     // 유저 리스트 창으로 이동
-    @GetMapping("/user/list")
-    public String listForm(Model model) {
-        List<User> users = userService.getUsers();
+    @GetMapping("/list")
+    public void listForm(Model model) {
+        var users = userService.getUsers();
         model.addAttribute("users", users);
-
-        return "user/list";
     }
     
-    // 유저 프로필 창으로 이동 // TODO: 테스트 작성 필요
-    @GetMapping("/users/{id}")
+    // 유저 프로필 창으로 이동
+    @GetMapping("/{id}")
     public String profileForm(@PathVariable("id") String id, Model model){
         try {
             User user = userService.findUser(id);
             model.addAttribute("user", user);
-            return "user/profile";
+            return "/user/profile";
         } catch (NoUserInListException e) {
             return "redirect:/user/list";
         }
     }
 
     // 로그인 창으로 이동
-    @GetMapping("/user/login")
-    public String loginForm(Model model) {
-        return "user/login";
-    }
+    @GetMapping("/login")
+    public void loginForm(Model model) {}
     // 로그인 폼 제출
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public String login(String id, String password, HttpSession session) {
         try {
-            User user = userService.findUser(id, password);
+            User user = userService.findLoginUser(id, password);
             session.setAttribute("sessionUser", user);
             return "redirect:/";
         } catch(NoUserInListException e) {
@@ -73,7 +66,7 @@ public class UserController {
     }
 
     // 로그아웃
-    @GetMapping("/user/logout")
+    @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("sessionUser");
 
@@ -81,10 +74,9 @@ public class UserController {
     }
 
     // 회원정보수정 창으로 이동
-    @GetMapping("/user/modify")
+    @GetMapping("/modify")
     public String modifyForm(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser, Model model) {
-
         if(loginUser != null){
             model.addAttribute("user", loginUser);
             return "user/modify";
@@ -93,7 +85,7 @@ public class UserController {
         return "redirect:/";
     }
     // 수정된 회원 정보 폼 제출
-    @PostMapping("/user/update")
+    @PostMapping("/update")
     public String update(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser,
             HttpSession session, @ModelAttribute User modifiedUser) {
