@@ -37,7 +37,7 @@ public class UserControllerTest {
         String requestResult = userController.join(testUser);
 
         assertEquals("redirect:/user/list", requestResult);
-        verify(userService, Mockito.times(1)).add(testUser);
+        verify(userService, Mockito.times(1)).addUser(testUser);
     }
 
     @Test
@@ -49,13 +49,13 @@ public class UserControllerTest {
         String requestResult = userController.join(testUser);
 
         assertEquals("redirect:/user/join", requestResult);
-        verify(userService, never()).add(testUser);
+        verify(userService, never()).addUser(testUser);
     }
     
     @Test
     @DisplayName("로그인을 성공적으로 마치면 홈 화면으로 이동한다.")
     public void login_WithCorrectInfo() {
-        when(userService.findUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
+        when(userService.findLoginUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
         assertThat(userController.login("admin", "admin", httpSession)).isEqualTo("redirect:/");
     }
@@ -63,7 +63,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("로그인을 실패하면 로그인 창으로 이동한다")
     public void login_WithIncorrectInfo() {
-        when(userService.findUser("wrongId", "wrongPassword")).thenThrow(NoUserInListException.class);
+        when(userService.findLoginUser("wrongId", "wrongPassword")).thenThrow(NoUserInListException.class);
 
         assertThat(userController.login("wrongId", "wrongPassword", httpSession))
                 .isEqualTo("redirect:/user/login");

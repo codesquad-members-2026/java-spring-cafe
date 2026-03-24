@@ -159,6 +159,8 @@
         <div class="edit-box">
             <form action="/user/update" method="post" class="info-form">
                 {{#user}}
+                    <input type="hidden" name="_method" value="PUT">
+
                     <div style="text-align: center;"><h2>Edit Profile</h2></div>
                     <div class="input-group">
                         <label>아이디 (변경 불가)</label>

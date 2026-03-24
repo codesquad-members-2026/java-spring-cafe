@@ -9,10 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
     UserService userService;
+    UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService();
+        userRepository = new UserRepository();
+        userService = new UserService(userRepository);
     }
 
     @Test
@@ -21,9 +23,9 @@ public class UserServiceTest {
         User user = new User("admin", "admin", "젠슨", "황",
                 "nvidia@gmail.com", "01049291779");
 
-        userService.add(user);
+        userService.addUser(user);
 
-        assertEquals(1, userService.count());
+        assertEquals(1, userService.countUser());
     }
 
     @Test
@@ -31,9 +33,9 @@ public class UserServiceTest {
     public void isExist_ReturnTrue(){
         User user = new User("admin", "admin", "젠슨", "황",
                 "nvidia@gmail.com", "01049291779");
-        userService.add(user);
+        userService.addUser(user);
 
-        assertEquals(userService.findUser("admin", "admin"), user);
+        assertEquals(userService.findLoginUser("admin", "admin"), user);
     }
 
     @Test
@@ -41,8 +43,8 @@ public class UserServiceTest {
     public void isExist_ReturnFalse(){
         User user = new User("admin", "adminnn", "젠슨", "황",
                 "nvidia@gmail.com", "01049291779");
-        userService.add(user);
+        userService.addUser(user);
 
-        assertThrows(NoUserInListException.class, () -> userService.findUser("admin", "admin"));
+        assertThrows(NoUserInListException.class, () -> userService.findLoginUser("admin", "admin"));
     }
 }

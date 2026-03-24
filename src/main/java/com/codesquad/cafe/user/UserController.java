@@ -6,12 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -21,7 +19,7 @@ public class UserController {
     @PostMapping("/join")
     public String join(@ModelAttribute User unregisUser) {
         if(unregisUser.verifyUser()){
-            userService.add(unregisUser);
+            userService.addUser(unregisUser);
             return "redirect:/user/list";
         }
 
@@ -47,6 +45,9 @@ public class UserController {
         }
     }
 
+    // 로그인 페이지 이동
+    @GetMapping("/login")
+    public void loginForm() {}
     // 로그인 폼 제출
     @PostMapping("/login")
     public String login(String id, String password, HttpSession session) {
@@ -62,7 +63,7 @@ public class UserController {
     // 로그아웃
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.removeAttribute("sessionUser");
+        session.invalidate();
 
         return "redirect:/";
     }
@@ -79,7 +80,7 @@ public class UserController {
         return "redirect:/";
     }
     // 수정된 회원 정보 폼 제출
-    @PostMapping("/update")
+    @PutMapping("/update")
     public String update(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser,
             HttpSession session, @ModelAttribute User modifiedUser) {
