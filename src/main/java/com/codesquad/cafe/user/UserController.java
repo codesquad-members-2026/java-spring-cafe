@@ -18,7 +18,7 @@ public class UserController {
     // 회원가입 폼 제출
     @PostMapping("/join")
     public String join(@ModelAttribute User unregisUser) {
-        if(unregisUser.verifyUser()){
+        if(unregisUser.verifySignup()){
             userService.addUser(unregisUser);
             return "redirect:/user/list";
         }

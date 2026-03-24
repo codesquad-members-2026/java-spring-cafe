@@ -20,7 +20,7 @@ public class User {
     }
 
     // 유저 정보 검증
-    public boolean verifyUser() {
+    public boolean verifySignup() {
         return !(getId().isEmpty() || getId().isBlank())
                 && !(getPassword().isEmpty() || getPassword().isBlank())
                 && !(getFirstName().isEmpty() || getFirstName().isBlank())
