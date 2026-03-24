@@ -42,9 +42,14 @@
                 <label class="text-muted small fw-bold">이메일 주소</label>
                 <div class="fs-5" th:text="${user.email}">user@example.com</div>
             </div>
+            <div class="d-grid gap-2 mt-4">
+                <a th:href="@{/users/{id}/form(id=${user.userId})}" class="btn btn-primary fw-bold">
+                    내 정보 수정하기
+                </a>
 
             <div class="d-grid gap-2 mt-4">
                 <a href="/users" class="btn btn-outline-primary">목록으로 돌아가기</a>
+            </div>
             </div>
         </div>
     </div>
