@@ -1,9 +1,18 @@
 package com.codesquad.cafe.domain;
+import jakarta.persistence.*;
 
+
+@Entity
 public class Article {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     private String writer;
     private String title;
+
+    @Column(length = 1000)
     private String contents;
     private Long number;
 
@@ -42,5 +51,13 @@ public class Article {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
