@@ -1,9 +1,9 @@
-<!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cafe - Question Detail</title>
+    <th:block th:replace="~{fragments/header :: header-css}"></th:block>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,9 +11,15 @@
             color: #3e2723;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 4rem 1rem;
             margin: 0;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1rem; /* Moved the padding here */
+            width: 100%;
+            box-sizing: border-box;
         }
         .article-card {
             background: white;
@@ -63,9 +69,13 @@
     </style>
 </head>
 <body>
-
+<div th:replace="~{fragments/header :: main-header}"></div>
+<div class="main-content">
 <div class="article-card">
-    <div class="article-meta">Question #<span th:text="${article.id}">1</span></div>
+    <div class="article-meta">
+        Question #<span th:text="${article.id}">1</span>
+        By <span th:text="${article.author}" style="color: #4e342e;">doe</span>
+    </div>
 
     <h1 th:text="${article.title}">Sample Question Title</h1>
 
@@ -75,6 +85,6 @@
 
     <a href="/qna/" class="btn-return">← Back to Q&A Board</a>
 </div>
-
+</div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package com.codesquad;
 
-import com.codesquad.cafeRepo.ArticleRepo;
 import com.codesquad.cafeRepo.JpaArticleRepo;
 import com.codesquad.cafeRepo.JpaUserRepo;
 import com.codesquad.service.ArticleService;
@@ -8,8 +7,10 @@ import com.codesquad.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
+@EnableAspectJAutoProxy
 public class SpringConfig {
 
     private final JpaUserRepo userRepository;
@@ -25,8 +26,6 @@ public class SpringConfig {
     public UserService userService(){
         return new UserService(userRepository);
      }
-
-
 
      @Bean
     public ArticleService articleService(){

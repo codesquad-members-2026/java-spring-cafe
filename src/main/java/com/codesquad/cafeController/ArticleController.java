@@ -2,6 +2,8 @@ package com.codesquad.cafeController;
 
 import com.codesquad.article.Article;
 import com.codesquad.service.ArticleService;
+import com.codesquad.user.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,14 +23,18 @@ public class ArticleController {
     }
 
     @GetMapping("/question")
-    public String getQuestionForm(){
+    public String getQuestionForm(HttpSession session){
+        if(session.getAttribute("currentUser") == null){
+            return "redirect:/user/login";
+        }
         return "qna/submitQuestion";
     }
 
     @PostMapping("/question")
-    public String postQuestionForm(@ModelAttribute Article article){
+    public String postQuestionForm(@ModelAttribute Article article, HttpSession session){
+        article.setAuthor(((User)session.getAttribute("currentUser")).getId());
         service.putNewArticle(article);
-        return "redirect:";
+        return "redirect:/qna/";
     }
 
     @GetMapping("/{articleId}")

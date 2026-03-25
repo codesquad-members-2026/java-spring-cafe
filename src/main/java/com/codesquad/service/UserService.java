@@ -42,7 +42,19 @@ public class UserService {
         return false;
     }
 
+    public boolean verifyUserCredentials(User supposedUser){
 
+        String userId = supposedUser.getId();
+        String password = supposedUser.getPassword();
 
+        User user = this.repo.getUserById(userId);
+        if(user == null){
+            return false;
+        }
+        if(user.getPassword().equals(password)){
+            return true;
+        }
+        return false;
+    }
 
 }
