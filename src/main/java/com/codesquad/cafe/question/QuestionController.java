@@ -27,7 +27,7 @@ public class QuestionController {
     @GetMapping("")
     public String getQuestions(Model model) {
         model.addAttribute("questions", questionService.getAll());
-        return "questions.html";
+        return "questions";
     }
 
     @GetMapping("/{questionId}")

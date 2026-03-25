@@ -46,7 +46,7 @@ public class UserController {
 
         try {
             User user = userService.login(email, password);
-            request.getSession().setAttribute("loginUser", user);
+            request.getSession().setAttribute("loginUser", user.getId());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/users/login";
@@ -65,16 +65,18 @@ public class UserController {
             return "redirect:/users/login";
         }
 
-        User loginUser = (User) session.getAttribute("loginUser");
+        Long loginUserId = (Long) session.getAttribute("loginUser");
         try {
-            userService.validateOwner(loginUser, ownerId);
+            userService.validateOwner(loginUserId, ownerId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/users";
         }
 
-        model.addAttribute("name", loginUser.getName());
-        model.addAttribute("email", loginUser.getEmail());
+        User user = userService.get(ownerId);
+
+        model.addAttribute("name", user.getName());
+        model.addAttribute("email", user.getEmail());
         return "users-detail";
     }
 }

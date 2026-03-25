@@ -34,8 +34,8 @@ public class UserService {
         return user;
     }
 
-    public void validateOwner(User loginUser, Long ownerId) {
-        if (!loginUser.getId().equals(ownerId)) {
+    public void validateOwner(Long loginUserId, Long ownerId) {
+        if (!loginUserId.equals(ownerId)) {
             throw new IllegalArgumentException("해당 글을 조회할 권한이 없습니다.");
         }
     }
