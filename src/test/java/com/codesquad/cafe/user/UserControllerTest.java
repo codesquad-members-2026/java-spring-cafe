@@ -1,5 +1,6 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.UnableToUpdateUserInfo;
 import com.codesquad.cafe.exception.UserInfoCannotBeFoundException;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,6 +26,8 @@ public class UserControllerTest {
     HttpSession httpSession;
     @Mock
     Model model;
+    @Mock
+    RedirectAttributes redirectAttributes;
 
     @InjectMocks
     UserController userController;
@@ -93,17 +97,39 @@ public class UserControllerTest {
         User originUser = Mockito.mock(User.class);
         User updateUser = Mockito.mock(User.class);
 
-        assertEquals("redirect:/", userController.update(originUser, updateUser));
+        assertEquals("redirect:/",
+                userController.update(originUser, httpSession, redirectAttributes, updateUser));
+
         verify(userService, Mockito.times(1))
-                .updateUserInfo(originUser.getLoginId(), updateUser);
+                .updateUserInfo(originUser.getId(), updateUser);
+
+        verify(httpSession, Mockito.times(1))
+                .setAttribute("sessionUser", updateUser.getLoginId());
     }
 
     @Test
-    @DisplayName("회원수정에 실패하면 수정 화면으로 돌아간다.")
-    public void update_FailureModifyUserInfo_RedirectList(){
+    @DisplayName("빈 유저 정보가 들어오면 수정 화면으로 돌아간다.")
+    public void update_NullUserInfo_RedirectModify(){
         User originUser = null;
         User updateUser = Mockito.mock(User.class);
 
-        assertEquals("redirect:/user/modify", userController.update(originUser, updateUser));
+        assertEquals("redirect:/user/modify",
+                userController.update(originUser, httpSession, redirectAttributes, updateUser));
+    }
+
+    @Test
+    @DisplayName("온전한 객체가 들어왔으나 회원수정 갱신에 실패하면 수정 화면으로 돌아간다.")
+    public void update_FailureModifyUserInfo_RedirectModify(){
+        User originUser = Mockito.mock(User.class);
+        User updateUser = Mockito.mock(User.class);
+
+        when(userService.updateUserInfo(originUser.getId(), updateUser)).thenThrow(UnableToUpdateUserInfo.class);
+
+        String result = userController.update(originUser, httpSession, redirectAttributes, updateUser);
+
+        verify(httpSession, Mockito.never()).setAttribute("sessionUser", updateUser);
+        verify(redirectAttributes, Mockito.times(1)).
+                addFlashAttribute("errorMessage", "회원 정보 수정에 실패했습니다. 다시 확인해 주세요!");
+        assertEquals("redirect:/user/modify", result);
     }
 }

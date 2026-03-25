@@ -37,13 +37,12 @@ public class UserService {
                 .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
     }
 
-    // TODO: 현재 수정 사항이 DB에 반영되지만 user/modify에 들어가면 회원가입 초기 데이터가 나타남 -> DB 정보를 다시 끌어오는 로직 필요
     // TODO: 루카스에 올라온 회원수정 요구사항을 따르기
     @Transactional
-    public void updateUserInfo(String loginId, User modifiedUser){
-        User realUser = jpaUserRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + loginId));
+    public User updateUserInfo(Long id, User modifiedUser){
+        User realUser = jpaUserRepository.findById(id)
+                .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
 
-        realUser.updateUser(modifiedUser);
+        return realUser.updateUser(modifiedUser);
     }
 }

@@ -1,8 +1,10 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.UnableToUpdateUserInfo;
 import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -42,11 +44,12 @@ public class User {
     }
 
     // User 정보 수정
-    public void updateUser(User modifiedUser) {
+    public User updateUser(User modifiedUser) {
         if(!checkModifiedUser(modifiedUser))
-            return;
+            throw new UnableToUpdateUserInfo("Failed to update user information");
 
         setField(modifiedUser);
+        return this;
     }
     private boolean checkModifiedUser(User modifiedUser) {
         return !modifiedUser.getPassword().contains(" ") && !modifiedUser.getEmail().contains(" ") &&
