@@ -1,27 +1,28 @@
 package com.codesquad.cafe.controller;
 
 import com.codesquad.cafe.domain.Article;
+import com.codesquad.cafe.repository.ArticleRepository;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
 
-    private final List<Article> articles = new ArrayList<>();
 
+    private final ArticleRepository articleRepository;
+
+    public ArticleController(ArticleRepository articleRepository) {
+        this.articleRepository = articleRepository;
+    }
 
     @PostMapping("/questions")
     public String createArticle(Article article) {
-        long num = articles.size() + 1;
-        article.setNumber(num);
-        articles.add(article);
-
+        articleRepository.save(article);
         return "redirect:/";
     }
 
@@ -32,15 +33,19 @@ public class ArticleController {
 
     @GetMapping("/")
     public String list(Model model) {
-        model.addAttribute("articles", articles);
+        model.addAttribute("articles", articleRepository.findAll());
         return "qna/index";
     }
 
-    @GetMapping("/articles/{number}")
-    public String show(@PathVariable("number") int number, Model model) {
-        Article article = articles.get(number - 1);
-        model.addAttribute("article", article);
+    @GetMapping("/articles/{id}")
+    public String show(@PathVariable("id") Long id, Model model) {
+        Optional<Article> article = articleRepository.findById(id);
 
-        return "qna/show";
+        if (article.isPresent()) {
+            model.addAttribute("article", article.get());
+            return "qna/show";
+        }
+
+        return "redirect:/";
     }
 }

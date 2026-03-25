@@ -37,27 +37,24 @@
                 <th scope="col" style="width: 10%;">번호</th>
                 <th scope="col" style="width: 50%;">제목</th>
                 <th scope="col" style="width: 20%;">글쓴이</th>
-                <th scope="col" style="width: 20%;">상세보기</th>
+                <th scope="col" style="width: 20%;">관리</th>
             </tr>
             </thead>
             <tbody>
-            <!-- 반복문 시작 -->
-            <tr th:each="article, status : ${articles}">
-                <td th:text="${status.count}">1</td>
-
+            <tr th:each="article : ${articles}">
+                <td th:text="${article.id}">1</td>
 
                 <td class="text-center">
-                    <a th:href="@{/articles/{num}(num=${article.number})}"
+                    <a th:href="@{/articles/{id}(id=${article.id})}"
                        th:text="${article.title}"
                        class="text-decoration-none text-dark fw-bold">
-                        질문 제목이 들어갈 자리입니다.
+                        질문 제목
                     </a>
                 </td>
 
                 <td th:text="${article.writer}">작성자</td>
                 <td>
-                    <!-- '보기' 버튼에도 링크를 걸어주면 더 좋겠죠? -->
-                    <a th:href="@{/articles/{num}(num=${article.number})}" class="btn btn-sm btn-outline-secondary">보기</a>
+                    <a th:href="@{/articles/{id}(id=${article.id})}" class="btn btn-sm btn-outline-secondary">보기</a>
                 </td>
             </tr>
 

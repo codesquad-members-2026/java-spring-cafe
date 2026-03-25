@@ -28,20 +28,17 @@
 <main class="container">
     <div class="card p-5">
         <div class="article-header">
-            <!-- 제목 출력 -->
-            <h2 class="fw-bold text-dark" th:text="${article.title}">게시글 제목이 여기에 표시됩니다.</h2>
+            <h2 class="fw-bold text-dark" th:text="${article.title}">게시글 제목</h2>
             <div class="text-muted d-flex justify-content-between align-items-center mt-3">
                 <span>
                     작성자: <strong class="text-primary" th:text="${article.writer}">홍길동</strong>
                 </span>
-                <!-- 우리가 추가한 고유 번호 -->
-                <span class="badge bg-secondary">글 번호: [[${article.number}]]</span>
+                <span class="badge bg-secondary">글 번호: [[${article.id}]]</span>
             </div>
         </div>
 
-        <!-- 본문 내용 출력 -->
         <div class="article-content bg-light p-4 rounded" th:text="${article.contents}">
-            게시글 본문 내용이 여기에 출력됩니다.
+            본문 내용
         </div>
 
         <div class="d-flex justify-content-end mt-4 pt-3 border-top">

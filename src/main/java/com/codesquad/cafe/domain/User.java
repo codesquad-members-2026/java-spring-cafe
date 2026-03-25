@@ -1,7 +1,15 @@
 package com.codesquad.cafe.domain;
 
-public class User {
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "users")
+public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false, length = 20, unique = true)
     private String userId;
     private String name;
     private String password;
