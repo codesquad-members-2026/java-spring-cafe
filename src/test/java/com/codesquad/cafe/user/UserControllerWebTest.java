@@ -44,7 +44,7 @@ public class UserControllerWebTest {
     @Test
     @DisplayName("유효한 로그인 폼 데이터를 받으면 홈 화면으로 리다이렉트한다.")
     public void login_HttpPostTest() throws Exception{
-        when(userService.findLoginUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
+        when(userService.findUserByIdAndPassword("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
         mockMvc.perform(post("/user/login")
                 .param("id", "admin")
@@ -52,6 +52,6 @@ public class UserControllerWebTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
-        Mockito.verify(userService, Mockito.times(1)).findLoginUser("admin", "admin");
+        Mockito.verify(userService, Mockito.times(1)).findUserByIdAndPassword("admin", "admin");
     }
 }

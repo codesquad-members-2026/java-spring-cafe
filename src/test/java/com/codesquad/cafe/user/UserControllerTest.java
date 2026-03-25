@@ -1,6 +1,6 @@
 package com.codesquad.cafe.user;
 
-import com.codesquad.cafe.exception.NoUserInListException;
+import com.codesquad.cafe.exception.UserInfoCannotBeFoundException;
 import jakarta.servlet.http.HttpSession;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -55,7 +55,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("로그인을 성공적으로 마치면 홈 화면으로 이동한다.")
     public void login_WithCorrectInfo() {
-        when(userService.findLoginUser("admin", "admin")).thenReturn(Mockito.mock(User.class));
+        when(userService.findUserByIdAndPassword("admin", "admin")).thenReturn(Mockito.mock(User.class));
 
         assertThat(userController.login("admin", "admin", httpSession)).isEqualTo("redirect:/");
     }
@@ -63,7 +63,7 @@ public class UserControllerTest {
     @Test
     @DisplayName("로그인을 실패하면 로그인 창으로 이동한다")
     public void login_WithIncorrectInfo() {
-        when(userService.findLoginUser("wrongId", "wrongPassword")).thenThrow(NoUserInListException.class);
+        when(userService.findUserByIdAndPassword("wrongId", "wrongPassword")).thenThrow(UserInfoCannotBeFoundException.class);
 
         assertThat(userController.login("wrongId", "wrongPassword", httpSession))
                 .isEqualTo("redirect:/user/login");
@@ -92,24 +92,18 @@ public class UserControllerTest {
     public void update_SuccessModifyUserInfo_RedirectHome(){
         User originUser = Mockito.mock(User.class);
         User updateUser = Mockito.mock(User.class);
-        when(originUser.updateUser(updateUser)).thenReturn(true);
 
-        assertEquals("redirect:/", userController.update(originUser, httpSession, updateUser));
-        verify(httpSession, Mockito.times(1)).setAttribute("sessionUser", originUser);
+        assertEquals("redirect:/", userController.update(originUser, updateUser));
+        verify(userService, Mockito.times(1))
+                .updateUserInfo(originUser.getLoginId(), updateUser);
     }
 
     @Test
     @DisplayName("회원수정에 실패하면 수정 화면으로 돌아간다.")
     public void update_FailureModifyUserInfo_RedirectList(){
-        User originUser = Mockito.mock(User.class);
+        User originUser = null;
         User updateUser = Mockito.mock(User.class);
-        when(originUser.updateUser(updateUser)).thenReturn(false);
 
-        assertEquals("redirect:/user/modify", userController.update(originUser, httpSession, updateUser));
-        verify(httpSession, Mockito.times(0)).setAttribute("sessionUser", originUser);
+        assertEquals("redirect:/user/modify", userController.update(originUser, updateUser));
     }
-
-    // TODO: UserController의 profileForm() 테스트 케이스 작성
-
-    // TODO:
 }
