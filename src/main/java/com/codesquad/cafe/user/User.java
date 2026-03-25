@@ -1,47 +1,52 @@
 package com.codesquad.cafe.user;
 
+import jakarta.persistence.*;
+
 import java.util.Objects;
 
+@Entity
+@Table(name = "users")
 public class User {
-    private String id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String loginId;
     private String password;
     private String lastName;
     private String firstName;
     private String email;
     private String phoneNumber;
 
-    public User(String id, String password, String firstName, String lastName, String email, String phoneNumber) {
-        this.id = id;
+    protected User(){};
+
+    public User(String loginId, String password, String lastName,
+                String firstName, String email, String phoneNumber) {
+        this.loginId = loginId;
         this.password = password;
-        this.firstName = firstName;
         this.lastName = lastName;
+        this.firstName = firstName;
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
 
-    // 유저 정보 검증
+    // TODO: 다음 커밋에서 지워질 내역 -> DTO로 역할 넘기기
     public boolean verifySignup() {
-        return !(getId().isEmpty() || getId().isBlank())
-                && !(getPassword().isEmpty() || getPassword().isBlank())
-                && !(getFirstName().isEmpty() || getFirstName().isBlank())
-                && !(getLastName().isEmpty() || getLastName().isBlank())
-                && !(getEmail().isEmpty() || getEmail().isBlank())
-                && !(getPhoneNumber().isEmpty() || getPhoneNumber().isBlank());
-    }
-    public boolean isLoginMatch(String id, String password) {
-        return this.id.equals(id) && this.password.equals(password);
-    }
-    public boolean isIdMatch(String id) {
-        return this.id.equals(id);
+        return !(loginId.isEmpty() || loginId.isBlank())
+                && !(password.isEmpty() || password.isBlank())
+                && !(lastName.isEmpty() || lastName.isBlank())
+                && !(firstName.isEmpty() || firstName.isBlank())
+                && !(email.isEmpty() || email.isBlank())
+                && !(phoneNumber.isEmpty() || phoneNumber.isBlank());
     }
 
     // User 정보 수정
-    public boolean updateUser(User modifiedUser) {
+    public void updateUser(User modifiedUser) {
         if(!checkModifiedUser(modifiedUser))
-            return false;
+            return;
 
         setField(modifiedUser);
-        return true;
     }
     private boolean checkModifiedUser(User modifiedUser) {
         return !modifiedUser.getPassword().contains(" ") && !modifiedUser.getEmail().contains(" ") &&
@@ -59,13 +64,18 @@ public class User {
         return string.isEmpty();
     }
 
-
     // getter, setter
-    public String getId() {
+    public Long getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+    public String getLoginId() {
+        return loginId;
+    }
+    public void setLoginId(String loginId) {
+        this.loginId = loginId;
     }
     public String getPassword() {
         return password;
@@ -73,17 +83,17 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getFirstName() {
-        return firstName;
-    }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
     public String getLastName() {
         return lastName;
     }
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+    public String getFirstName() {
+        return firstName;
+    }
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
     public String getEmail() {
         return email;
@@ -106,9 +116,20 @@ public class User {
                 && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName)
                 && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(id, password, lastName, firstName, email, phoneNumber);
+    }
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", loginId='" + loginId + '\'' +
+                ", password='" + password + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
     }
 }
