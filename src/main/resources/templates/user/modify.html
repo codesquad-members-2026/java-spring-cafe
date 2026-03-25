@@ -157,8 +157,10 @@
     <div class="box">
 
         <div class="edit-box">
-            <form action="/update" method="post" class="info-form">
+            <form action="/user/update" method="post" class="info-form">
                 {{#user}}
+                    <input type="hidden" name="_method" value="PUT">
+
                     <div style="text-align: center;"><h2>Edit Profile</h2></div>
                     <div class="input-group">
                         <label>아이디 (변경 불가)</label>
@@ -198,7 +200,7 @@
         <div class="nav-box">
             <p>Menu</p>
             <a href="/" class="btn-link">Home</a>
-            <a href="/list" class="btn-link">User List</a>
+            <a href="/user/list" class="btn-link">User List</a>
         </div>
 
     </div>

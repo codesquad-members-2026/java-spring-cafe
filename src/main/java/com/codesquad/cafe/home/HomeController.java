@@ -1,6 +1,7 @@
 package com.codesquad.cafe.home;
 
 import com.codesquad.cafe.user.User;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,5 +17,15 @@ public class HomeController {
         }
 
         return "index";
+    }
+
+    @GetMapping("/dev/login")
+    public String login(HttpSession session) {
+        User devUser = new User("admin", "admin", "리자", "관",
+                "admin@naver.com", "01011112222");
+
+        session.setAttribute("sessionUser", devUser);
+
+        return "redirect:/";
     }
 }

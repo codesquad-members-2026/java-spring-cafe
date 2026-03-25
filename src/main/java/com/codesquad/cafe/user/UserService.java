@@ -1,38 +1,33 @@
 package com.codesquad.cafe.user;
 
-import com.codesquad.cafe.exception.NoUserInListException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
-    private final List<User> users;
+    private final UserRepository userRepository;
 
-    UserService(){
-        users = new ArrayList<>();
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    void add(User user) {
-        users.add(user);
+    void addUser(User user){
+        userRepository.add(user);
     }
 
-    int count(){
-        return users.size();
-    }
-
-    User findUser(String id, String password){
-        for(User user : users){
-            if(user.getId().equals(id) && user.getPassword().equals(password)){
-                return user;
-            }
-        }
-
-        throw new NoUserInListException("해당 유저가 존재하지 않습니다.");
+    int countUser(){
+        return userRepository.count();
     }
 
     List<User> getUsers(){
-        return users;
+        return userRepository.getUsers();
+    }
+
+    User findLoginUser(String id, String password){
+        return userRepository.matchIdPassword(id, password);
+    }
+
+    User findUser(String id){
+        return userRepository.matchId(id);
     }
 }

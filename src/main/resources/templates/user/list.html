@@ -88,6 +88,11 @@
             filter: contrast(80%);
         }
 
+        td a {
+            text-decoration: none;
+            color: #656464;
+        }
+
     </style>
 </head>
 <body>
@@ -103,18 +108,12 @@
             <thead>
             <tr>
                 <th>아이디</th>
-                <th>이름</th>
-                <th>이메일</th>
-                <th>전화번호</th>
             </tr>
             </thead>
             <tbody>
             {{#users}}
-                <tr>
+                <tr onclick="location.href='/user/{{id}}'" style="cursor: pointer;">
                     <td>{{id}}</td>
-                    <td>{{lastName}}{{firstName}}</td>
-                    <td>{{email}}</td>
-                    <td>{{phoneNumber}}</td>
                 </tr>
             {{/users}}
             </tbody>
