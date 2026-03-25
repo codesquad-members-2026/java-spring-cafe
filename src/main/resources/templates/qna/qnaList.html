@@ -131,7 +131,6 @@
     <a th:href="@{/qna/{id}(id=${article.id})}"  class="article-card" th:each="article : ${articles}" >
         <div class="article-meta" th:text="'Question #' + ${article.id}">Question #ID</div>
         <h2 class="article-title" th:text="${article.title}">Sample Title</h2>
-        <p class="article-content" th:text="${article.content}">Sample content goes here...</p>
     </a>
 
 </div>
