@@ -130,6 +130,7 @@
             <a th:href="@{/qna/{id}/edit(id=${article.id})}" class="btn-edit">Edit</a>
 
             <form th:action="@{/qna/{id}/delete(id=${article.id})}" method="post" class="delete-form" onsubmit="return confirm('Are you sure you want to delete this question? This cannot be undone.');">
+                <input type="hidden" name="_method" value="DELETE" />
                 <button type="submit" class="btn-delete">Delete</button>
             </form>
         </div>

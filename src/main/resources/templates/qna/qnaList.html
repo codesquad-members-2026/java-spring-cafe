@@ -69,6 +69,17 @@
             line-height: 1.5;
             color: #5d4037;
         }
+        .error-banner {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid #ef9a9a;
+            text-align: left;
+        }
         .empty-state {
             text-align: center;
             color: #8d6e63;
@@ -123,6 +134,10 @@
 
 
 <div class="article-container">
+
+    <div th:if="${errorMessage}" class="error-banner">
+        <span th:text="${errorMessage}"> ERROR MESSAGE</span>
+    </div>
 
     <div th:if="${#arrays.isEmpty(articles)}" class="article-card empty-state">
         <p>No questions have been asked yet. Be the first!</p>

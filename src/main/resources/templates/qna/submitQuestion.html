@@ -96,19 +96,22 @@
 
     <h1>Post a Question</h1>
 
-    <form action="/qna/question" method="post">
+    <form th:action="${formActionUrl}" th:object="${article}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" placeholder="What is your question?" required>
+            <input type="text" th:field="*{title}" placeholder="What is your question?" required>
         </div>
+
         <div class="form-group">
             <label for="content">Details</label>
-            <textarea id="content" name="content" placeholder="Explain your question in detail..." required></textarea>
+            <textarea th:field="*{content}" placeholder="Explain your question in detail..." required></textarea>
         </div>
 
-        <button type="submit">POST QUESTION</button>
+        <button type="submit" th:text="${article.id == 0 ? 'POST QUESTION' : 'UPDATE QUESTION'}">POST QUESTION</button>
     </form>
-
     <a href="/qna/" class="back-link">← Cancel and return to Q&A</a>
 </div>
 </div>

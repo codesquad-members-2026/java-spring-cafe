@@ -24,16 +24,24 @@ public class ArticleController {
     }
 
     @GetMapping("/question")
-    public String getQuestionForm(HttpSession session){
+    public String getQuestionForm(HttpSession session, Model model){
         if(session.getAttribute("currentUser") == null){
             return "redirect:/user/login";
         }
+        Article targetArticle = new Article();
+        model.addAttribute("article", targetArticle);
+        model.addAttribute("formActionUrl", "/qna/question");
         return "qna/submitQuestion";
     }
 
     @PostMapping("/question")
     public String postQuestionForm(@ModelAttribute Article article, HttpSession session){
-        article.setAuthor(((User)session.getAttribute("currentUser")).getId());
+        User currentUser = (User) session.getAttribute("currentUser");
+        if(currentUser == null){
+            return "redirect:/user/login";
+        }
+        article.setUser(currentUser);
+        article.setAuthor();
         service.putNewArticle(article);
         return "redirect:/qna/";
     }
@@ -49,6 +57,40 @@ public class ArticleController {
         model.addAttribute("article", service.findArticleById(articleId));
         return "qna/questionDetail";
     }
+
+    @GetMapping("/{id}/edit")
+    public String getEditPageForArticle(@PathVariable int id, HttpSession session, Model model){
+        if(session.getAttribute("currentUser") == null){
+            return "redirect:/user/login";
+        }
+
+        Article targetArticle = service.findArticleById(id);
+        model.addAttribute("article", targetArticle);
+        model.addAttribute("formActionUrl", "/qna/"+id+"/edit");
+        return "qna/submitQuestion";
+    }
+
+    @PostMapping("/{id}/edit")
+    public String postEditedArticle(@PathVariable int id, HttpSession session, @ModelAttribute Article article){
+        article.setUser((User)session.getAttribute("currentUser"));
+        article.setAuthor();
+        service.putNewArticle(article);
+        return "redirect:/qna/"+id;
+    }
+
+    @DeleteMapping("/{id}/delete")
+    public String deleteArticle(@PathVariable int id, HttpSession session, RedirectAttributes ra){
+        Article targetArticle = service.findArticleById(id);
+        if(!targetArticle.getUser().equals(session.getAttribute("currentUser"))){
+            ra.addFlashAttribute("errorMessage", "YOU CANNOT DELETE OTHER'S ARTICLE");
+            return "redirect:/qna/";
+        }
+        service.deleteArticle(targetArticle, (User)session.getAttribute("currentUser"));
+        return "redirect:/qna/";
+    }
+
+
+
 
 
 }

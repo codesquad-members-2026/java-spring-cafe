@@ -49,8 +49,9 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String postSignUp(@ModelAttribute User user){
+    public String postSignUp(@ModelAttribute User user, HttpSession session){
         service.addUser(user);
+        session.setAttribute("currentUser", service.findUserById(user.getId()));
         return "redirect:/user/users";
     }
 

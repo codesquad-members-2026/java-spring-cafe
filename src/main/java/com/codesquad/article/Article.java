@@ -1,5 +1,6 @@
 package com.codesquad.article;
 
+import com.codesquad.user.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +9,10 @@ public class Article {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_pk")
+    private User user;
     private String author;
     private String title;
     private String content;
@@ -16,8 +21,16 @@ public class Article {
         return author;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setAuthor() {
+        this.author = this.user.getId();
     }
 
     public void setId(int id){

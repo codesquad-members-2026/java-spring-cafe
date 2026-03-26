@@ -3,6 +3,7 @@ package com.codesquad.service;
 import com.codesquad.article.Article;
 import com.codesquad.cafeRepo.ArticleRepo;
 import com.codesquad.cafeRepo.JpaArticleRepo;
+import com.codesquad.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -26,6 +27,12 @@ public class ArticleService {
 
     public Article findArticleById(int id){
         return this.repo.findArticleById(id);
+    }
+
+    public void deleteArticle(Article targetArticle, User sessionUser){
+        if(targetArticle.getUser().equals(sessionUser)){
+            repo.delete(targetArticle);
+        }
     }
 
 }
