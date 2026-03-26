@@ -12,8 +12,6 @@ public class ArticleTest {
         User testUser = new User();
         testUser.setName("Tester");
         testUser.setId("testID");
-        testUser.setPassword("testpassword");
-        testUser.setEmail("test@test.com");
         Article newArticle = new Article();
         newArticle.setTitle("title1");
         newArticle.setContent("body1");
