@@ -15,7 +15,6 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-
     private final UserRepository userRepository;
 
     public UserController(UserRepository userRepository) {
@@ -29,14 +28,12 @@ public class UserController {
 
     @PostMapping("/users")
     public String create(User user) {
-
         userRepository.save(user);
         return "redirect:/users";
     }
 
     @GetMapping("/users")
     public String list(Model model) {
-
         model.addAttribute("users", userRepository.findAll());
         return "user/list";
     }
@@ -60,7 +57,7 @@ public class UserController {
         if (!sessionedUser.getUserId().equals(userId)) {
             rttr.addFlashAttribute("errorMessage", "자신의 정보만 수정할 수 있습니다.");
             return "redirect:/";
-            }
+        }
 
         model.addAttribute("user", sessionedUser);
         return "user/updateForm";
@@ -75,6 +72,7 @@ public class UserController {
         }
 
         if (!sessionedUser.getPassword().equals(updatedUser.getPassword())) {
+            // 비밀번호가 틀린 경우 다시 폼으로 보냄
             return "redirect:/users/" + userId + "/form";
         }
 
@@ -90,11 +88,10 @@ public class UserController {
         return "/user/login";
     }
 
-
     @PostMapping("/login")
-    public String update(String userId, String password, HttpSession session, RedirectAttributes rttr) {
+    public String loginProcess(String userId, String password, HttpSession session, RedirectAttributes rttr) {
         Optional<User> loginUser = userRepository.findByUserId(userId);
-        if(loginUser.isPresent()) {
+        if (loginUser.isPresent()) {
             User user = loginUser.get();
             if (user.getPassword().equals(password)) {
                 session.setAttribute("sessionedUser", user);
@@ -104,13 +101,13 @@ public class UserController {
                 return "redirect:/loginForm";
             }
         }
-        return "redirect:/";
+        rttr.addFlashAttribute("errorMessage", "존재하지 않는 사용자입니다.");
+        return "redirect:/loginForm";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-
         return "redirect:/";
     }
 }
