@@ -24,15 +24,17 @@ public class UserController {
         1. 화면의 단순 입력값 검증 로직과 핵심 비즈니스 로직이 한 곳에 섞여 코드가 너무 비대해지고 유지 보수에 어려움이 생김
         2. 브라우저에서 날아온 데이터가 DB와 직결된 엔티티에 필터링 없이 꽂히게 되어 악의적인 데이터 조작(Overposting 등) 보안 사고의 위험 존재
         3. 로그인할 때(아이디/비번만 필요)와 회원 가입할 때(모든 정보 필요)처럼 상황마다 다른 검증 규칙을 엔티티 하나로 감당할 수 없음
+        
+        verifySignup() 로직은 User가 아닌 DTO에서 담당해야함
      */
     @PostMapping("/join")
-    public String join(@ModelAttribute User unregisUser) {
-        if(unregisUser.verifySignup()){
-            userService.addUser(unregisUser);
+    public String join(@ModelAttribute User signupUser) {
+        if(signupUser.verifySignup()){
+            userService.addUser(signupUser);
             return "redirect:/user/list";
         }
 
-        return "redirect:/user/join";
+        return "redirect:/user/signup";
     }
 
     // 유저 리스트 창으로 이동
@@ -48,7 +50,7 @@ public class UserController {
         try {
             User user = userService.findUserById(loginId);
             model.addAttribute("user", user);
-            return "/user/profile";
+            return "user/profile";
         } catch (UserInfoCannotBeFoundException e) {
             return "redirect:/user/list";
         }

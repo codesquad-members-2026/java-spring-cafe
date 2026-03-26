@@ -18,14 +18,4 @@ public class HomeController {
 
         return "index";
     }
-
-    @GetMapping("/dev/login")
-    public String login(HttpSession session) {
-        User devUser = new User("admin", "admin", "리자", "관",
-                "admin@naver.com", "01011112222");
-
-        session.setAttribute("sessionUser", devUser);
-
-        return "redirect:/";
-    }
 }
