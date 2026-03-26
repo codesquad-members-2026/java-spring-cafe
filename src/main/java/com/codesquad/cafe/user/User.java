@@ -1,6 +1,7 @@
 package com.codesquad.cafe.user;
 
 import com.codesquad.cafe.exception.UnableToUpdateUserInfo;
+import com.codesquad.cafe.user.dto.UserUpdateDTO;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -43,27 +44,25 @@ public class User {
     }
 
     // User 정보 수정
-    public User updateUser(User modifiedUser) {
-        if(!checkModifiedUser(modifiedUser))
+    public User updateUser(UserUpdateDTO updateDTO) {
+        if(!checkPassword(updateDTO.getPassword()) || !checkBlank(updateDTO))
             throw new UnableToUpdateUserInfo("Failed to update user information");
 
-        setField(modifiedUser);
+        setField(updateDTO);
         return this;
     }
-    private boolean checkModifiedUser(User modifiedUser) {
-        return !modifiedUser.getPassword().contains(" ") && !modifiedUser.getEmail().contains(" ") &&
-                !modifiedUser.getFirstName().contains(" ") && !modifiedUser.getLastName().contains(" ")
-                && !modifiedUser.getPhoneNumber().contains(" ");
+    private boolean checkPassword(String password) {
+        return password.equals(this.password);
     }
-    private void setField(User modifiedUser) {
-        this.password = isEmpty(modifiedUser.getPassword()) ? password : modifiedUser.getPassword();
-        this.firstName = isEmpty(modifiedUser.getFirstName()) ? firstName : modifiedUser.getFirstName();
-        this.lastName = isEmpty(modifiedUser.getLastName()) ? lastName : modifiedUser.getLastName();
-        this.email = isEmpty(modifiedUser.getEmail()) ? email : modifiedUser.getEmail();
-        this.phoneNumber = isEmpty(modifiedUser.getPhoneNumber()) ? phoneNumber : modifiedUser.getPhoneNumber();
+    private boolean checkBlank(UserUpdateDTO modifiedUser) {
+        return !modifiedUser.getEmail().contains(" ") && !modifiedUser.getFirstName().contains(" ")
+                && !modifiedUser.getLastName().contains(" ") && !modifiedUser.getPhoneNumber().contains(" ");
     }
-    private boolean isEmpty(String string) {
-        return string.isEmpty();
+    private void setField(UserUpdateDTO modifiedUser) {
+        this.firstName = modifiedUser.getFirstName();
+        this.lastName = modifiedUser.getLastName();
+        this.email = modifiedUser.getEmail();
+        this.phoneNumber = modifiedUser.getPhoneNumber();
     }
 
     // getter, setter
@@ -96,13 +95,11 @@ public class User {
     public boolean equals(Object object) {
         if (object == null || getClass() != object.getClass()) return false;
         User user = (User) object;
-        return Objects.equals(id, user.id) && Objects.equals(password, user.password)
-                && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName)
-                && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber);
+        return Objects.equals(id, user.id) && Objects.equals(loginId, user.loginId) && Objects.equals(password, user.password) && Objects.equals(lastName, user.lastName) && Objects.equals(firstName, user.firstName) && Objects.equals(email, user.email) && Objects.equals(phoneNumber, user.phoneNumber);
     }
     @Override
     public int hashCode() {
-        return Objects.hash(id, password, lastName, firstName, email, phoneNumber);
+        return Objects.hash(id, loginId, password, lastName, firstName, email, phoneNumber);
     }
     @Override
     public String toString() {

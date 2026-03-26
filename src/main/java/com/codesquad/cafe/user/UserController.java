@@ -2,9 +2,12 @@ package com.codesquad.cafe.user;
 
 import com.codesquad.cafe.exception.UnableToUpdateUserInfo;
 import com.codesquad.cafe.exception.UserInfoCannotBeFoundException;
+import com.codesquad.cafe.user.dto.UserUpdateDTO;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -91,30 +94,29 @@ public class UserController {
         return "redirect:/";
     }
     
-    // TODO: 직접 폼 데이터를 브라우저에게 받지 말고 DTO를 만들어서 포장된 데이터로 전달받기
     // 수정된 회원 정보 폼 제출
     @PutMapping("/update")
     public String update(
-            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
-            HttpSession session, RedirectAttributes redirectAttributes,
-            @ModelAttribute User modifiedUser) {
+            @Valid @ModelAttribute UserUpdateDTO dto, BindingResult bindingResult,
+            HttpSession session, RedirectAttributes redirectAttributes) {
 
-        if(loginUser != null){
-            Long id = loginUser.getId();
-
-            try {
-                User updateUser = userService.updateUserInfo(id, modifiedUser);
-                session.setAttribute("sessionUser", updateUser);
-                return "redirect:/";
-            } catch (UnableToUpdateUserInfo e) {
-                redirectAttributes.addFlashAttribute("errorMessage",
-                        "회원 정보 수정에 실패했습니다. 다시 확인해 주세요!");
-                return "redirect:/user/modify";
-            } catch(UserInfoCannotBeFoundException e) {
-                return "redirect:/";
-            }
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "빈칸을 모두 채워주세요!");
+            return "redirect:/user/modify";
         }
 
-        return "redirect:/user/modify";
+        try {
+            Long id = dto.getId();
+            User updateUser = userService.updateUserInfo(id, dto);
+            session.setAttribute("sessionUser", updateUser);
+            return "redirect:/";
+        } catch (UnableToUpdateUserInfo e) {
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "회원 정보 수정에 실패했습니다!");
+            return "redirect:/user/modify";
+        } catch (UserInfoCannotBeFoundException e) {
+            return "redirect:/";
+        }
     }
 }

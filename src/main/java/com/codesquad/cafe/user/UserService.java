@@ -1,6 +1,7 @@
 package com.codesquad.cafe.user;
 
 import com.codesquad.cafe.exception.UserInfoCannotBeFoundException;
+import com.codesquad.cafe.user.dto.UserUpdateDTO;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -39,12 +40,11 @@ public class UserService {
                 .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
     }
 
-    // TODO: 루카스에 올라온 회원수정 요구사항을 따르기
     @Transactional
-    public User updateUserInfo(Long id, User modifiedUser){
-        User realUser = jpaUserRepository.findById(id)
+    public User updateUserInfo(Long id, UserUpdateDTO updateDTO){
+        User result = jpaUserRepository.findById(id)
                 .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
 
-        return realUser.updateUser(modifiedUser);
+        return result.updateUser(updateDTO);
     }
 }
