@@ -4,7 +4,6 @@ import com.codesquad.cafe.exception.UnableToUpdateUserInfo;
 import jakarta.persistence.*;
 
 import java.util.Objects;
-import java.util.Optional;
 
 @Entity
 @Table(name = "users")
