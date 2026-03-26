@@ -2,11 +2,13 @@ package com.codesquad.cafe.controller;
 
 import com.codesquad.cafe.domain.User;
 import com.codesquad.cafe.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Optional;
 
@@ -41,34 +43,74 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     public String profile(@PathVariable("userId") String userId, Model model) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다: " + userId));
 
-        userRepository.findByUserId(userId).ifPresent(user -> model.addAttribute("user", user));
-
+        model.addAttribute("user", user);
         return "user/profile";
     }
 
     @GetMapping("/users/{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId, Model model) {
+    public String updateForm(@PathVariable("userId") String userId, Model model, HttpSession session, RedirectAttributes rttr) {
+        User sessionedUser = (User) session.getAttribute("sessionedUser");
 
-        userRepository.findByUserId(userId).ifPresent(user -> model.addAttribute("user", user));
+        if (sessionedUser == null) {
+            return "redirect:/loginForm";
+        }
+        if (!sessionedUser.getUserId().equals(userId)) {
+            rttr.addFlashAttribute("errorMessage", "자신의 정보만 수정할 수 있습니다.");
+            return "redirect:/";
+            }
+
+        model.addAttribute("user", sessionedUser);
         return "user/updateForm";
     }
 
     @PostMapping("/users/{userId}/update")
-    public String update(@PathVariable("userId") String userId, User updatedUser) {
+    public String update(@PathVariable("userId") String userId, User updatedUser, HttpSession session) {
+        User sessionedUser = (User) session.getAttribute("sessionedUser");
 
-        Optional<User> maybeUser = userRepository.findByUserId(userId);
-        if (maybeUser.isPresent()) {
-            User user = maybeUser.get();
-            if (user.getPassword().equals(updatedUser.getPassword())) {
-                user.setName(updatedUser.getName());
-                user.setEmail(updatedUser.getEmail());
-                userRepository.save(user); // 덮어쓰기!
-                return "redirect:/users";
+        if (sessionedUser == null || !sessionedUser.getUserId().equals(userId)) {
+            return "redirect:/";
+        }
+
+        if (!sessionedUser.getPassword().equals(updatedUser.getPassword())) {
+            return "redirect:/users/" + userId + "/form";
+        }
+
+        sessionedUser.setName(updatedUser.getName());
+        sessionedUser.setEmail(updatedUser.getEmail());
+        userRepository.save(sessionedUser);
+
+        return "redirect:/users";
+    }
+
+    @GetMapping("/loginForm")
+    public String login() {
+        return "/user/login";
+    }
+
+
+    @PostMapping("/login")
+    public String update(String userId, String password, HttpSession session, RedirectAttributes rttr) {
+        Optional<User> loginUser = userRepository.findByUserId(userId);
+        if(loginUser.isPresent()) {
+            User user = loginUser.get();
+            if (user.getPassword().equals(password)) {
+                session.setAttribute("sessionedUser", user);
+                return "redirect:/";
             } else {
-                return "redirect:/users/" + userId + "/form";
+                rttr.addFlashAttribute("errorMessage", "아이디 또는 비밀번호가 틀렸습니다.");
+                return "redirect:/loginForm";
             }
         }
-        return "redirect:/users";
+        return "redirect:/";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+
+        return "redirect:/";
     }
 }
