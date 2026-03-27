@@ -108,8 +108,8 @@ public class UserController {
 
         try {
             Long id = dto.getId();
-            User updateUser = userService.updateUserInfo(id, dto);
-            session.setAttribute("sessionUser", updateUser);
+            User updatedUser = userService.updateUserInfo(id, dto);
+            session.setAttribute("sessionUser", updatedUser);
             return "redirect:/";
         } catch (UnableToUpdateUserInfo e) {
             redirectAttributes.addFlashAttribute("errorMessage",

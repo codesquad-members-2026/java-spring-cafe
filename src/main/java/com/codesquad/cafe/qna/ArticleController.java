@@ -1,9 +1,11 @@
 package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
+import com.codesquad.cafe.user.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -11,7 +13,7 @@ import java.util.List;
 @RequestMapping("/qna")
 public class ArticleController {
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
@@ -38,7 +40,16 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String qnaArticleForm(@PathVariable Long id, Model model) {
+    public String qnaArticleForm(
+            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
+            @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+
+        if(loginUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "로그인 후에 이용할 수 있습니다!");
+            return "redirect:/qna/list";
+        }
+
         try {
             Article article = articleService.findArticleById(id);
             model.addAttribute("article", article);

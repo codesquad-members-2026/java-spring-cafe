@@ -33,7 +33,7 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    // TODO: 다음 커밋에서 지워질 내역 -> DTO로 역할 넘기기
+    // TODO: DTO로 역할 넘기기
     public boolean verifySignup() {
         return !(loginId.isEmpty() || loginId.isBlank())
                 && !(password.isEmpty() || password.isBlank())
@@ -45,13 +45,13 @@ public class User {
 
     // User 정보 수정
     public User updateUser(UserUpdateDTO updateDTO) {
-        if(!checkPassword(updateDTO.getPassword()) || !checkBlank(updateDTO))
+        if(!isEqualPassword(updateDTO.getPassword()) || !checkBlank(updateDTO))
             throw new UnableToUpdateUserInfo("Failed to update user information");
 
         setField(updateDTO);
         return this;
     }
-    private boolean checkPassword(String password) {
+    private boolean isEqualPassword(String password) {
         return password.equals(this.password);
     }
     private boolean checkBlank(UserUpdateDTO modifiedUser) {

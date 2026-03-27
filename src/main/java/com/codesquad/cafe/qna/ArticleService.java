@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 @Transactional(readOnly=true)
 public class ArticleService {
-    JpaArticleRepository jpaArticleRepository;
+    private final JpaArticleRepository jpaArticleRepository;
 
     public ArticleService(JpaArticleRepository jpaArticleRepository) {
         this.jpaArticleRepository = jpaArticleRepository;
