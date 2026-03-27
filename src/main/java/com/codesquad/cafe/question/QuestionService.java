@@ -24,12 +24,14 @@ public class QuestionService {
         repository.save(question);
     }
 
-    public List<Question> getAll() {
-        return repository.findAll();
+    public List<QuestionSummary> getAll() {
+        return repository.findAll().stream()
+                .map(QuestionSummary::from)
+                .toList();
     }
 
-    public Question get(Long questionId) {
-        return repository.findById(questionId).get();
+    public QuestionDetail getDetail(Long questionId) {
+        Question question = repository.findById(questionId).get();
+        return QuestionDetail.from(question);
     }
-
 }

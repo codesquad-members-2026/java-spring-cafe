@@ -55,9 +55,11 @@ public class QuestionController {
 
     @GetMapping("/{questionId}")
     public String getQuestionById(@PathVariable Long questionId, Model model) {
-        Question question = questionService.get(questionId);
+        QuestionDetail question = questionService.getDetail(questionId);
+
         model.addAttribute("title", question.getTitle());
         model.addAttribute("contents", question.getContents());
+        model.addAttribute("author", question.getAuthor());
         return "questions-detail";
     }
 }
