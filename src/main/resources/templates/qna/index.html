@@ -17,9 +17,24 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
     <div class="container-fluid px-5">
         <a class="navbar-brand fw-bold" href="/">Cafe</a>
+
         <div class="navbar-nav ms-auto">
             <a class="nav-link" href="/users">멤버 목록</a>
-            <a class="nav-link" href="/questions/form">질문하기</a>
+
+            <th:block th:if="${session.sessionedUser == null}">
+                <a class="nav-link" href="/loginForm">로그인</a>
+                <a class="nav-link" href="/user/form">회원가입</a>
+            </th:block>
+
+            <th:block th:if="${session.sessionedUser != null}">
+                <a class="nav-link" href="/questions/form">질문하기</a>
+                <a class="nav-link" href="/users/updateForm">개인정보수정</a>
+                <a class="nav-link" href="/logout">로그아웃</a>
+
+                <span class="navbar-text ms-3 text-white fw-bold">
+                    <span th:text="${session.sessionedUser.name}">사용자</span>님 환영합니다!
+                </span>
+            </th:block>
         </div>
     </div>
 </nav>
@@ -43,7 +58,6 @@
             <tbody>
             <tr th:each="article : ${articles}">
                 <td th:text="${article.id}">1</td>
-
                 <td class="text-center">
                     <a th:href="@{/articles/{id}(id=${article.id})}"
                        th:text="${article.title}"
@@ -51,7 +65,6 @@
                         질문 제목
                     </a>
                 </td>
-
                 <td th:text="${article.writer}">작성자</td>
                 <td>
                     <a th:href="@{/articles/{id}(id=${article.id})}" class="btn btn-sm btn-outline-secondary">보기</a>
