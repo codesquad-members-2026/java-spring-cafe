@@ -20,10 +20,10 @@ public class UserTest {
         User user4 = new User("", "xhCmjIIHA3%&YN*b", "젠슨", "황",
                 "   ", "01049291779");
 
-        assertEquals(true, user1.verifyUser());
-        assertEquals(false, user2.verifyUser());
-        assertEquals(false, user3.verifyUser());
-        assertEquals(false, user4.verifyUser());
+        assertEquals(true, user1.verifySignup());
+        assertEquals(false, user2.verifySignup());
+        assertEquals(false, user3.verifySignup());
+        assertEquals(false, user4.verifySignup());
     }
 
     @Test

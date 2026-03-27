@@ -1,21 +1,32 @@
 package com.codesquad.cafe.qna;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "article")
 public class Article {
-    private Integer id;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String title;
     private String contents;
 
-    Article(Integer id, String title, String contents) {
-        this.id = id;
+    protected Article() {}
+
+    public Article(String title, String contents) {
         this.title = title;
         this.contents = contents;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public String getTitle() {
+        return title;
+    }
+    public String getContents() {
+        return contents;
     }
 }

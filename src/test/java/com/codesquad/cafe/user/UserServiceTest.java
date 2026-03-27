@@ -1,21 +1,21 @@
 package com.codesquad.cafe.user;
 
-import com.codesquad.cafe.exception.NoUserInListException;
+import com.codesquad.cafe.exception.UserInfoCannotBeFoundException;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
+@Transactional
 public class UserServiceTest {
-    UserService userService;
-    UserRepository userRepository;
 
-    @BeforeEach
-    void setUp() {
-        userRepository = new UserRepository();
-        userService = new UserService(userRepository);
-    }
+    @Autowired
+    private UserService userService;
 
     @Test
     @DisplayName("User 객체를 리스트에 저장한다")
@@ -25,7 +25,7 @@ public class UserServiceTest {
 
         userService.addUser(user);
 
-        assertEquals(1, userService.countUser());
+        assertEquals(1L, userService.countUsers());
     }
 
     @Test
@@ -35,7 +35,7 @@ public class UserServiceTest {
                 "nvidia@gmail.com", "01049291779");
         userService.addUser(user);
 
-        assertEquals(userService.findLoginUser("admin", "admin"), user);
+        assertEquals(userService.findUserByIdAndPassword("admin", "admin"), user);
     }
 
     @Test
@@ -45,6 +45,6 @@ public class UserServiceTest {
                 "nvidia@gmail.com", "01049291779");
         userService.addUser(user);
 
-        assertThrows(NoUserInListException.class, () -> userService.findLoginUser("admin", "admin"));
+        assertThrows(UserInfoCannotBeFoundException.class, () -> userService.findUserByIdAndPassword("admin", "admin"));
     }
 }

@@ -1,33 +1,50 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.UserInfoCannotBeFoundException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class UserService {
-    private final UserRepository userRepository;
+    private final JpaUserRepository jpaUserRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserService(JpaUserRepository  jpaUserRepository) {
+        this.jpaUserRepository = jpaUserRepository;
     }
 
-    void addUser(User user){
-        userRepository.add(user);
+    @Transactional
+    public void addUser(User user){
+        jpaUserRepository.save(user);
     }
 
-    int countUser(){
-        return userRepository.count();
+    public Long countUsers(){
+        return jpaUserRepository.count();
     }
 
-    List<User> getUsers(){
-        return userRepository.getUsers();
+    public List<User> getUsers(){
+        return jpaUserRepository.findAll();
     }
 
-    User findLoginUser(String id, String password){
-        return userRepository.matchIdPassword(id, password);
+    // TODO: id로 매핑 후 loginId를 비교
+    public User findUserById(String id){
+        return jpaUserRepository.findByLoginId(id)
+                .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
     }
 
-    User findUser(String id){
-        return userRepository.matchId(id);
+    // TODO: id로 매핑 후 loginId, password로 비교
+    public User findUserByIdAndPassword(String id, String password){
+        return jpaUserRepository.findByLoginIdAndPassword(id, password)
+                .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
+    }
+
+    // TODO: 루카스에 올라온 회원수정 요구사항을 따르기
+    @Transactional
+    public User updateUserInfo(Long id, User modifiedUser){
+        User realUser = jpaUserRepository.findById(id)
+                .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
+
+        return realUser.updateUser(modifiedUser);
     }
 }

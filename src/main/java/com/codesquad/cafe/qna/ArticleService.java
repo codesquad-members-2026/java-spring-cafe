@@ -1,39 +1,35 @@
 package com.codesquad.cafe.qna;
 
-import com.codesquad.cafe.exception.NoArticleInListException;
+import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional(readOnly=true)
 public class ArticleService {
-    private List<Article> articles;
+    JpaArticleRepository jpaArticleRepository;
 
-    ArticleService() {
-        this.articles = new ArrayList<>();
+    public ArticleService(JpaArticleRepository jpaArticleRepository) {
+        this.jpaArticleRepository = jpaArticleRepository;
     }
 
-    public int size(){
-        return this.articles.size();
+    public Long size(){
+        return jpaArticleRepository.count();
     }
 
+    @Transactional
     public void add(Article article) {
-        article.setId(size() + 1);
-        articles.add(article);
+        jpaArticleRepository.save(article);
     }
 
-    public Article findById(Integer id) {
-        for(Article article : articles){
-            if(article.getId().equals(id)){
-                return article;
-            }
-        }
-
-        throw new NoArticleInListException("존재하지 않는 게시글");
+    public Article findArticleById(Long id) {
+        return jpaArticleRepository.findById(id)
+                .orElseThrow(() -> new ArticleInfoCannnotBeFoundException("No article found with id" + id));
     }
 
     public List<Article> getArticles() {
-        return articles;
+        return jpaArticleRepository.findAll();
     }
 }
