@@ -54,7 +54,12 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}")
-    public String getQuestionById(@PathVariable Long questionId, Model model) {
+    public String getQuestionById(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+                                  @PathVariable Long questionId, Model model) {
+
+        if (loginUserId == null) {
+            return "redirect:/users/login";
+        }
         QuestionDetail question = questionService.getDetail(questionId);
 
         model.addAttribute("title", question.getTitle());
