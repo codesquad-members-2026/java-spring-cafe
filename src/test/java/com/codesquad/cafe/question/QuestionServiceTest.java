@@ -1,7 +1,6 @@
 package com.codesquad.cafe.question;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,8 +30,8 @@ class QuestionServiceTest {
     @DisplayName("게시글을 작성하고 전체 조회할 수 있다")
     void saveAndGetAll() {
         // given
-        questionService.save(question1);
-        questionService.save(question2);
+        questionService.save(loginUserId, question1);
+        questionService.save(loginUserId, question2);
 
         // when
         List<Question> questions = questionService.getAll();
@@ -46,7 +45,7 @@ class QuestionServiceTest {
     @DisplayName("게시글을 작성하고 단건 조회할 수 있다")
     void saveAndGetById() {
         // given
-        questionService.save(question1);
+        questionService.save(loginUserId, question1);
 
         // when
         Question found = questionService.get(1);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 @Controller
 @RequestMapping("/questions")
@@ -18,12 +19,6 @@ public class QuestionController {
 
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
-    }
-
-    @PostMapping("")
-    public String create(@ModelAttribute Question question) {
-        questionService.save(question);
-        return "redirect:/questions";
     }
 
     @GetMapping("")
@@ -36,6 +31,26 @@ public class QuestionController {
 
         model.addAttribute("questions", questionService.getAll());
         return "questions";
+    }
+
+    @GetMapping("/create")
+    public String createForm(@SessionAttribute(name = "loginUser", required = false) Long loginUserId) {
+        if (loginUserId == null) {
+            return "redirect:/users/login";
+        }
+
+        return "redirect:/question/form.html";
+    }
+
+    @PostMapping("/create")
+    public String create(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+                         @ModelAttribute Question question) {
+        if (loginUserId == null) {
+            return "redirect:/users/login";
+        }
+
+        questionService.save(loginUserId, question);
+        return "redirect:/questions";
     }
 
     @GetMapping("/{questionId}")
