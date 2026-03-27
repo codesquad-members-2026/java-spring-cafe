@@ -23,7 +23,13 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String getUsers(Model model) {
+    public String getUsers(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            model.addAttribute("loginUser", session.getAttribute("loginUser"));
+        }
+
         model.addAttribute("users", userService.getAll());
         return "users";
     }
@@ -51,6 +57,14 @@ public class UserController {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/users/login";
         }
+
+        return "redirect:/users";
+    }
+
+    @PostMapping("/logout")
+    public String logout(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        session.invalidate();
 
         return "redirect:/users";
     }

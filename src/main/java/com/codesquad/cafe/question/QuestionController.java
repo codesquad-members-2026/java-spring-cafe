@@ -1,5 +1,7 @@
 package com.codesquad.cafe.question;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +27,13 @@ public class QuestionController {
     }
 
     @GetMapping("")
-    public String getQuestions(Model model) {
+    public String getQuestions(HttpServletRequest request, Model model) {
+        HttpSession session = request.getSession(false);
+
+        if (session != null) {
+            model.addAttribute("loginUser", session.getAttribute("loginUser"));
+        }
+
         model.addAttribute("questions", questionService.getAll());
         return "questions";
     }

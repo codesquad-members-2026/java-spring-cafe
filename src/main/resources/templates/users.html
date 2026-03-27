@@ -64,7 +64,7 @@
             gap: 8px;
         }
 
-        .signup-btn, .nav-btn {
+        .signup-btn, .nav-btn, .login-btn, .logout-btn {
             height: 36px;
             padding: 0 16px;
             border: none;
@@ -90,7 +90,19 @@
             border: 0.5px solid var(--border-color);
         }
 
-        .signup-btn:hover, .nav-btn:hover { opacity: 0.85; }
+        .login-btn {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 0.5px solid var(--border-color);
+        }
+
+        .logout-btn {
+            background: var(--bg-card);
+            color: #c0392b;
+            border: 0.5px solid #f5c2c2;
+        }
+
+        .signup-btn:hover, .nav-btn:hover, .login-btn:hover, .logout-btn:hover { opacity: 0.75; }
 
         .card {
             background: var(--bg-card);
@@ -185,7 +197,14 @@
         </div>
         <div class="btn-group">
             <a href="/questions" class="nav-btn">게시글</a>
-            <a href="/user/form.html" class="signup-btn">회원가입</a>
+            {{#loginUser}}
+                <form action="/users/logout" method="post">
+                    <button type="submit" class="logout-btn">로그아웃</button>
+                </form>
+            {{/loginUser}}
+            {{^loginUser}}
+                <a href="/users/login" class="login-btn">로그인</a>
+            {{/loginUser}}
         </div>
     </div>
 
