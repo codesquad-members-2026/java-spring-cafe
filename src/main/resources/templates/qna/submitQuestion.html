@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cafe - Ask a Question</title>
+    <th:block th:replace="~{fragments/header :: header-css}"></th:block>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,8 +12,7 @@
             color: #3e2723;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             height: 100vh;
             margin: 0;
         }
@@ -24,6 +24,14 @@
             width: 100%;
             max-width: 400px;
             text-align: center;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1rem; /* Moved the padding here */
+            width: 100%;
+            box-sizing: border-box;
         }
         h1 { margin-top: 0; font-size: 1.8rem; color: #4e342e; margin-bottom: 1.5rem; }
 
@@ -78,23 +86,34 @@
     </style>
 </head>
 <body>
+
+<div th:replace="~{fragments/header :: main-header}"></div>
+
+<div class="main-content">
 <div class="card">
+
+
+
     <h1>Post a Question</h1>
 
-    <form action="/qna/question" method="post">
+    <form th:action="${formActionUrl}" th:object="${article}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
         <div class="form-group">
             <label for="title">Title</label>
-            <input type="text" id="title" name="title" placeholder="What is your question?" required>
+            <input type="text" th:field="*{title}" placeholder="What is your question?" required>
         </div>
+
         <div class="form-group">
             <label for="content">Details</label>
-            <textarea id="content" name="content" placeholder="Explain your question in detail..." required></textarea>
+            <textarea th:field="*{content}" placeholder="Explain your question in detail..." required></textarea>
         </div>
 
-        <button type="submit">POST QUESTION</button>
+        <button type="submit" th:text="${article.id == 0 ? 'POST QUESTION' : 'UPDATE QUESTION'}">POST QUESTION</button>
     </form>
-
     <a href="/qna/" class="back-link">← Cancel and return to Q&A</a>
+</div>
 </div>
 </body>
 </html>

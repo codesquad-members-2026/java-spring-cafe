@@ -1,32 +1,35 @@
 package com.codesquad;
 
-import com.codesquad.cafeRepo.ArticleRepo;
-import com.codesquad.cafeRepo.UserRepo;
+import com.codesquad.cafeRepo.JpaArticleRepo;
+import com.codesquad.cafeRepo.JpaUserRepo;
 import com.codesquad.service.ArticleService;
 import com.codesquad.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @Configuration
+@EnableAspectJAutoProxy
 public class SpringConfig {
 
-    @Bean
-    public UserRepo userRepo(){
-        return new UserRepo();
+    private final JpaUserRepo userRepository;
+    private final JpaArticleRepo articleRepository;
+
+    @Autowired
+    public SpringConfig( JpaUserRepo userRepo, JpaArticleRepo articleRepo){
+        this.userRepository = userRepo;
+        this.articleRepository = articleRepo;
     }
-     @Bean
-    public UserService userService(){
-        return new UserService(userRepo());
-     }
 
      @Bean
-    public ArticleRepo articleRepo(){
-        return new ArticleRepo();
+    public UserService userService(){
+        return new UserService(userRepository);
      }
 
      @Bean
     public ArticleService articleService(){
-        return new ArticleService();
+        return new ArticleService(articleRepository);
      }
 
 

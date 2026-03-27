@@ -3,6 +3,7 @@ package com.codesquad.cafeController;
 import com.codesquad.service.UserService;
 import com.codesquad.user.User;
 import com.codesquad.user.UserUpdateForm;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,14 +21,37 @@ public class UserController {
         this.service = userService;
     }
 
+    @GetMapping("/login")
+    public String logInPage(HttpSession session){
+        if(session.getAttribute("currentUser") != null){
+            return "redirect:/";
+        }
+        return "user/login";
+    }
+
+    @PostMapping("/login")
+    public String logInWithCredentials(@ModelAttribute User user, HttpSession session, RedirectAttributes redirection){
+
+        if(service.verifyUserCredentials(user)){
+            User targetUser = service.findUserById(user.getId());
+            session.setAttribute("currentUser", targetUser);
+            return "redirect:/";
+        }
+        else{
+            redirection.addFlashAttribute("errorMessage", "User Credentials Does Not Match");
+            return "redirect:/user/login";
+        }
+    }
+
     @GetMapping("/signup")
     public String getSignUp(){
         return "user/signup";
     }
 
     @PostMapping("/signup")
-    public String postSignUp(@ModelAttribute User user){
+    public String postSignUp(@ModelAttribute User user, HttpSession session){
         service.addUser(user);
+        session.setAttribute("currentUser", service.findUserById(user.getId()));
         return "redirect:/user/users";
     }
 
@@ -44,23 +68,46 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/edit")
-    public String getUserInfoModPage(@PathVariable String id, Model model){
-        model.addAttribute("user",service.findUserById(id));
-        return "user/editProfile";
+    public String getUserInfoModPage(@PathVariable String id, Model model, HttpSession session, RedirectAttributes redirectAttribute){
+        if(session.getAttribute("currentUser") == null){
+            return "redirect:/user/login";
+        }
+
+        if((session.getAttribute("currentUser")).equals(service.findUserById(id))){
+            model.addAttribute("user",service.findUserById(id));
+            return "user/editProfile";
+        }
+        else{
+            redirectAttribute.addFlashAttribute("errorMessage", "YOU CANNOT MODIFY OTHER'S PROFILE");
+            return "redirect:/user/users";
+        }
+
     }
 
-
+    // thymeleaf 없이 어떻게 잘못된 비밀번호 입력시 리다이렉션이나 에러를 표시할 수 있을까?
     @PutMapping("/users/{id}/edit")
-    public String putUserInfoMod(@PathVariable String id, UserUpdateForm form, Model model, RedirectAttributes redirectAttrs){
+    public String putUserInfoMod(@PathVariable String id, UserUpdateForm form, Model model, RedirectAttributes redirectAttrs, HttpSession session){
+
+        if(session.getAttribute("currentUser") == null){
+            return "redirect:/user/login";
+        }
+
         User existingUser = service.findUserById(id);
-        if(service.validateFormWithUser(existingUser, form)){
-            service.updateUserProfile(existingUser, form);
-            model.addAttribute("user", existingUser);
+
+        if(session.getAttribute("currentUser").equals(existingUser) && service.updateUserProfile(existingUser.getId(), form)){
+            session.setAttribute("currentUser", existingUser);
+            model.addAttribute("user", session.getAttribute("currentUser"));
             return "user/userDetail";
         }
         else{
             redirectAttrs.addFlashAttribute("errorMessage", "Incorrect Credentials. Please try again");
             return "redirect:/user/users/{id}/edit";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logOut(HttpSession session){
+        session.setAttribute("currentUser", null);
+        return "redirect:/";
     }
 }

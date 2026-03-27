@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Cafe - Q&A Board</title>
+    <th:block th:replace="~{fragments/header :: header-css}"></th:block>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -11,10 +12,16 @@
             color: #3e2723;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 2rem;
             min-height: 100vh;
             margin: 0;
+            box-sizing: border-box;
+        }
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 4rem 1rem; /* Moved the padding here */
+            width: 100%;
             box-sizing: border-box;
         }
         h1 {
@@ -62,6 +69,17 @@
             line-height: 1.5;
             color: #5d4037;
         }
+        .error-banner {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            font-weight: bold;
+            border: 1px solid #ef9a9a;
+            text-align: left;
+        }
         .empty-state {
             text-align: center;
             color: #8d6e63;
@@ -106,6 +124,9 @@
 </head>
 <body>
 
+<div th:replace="~{fragments/header :: main-header}"></div>
+
+<div class="main-content">
 <div class="header-container">
     <h1>Cafe Q&A Board</h1>
     <a href="/qna/question" class="btn-primary">Ask a Question</a>
@@ -114,6 +135,10 @@
 
 <div class="article-container">
 
+    <div th:if="${errorMessage}" class="error-banner">
+        <span th:text="${errorMessage}"> ERROR MESSAGE</span>
+    </div>
+
     <div th:if="${#arrays.isEmpty(articles)}" class="article-card empty-state">
         <p>No questions have been asked yet. Be the first!</p>
     </div>
@@ -121,12 +146,11 @@
     <a th:href="@{/qna/{id}(id=${article.id})}"  class="article-card" th:each="article : ${articles}" >
         <div class="article-meta" th:text="'Question #' + ${article.id}">Question #ID</div>
         <h2 class="article-title" th:text="${article.title}">Sample Title</h2>
-        <p class="article-content" th:text="${article.content}">Sample content goes here...</p>
     </a>
 
 </div>
 
 <a href="/" class="back-link">← Return Home</a>
-
+</div>
 </body>
 </html>

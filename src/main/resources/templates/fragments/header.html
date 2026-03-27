@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <style th:fragment="header-css">
+        .global-header {
+            background-color: #6d4c41;
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .global-header .logo a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        .global-header .user-menu div {
+            display: flex;
+            align-items: center;
+        }
+        .global-header .user-menu a {
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 1.5rem;
+            transition: opacity 0.3s;
+        }
+        .global-header .user-menu a:hover { opacity: 0.8; }
+        .global-header .btn-login { color: white; }
+        .global-header .btn-signup { color: #fdfaf6; }
+        .global-header .btn-logout { color: #ffcdd2; }
+        .global-header .btn-edit { color: #ffcdd2; }
+    </style>
+</head>
+<body>
+
+<header class="global-header" th:fragment="main-header">
+    <div class="logo">
+        <a href="/">☕ Cafe</a>
+    </div>
+
+    <div class="user-menu">
+        <div th:if="${session.currentUser == null}">
+            <a href="/user/login" class="btn-login">Log In</a>
+            <a href="/user/signup" class="btn-signup">Sign Up</a>
+        </div>
+
+        <div th:if="${session.currentUser != null}">
+            <span>Hello, <strong th:text="${session.currentUser.name}">User</strong>!</span>
+            <a href="/user/logout" class="btn-logout">Log Out</a>
+            <a th:href="@{/user/users/{id}/edit(id=${session.currentUser.id})}" class="btn-edit">Edit Profile</a>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>

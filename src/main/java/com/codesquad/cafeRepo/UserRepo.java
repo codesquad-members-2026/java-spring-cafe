@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserRepo {
+public class UserRepo implements InterfaceRepo {
     private final Map<String, User> emailToUserMap = new HashMap<>();
     private final Map<String, User> idToUserMap = new HashMap<>();
 
@@ -30,11 +30,13 @@ public class UserRepo {
         return null;
     }
 
-    public boolean validateFormWithUser(User user, UserUpdateForm form){
+    public boolean validateFormWithUser(String userId, UserUpdateForm form){
+        User user = this.idToUserMap.get(userId);
         return user.getPassword().equals(form.getPassword());
     }
 
-    public void updateUserProfile(User user, UserUpdateForm form){
+    public void updateUserProfile(String userId, UserUpdateForm form){
+        User user = this.idToUserMap.get(userId);
         if(user == null){
             return;
         }

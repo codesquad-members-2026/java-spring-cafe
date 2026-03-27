@@ -1,6 +1,14 @@
 package com.codesquad.user;
 
+import jakarta.persistence.*;
+
+import java.util.Objects;
+
+@Entity
+@Table(name="users")
 public class User {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int primaryKey;
     private String id;
     private String email;
     private String password;
@@ -36,5 +44,17 @@ public class User {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return primaryKey == user.primaryKey && Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(password, user.password) && Objects.equals(name, user.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(primaryKey, id, email, password, name);
     }
 }
