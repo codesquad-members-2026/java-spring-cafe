@@ -20,12 +20,24 @@ public class ArticleController {
     }
 
     @GetMapping("/form")
-    public String qnaForm() {
+    public String qnaForm(
+            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
+            Model model, RedirectAttributes redirectAttributes) {
 
+        if(loginUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "로그인 후에 이용할 수 있습니다!");
+            return "redirect:/qna/list";
+        }
+
+        model.addAttribute("sessionUser", loginUser);
         return "qna/form";
     }
     @PostMapping("/questions")
-    public String question(@ModelAttribute Article article) {
+    public String question(
+            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
+            @ModelAttribute Article article) {
+        article.setWriter(loginUser);
         articleService.add(article);
 
         return "redirect:/qna/list";

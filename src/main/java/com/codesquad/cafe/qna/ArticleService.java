@@ -1,6 +1,7 @@
 package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
+import com.codesquad.cafe.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

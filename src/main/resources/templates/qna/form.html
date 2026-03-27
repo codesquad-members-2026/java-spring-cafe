@@ -136,20 +136,22 @@
 
         <form action="/qna/questions" method="post">
 
-            <div class="input-group">
-                <label for="writer">작성자</label>
-                <input type="text" id="writer" name="writer" value="익명" readonly>
-            </div>
+            {{#sessionUser}}
+                <div class="input-group">
+                    <label for="writer">작성자</label>
+                    <input type="text" id="writer" value={{loginId}} readonly>
+                </div>
 
-            <div class="input-group">
-                <label for="title">제목</label>
-                <input type="text" id="title" name="title" placeholder="제목을 입력해 주세요" required>
-            </div>
+                <div class="input-group">
+                    <label for="title">제목</label>
+                    <input type="text" id="title" name="title" placeholder="제목을 입력해 주세요" required>
+                </div>
 
-            <div class="input-group">
-                <label for="contents">내용</label>
-                <textarea id="contents" name="contents" placeholder="자유롭게 글을 작성해 주세요" required></textarea>
-            </div>
+                <div class="input-group">
+                    <label for="contents">내용</label>
+                    <textarea id="contents" name="contents" placeholder="자유롭게 글을 작성해 주세요" required></textarea>
+                </div>
+            {{/sessionUser}}
 
             <div class="button-group">
                 <a href="/" class="btn btn-cancel">취소</a>
