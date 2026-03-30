@@ -9,7 +9,9 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String writer;
+    @ManyToOne
+    @JoinColumn(name = "writer_id")
+    private User writer;
     private String title;
 
     @Column(length = 1000)
@@ -25,11 +27,11 @@ public class Article {
         this.number = number;
     }
 
-    public String getWriter() {
+    public User getWriter() {
         return writer;
     }
 
-    public void setWriter(String writer) {
+    public void setWriter(User writer) {
         this.writer = writer;
     }
 

@@ -16,43 +16,45 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm">
-    <div class="container">
+    <div class="container px-5">
         <a class="navbar-brand fw-bold" href="/">Cafe</a>
-        <div class="navbar-nav">
+        <div class="navbar-nav ms-auto align-items-center">
+            <a class="nav-link" href="/">질문 목록</a>
             <a class="nav-link" href="/users">멤버 목록</a>
-            <a class="nav-link active" href="/questions/form">질문하기</a>
+            <th:block th:if="${session.sessionedUser != null}">
+                <span class="navbar-text ms-3 text-white fw-bold">
+                    <span th:text="${session.sessionedUser.name}">사용자</span>님
+                </span>
+                <a class="nav-link" href="/users/logout">로그아웃</a>
+            </th:block>
         </div>
     </div>
 </nav>
 
-<main class="container form-container">
-    <div class="card">
-        <div class="card-header text-center">
-            <h1 class="h3 mb-3 fw-bold text-primary">질문하기</h1>
-            <p class="text-muted">궁금한 내용을 자유롭게 남겨주세요!</p>
+<main class="container form-container mb-5">
+    <div class="card shadow-sm">
+        <div class="card-header text-center bg-white border-0 pt-5">
+            <h1 class="h3 fw-bold text-primary">새 질문 작성</h1>
         </div>
 
         <div class="card-body p-4">
             <form action="/questions" method="post">
 
                 <div class="mb-3">
-                    <label for="writer" class="form-label fw-bold">작성자</label>
-                    <input type="text" class="form-control" id="writer" name="writer" placeholder="이름을 입력하세요" required>
-                </div>
-
-                <div class="mb-3">
                     <label for="title" class="form-label fw-bold">제목</label>
-                    <input type="text" class="form-control" id="title" name="title" placeholder="제목을 입력하세요" required>
+                    <input type="text" class="form-control form-control-lg" id="title" name="title"
+                           placeholder="무엇이 궁금하신가요?" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="contents" class="form-label fw-bold">내용</label>
-                    <textarea class="form-control" id="contents" name="contents" rows="10" placeholder="내용을 입력하세요" required></textarea>
+                    <textarea class="form-control" id="contents" name="contents" rows="12"
+                              placeholder="상세한 내용을 입력해 주세요." required></textarea>
                 </div>
 
                 <div class="d-flex justify-content-end gap-2 mt-4">
-                    <a href="/" class="btn btn-outline-secondary">취소</a>
-                    <button type="submit" class="btn btn-primary">질문하기</button>
+                    <a href="/" class="btn btn-light px-4">취소</a>
+                    <button type="submit" class="btn btn-primary px-4 fw-bold">질문 등록하기</button>
                 </div>
             </form>
         </div>

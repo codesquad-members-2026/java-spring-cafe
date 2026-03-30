@@ -31,7 +31,7 @@
             <h2 class="fw-bold text-dark" th:text="${article.title}">게시글 제목</h2>
             <div class="text-muted d-flex justify-content-between align-items-center mt-3">
                 <span>
-                    작성자: <strong class="text-primary" th:text="${article.writer}">홍길동</strong>
+                    작성자: <strong class="text-primary" th:text="${article.writer.name}">홍길동</strong>
                 </span>
                 <span class="badge bg-secondary">글 번호: [[${article.id}]]</span>
             </div>
