@@ -2,6 +2,7 @@ package com.codesquad.cafe.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -12,5 +13,6 @@ public class MyConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         registry.addViewController("/user/signup").setViewName("user/signup");
+        registry.addViewController("/qna/edit").setViewName("qna/edit");
     }
 }

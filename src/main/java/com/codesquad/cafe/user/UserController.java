@@ -47,6 +47,7 @@ public class UserController {
         model.addAttribute("users", users);
     }
     
+    // TODO: loginId가 아닌 id로 User 찾기
     // 유저 프로필 창으로 이동
     @GetMapping("/{loginId}")
     public String profileForm(@PathVariable("loginId") String loginId, Model model){
@@ -75,6 +76,7 @@ public class UserController {
     }
 
     // 로그아웃
+    // TODO: logout은 getmapping 하면 안됀다.
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
@@ -97,6 +99,8 @@ public class UserController {
     // 수정된 회원 정보 폼 제출
     @PutMapping("/update")
     public String update(
+            // TODO: @Valid의 근본을 알기
+            // TODO: Spring validation 하는 방법들에 대해 공부하기(숙제)
             @Valid @ModelAttribute UserUpdateDTO dto, BindingResult bindingResult,
             HttpSession session, RedirectAttributes redirectAttributes) {
 
@@ -108,6 +112,7 @@ public class UserController {
 
         try {
             Long id = dto.getId();
+            // TODO: 권한이 있는가 없는가, DTO의 정보와 User의 정보 검증
             User updatedUser = userService.updateUserInfo(id, dto);
             session.setAttribute("sessionUser", updatedUser);
             return "redirect:/";

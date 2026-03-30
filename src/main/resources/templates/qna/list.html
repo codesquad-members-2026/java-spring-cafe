@@ -118,7 +118,7 @@
         <div class="list-header">
             <h2>Q&A Board</h2>
             <div class="header-buttons">
-                <a href="/qna/form" class="btn btn-write">글쓰기</a>
+                <a href="/qna/write" class="btn btn-write">글쓰기</a>
                 <a href="/" class="btn">Home</a>
             </div>
         </div>
@@ -132,6 +132,7 @@
             </tr>
             </thead>
             <tbody>
+            <!-- LAZY를 사용하는 것이 아니라 contents를 가져오지 않는 것이 성능 향상에 더 도움이 됌 -->
             {{#articles}}
                 <tr class="article-row" onclick="location.href='/qna/articles/{{id}}'">
                     <td>{{id}}</td>
@@ -146,6 +147,7 @@
 
 </body>
 
+<!--변경 예정-->
 {{#errorMessage}}
 <script>
     alert("{{errorMessage}}");

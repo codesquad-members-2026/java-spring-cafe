@@ -3,6 +3,7 @@ package com.codesquad.cafe.user.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+// TODO: 어디서 이 기술을 구현했는가
 
 public class UserUpdateDTO {
     @NotNull(message = "PK가 존재하지 않습니다.")

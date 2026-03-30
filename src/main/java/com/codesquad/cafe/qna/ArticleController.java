@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/qna")
@@ -19,8 +20,8 @@ public class ArticleController {
         this.articleService = articleService;
     }
 
-    @GetMapping("/form")
-    public String qnaForm(
+    @GetMapping("/write")
+    public String writeForm(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser,
             Model model, RedirectAttributes redirectAttributes) {
 
@@ -31,20 +32,21 @@ public class ArticleController {
         }
 
         model.addAttribute("sessionUser", loginUser);
-        return "qna/form";
+        return "qna/write";
     }
-    @PostMapping("/questions")
-    public String question(
+    @PostMapping("/write")
+    public String write(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser,
             @ModelAttribute Article article) {
-        article.setWriter(loginUser);
+
+        article.setWriter(loginUser); // TODO: setter 메서드 사용은 위험 -> 추후 DTO를 활용
         articleService.add(article);
 
         return "redirect:/qna/list";
     }
 
     @GetMapping("/list")
-    public String qnaListForm(Model model) {
+    public String listForm(Model model) {
         List<Article> articleList = articleService.getArticles();
         model.addAttribute("articles", articleList);
 
@@ -52,7 +54,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public String qnaArticleForm(
+    public String articleForm(
             @SessionAttribute(name = "sessionUser", required = false) User loginUser,
             @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
 
@@ -70,4 +72,35 @@ public class ArticleController {
             return "redirect:/qna/list";
         }
     }
+
+    @GetMapping("/articles/{id}/edit")
+    public String moveEditForm(
+            @SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+            Model model, @PathVariable Long id, RedirectAttributes redirectAttributes){
+
+        try {
+            Article article = articleService.findArticleById(id);
+            System.out.println(article.getWriter().getLoginId());
+            if(Objects.equals(sessionUser.getId(), article.getWriter().getId())){ // TODO: 수정 필요
+                model.addAttribute("article", article);
+                return "qna/edit";
+            }
+
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "해당 글을 쓴 작성자만 수정할 수 있습니다!");
+            return "redirect:/qna/list";
+
+        } catch (ArticleInfoCannnotBeFoundException e) {
+            // TODO: addAttribute() vs addFlashAttribute() --> session 과의 연결점
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "존재하지 않는 게시글입니다!");
+            return "redirect:/qna/list";
+        }
+    }
+
+    // TODO: 글 수정
+//    @PutMapping("/edit")
+//    public String edit(){
+//
+//    }
 }

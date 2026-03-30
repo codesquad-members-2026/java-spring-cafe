@@ -11,6 +11,7 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // TODO: LAZY를 왜 사용하는가
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer")
     private User writer;
@@ -38,5 +39,5 @@ public class Article {
     public User getWriter() {return writer;}
     public void setWriter(User writer) {
         this.writer = writer;
-    }
+    } // TODO: 언젠간 없앨 것임
 }

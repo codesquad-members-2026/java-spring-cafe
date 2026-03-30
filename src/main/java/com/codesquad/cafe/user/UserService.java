@@ -28,13 +28,12 @@ public class UserService {
         return jpaUserRepository.findAll();
     }
 
-    // TODO: id로 매핑 후 loginId를 비교
+    // TODO: id로 매핑 후 loginId를 비교 -> findById()로 대체 가능
     public User findUserById(String id){
         return jpaUserRepository.findByLoginId(id)
                 .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
     }
 
-    // TODO: id로 매핑 후 loginId, password로 비교
     public User findUserByIdAndPassword(String id, String password){
         return jpaUserRepository.findByLoginIdAndPassword(id, password)
                 .orElseThrow(() -> new UserInfoCannotBeFoundException("No user found with id " + id));
