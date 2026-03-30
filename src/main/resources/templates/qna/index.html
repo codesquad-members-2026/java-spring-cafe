@@ -75,7 +75,7 @@
                         질문 제목
                     </a>
                 </td>
-                <td th:text="${article.writer}">작성자</td>
+                <td th:text="${article.writer.name}">작성자</td>
                 <td>
                     <a th:href="@{/articles/{id}(id=${article.id})}" class="btn btn-sm btn-outline-secondary">보기</a>
                 </td>
