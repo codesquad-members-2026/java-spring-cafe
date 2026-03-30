@@ -18,18 +18,21 @@
     <div class="container-fluid px-5">
         <a class="navbar-brand fw-bold" href="/">Cafe</a>
 
-        <div class="navbar-nav ms-auto">
+        <div class="navbar-nav ms-auto align-items-center">
+            <a class="nav-link" href="/">질문 목록</a>
             <a class="nav-link" href="/users">멤버 목록</a>
 
             <th:block th:if="${session.sessionedUser == null}">
-                <a class="nav-link" href="/loginForm">로그인</a>
-                <a class="nav-link" href="/user/form">회원가입</a>
+                <a class="nav-link" href="/users/loginForm">로그인</a>
+                <a class="nav-link" href="/users/form">회원가입</a>
             </th:block>
 
             <th:block th:if="${session.sessionedUser != null}">
                 <a class="nav-link" href="/questions/form">질문하기</a>
-                <a class="nav-link" href="/users/updateForm">개인정보수정</a>
-                <a class="nav-link" href="/logout">로그아웃</a>
+
+                <a class="nav-link" th:href="@{/users/{userId}/form(userId=${session.sessionedUser.userId})}">개인정보수정</a>
+
+                <a class="nav-link" href="/users/logout">로그아웃</a>
 
                 <span class="navbar-text ms-3 text-white fw-bold">
                     <span th:text="${session.sessionedUser.name}">사용자</span>님 환영합니다!
@@ -38,6 +41,13 @@
         </div>
     </div>
 </nav>
+
+<div class="container mt-3" th:if="${errorMessage}">
+    <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+        <strong th:text="${errorMessage}">에러 메시지 내용</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+</div>
 
 <main class="container">
     <div class="card p-4">

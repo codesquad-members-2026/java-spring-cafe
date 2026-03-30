@@ -37,7 +37,7 @@ public class UserController {
         return "user/list";
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping("/profile/{userId}")
     public String profile(@PathVariable("userId") String userId, Model model) {
         User user = userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다: " + userId));
@@ -47,13 +47,15 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/form")
-    public String updateForm(@PathVariable("userId") String userId, Model model, HttpSession session, RedirectAttributes rttr) {
+    public String updateForm(@PathVariable("userId") String userId, Model model,
+                             HttpSession session, RedirectAttributes rttr) {
         User sessionedUser = (User) session.getAttribute("sessionedUser");
 
 
         if (sessionedUser == null) {
             return "redirect:/users/loginForm";
         }
+
 
         if (!sessionedUser.getUserId().equals(userId)) {
             rttr.addFlashAttribute("errorMessage", "자신의 정보만 수정할 수 있습니다.");

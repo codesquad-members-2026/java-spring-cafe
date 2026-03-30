@@ -22,6 +22,7 @@
 
         <div class="navbar-nav ms-auto align-items-center">
             <a class="nav-link" href="/">질문 목록</a>
+            <a class="nav-link" href="/users">멤버 목록</a>
 
             <th:block th:if="${session.sessionedUser == null}">
                 <a class="nav-link" href="/users/loginForm">로그인</a>
@@ -30,7 +31,9 @@
 
             <th:block th:if="${session.sessionedUser != null}">
                 <a class="nav-link" href="/questions/form">질문하기</a>
-                <a class="nav-link" th:href="@{/users/{id}/form(id=${session.sessionedUser.userId})}">개인정보수정</a>
+
+                <a class="nav-link" th:href="@{/users/{userId}/form(userId=${session.sessionedUser.userId})}">개인정보수정</a>
+
                 <a class="nav-link" href="/users/logout">로그아웃</a>
 
                 <span class="navbar-text ms-3 text-white fw-bold">
@@ -63,9 +66,8 @@
                         <th scope="row" class="ps-4" th:text="${stat.count}">1</th>
                         <td class="fw-bold text-secondary" th:text="${user.userId}">userId</td>
                         <td>
-                            <a th:href="@{/users/{id}(id=${user.userId})}"
-                               th:text="${user.name}"
-                               class="profile-link fw-bold">이름</a>
+                            <a th:href="@{/users/profile/{id}(id=${user.userId})}"
+                               th:text="${user.name}" class="profile-link fw-bold">이름</a>
                         </td>
                         <td th:text="${user.email}">email@example.com</td>
                     </tr>
