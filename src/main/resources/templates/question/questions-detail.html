@@ -140,6 +140,16 @@
         .btn-delete:hover {
             opacity: 0.85;
         }
+
+        .error-box {
+            margin-top: 1rem;
+            padding: 10px 14px;
+            background: #fff5f5;
+            border: 0.5px solid #f5c2c2;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -168,6 +178,11 @@
             <button class="btn btn-delete">삭제</button>
         </div>
     </div>
+
+
+    {{#errorMessage}}
+        <div class="error-box">{{errorMessage}}</div>
+    {{/errorMessage}}
 </div>
 
 </body>

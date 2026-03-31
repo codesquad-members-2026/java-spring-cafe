@@ -34,4 +34,21 @@ public class QuestionService {
         Question question = repository.findById(questionId).get();
         return QuestionDetail.from(question);
     }
+
+    public void validateOwner(Long questionId, Long loginUserId) {
+        Question question = repository.findById(questionId).get();
+        Long authorId = question.getAuthor().getId();
+
+        if (!authorId.equals(loginUserId)) {
+            throw new IllegalStateException("게시글 수정 권한이 없음");
+        }
+    }
+
+    @Transactional
+    public void update(Long questionId, Long loginUserId, Question updatedQuestion) {
+        validateOwner(questionId, loginUserId);
+        Question question = repository.findById(questionId).get();
+        question.setTitle(updatedQuestion.getTitle());
+        question.setContents(updatedQuestion.getContents());
+    }
 }

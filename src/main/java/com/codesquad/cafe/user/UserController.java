@@ -31,7 +31,7 @@ public class UserController {
         }
 
         model.addAttribute("users", userService.getAll());
-        return "users";
+        return "/user/users";
     }
 
     @PostMapping("")
@@ -42,7 +42,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String getLoginForm() {
-        return "login-form";
+        return "/user/login-form";
     }
 
     @PostMapping("/login")
@@ -91,6 +91,6 @@ public class UserController {
 
         model.addAttribute("name", user.getName());
         model.addAttribute("email", user.getEmail());
-        return "users-detail";
+        return "/user/users-detail";
     }
 }
