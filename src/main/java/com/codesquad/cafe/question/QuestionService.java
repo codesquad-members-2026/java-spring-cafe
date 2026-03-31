@@ -51,4 +51,10 @@ public class QuestionService {
         question.setTitle(updatedQuestion.getTitle());
         question.setContents(updatedQuestion.getContents());
     }
+
+    @Transactional
+    public void delete(Long questionId, Long loginUserId) {
+        validateOwner(questionId, loginUserId);
+        repository.deleteById(questionId);
+    }
 }

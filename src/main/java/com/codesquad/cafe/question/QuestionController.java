@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,6 +68,7 @@ public class QuestionController {
         model.addAttribute("title", question.getTitle());
         model.addAttribute("contents", question.getContents());
         model.addAttribute("author", question.getAuthor());
+        model.addAttribute("id", questionId);
         return "/question/questions-detail";
     }
 
@@ -106,5 +108,23 @@ public class QuestionController {
         }
 
         return "redirect:/questions/" + questionId;
+    }
+
+    @DeleteMapping("/{questionId}")
+    public String delete(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+                         @PathVariable Long questionId, RedirectAttributes redirectAttributes) {
+
+        if (loginUserId == null) {
+            return "redirect:/users/login";
+        }
+
+        try {
+            questionService.delete(questionId, loginUserId);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/questions/" + questionId;
+        }
+
+        return "redirect:/questions";
     }
 }
