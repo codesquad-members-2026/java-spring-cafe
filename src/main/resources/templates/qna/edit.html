@@ -129,27 +129,26 @@
             <a href="/" class="btn btn-submit">Home</a>
         </div>
 
-        <form action="/qna/edit" method="post">
+        {{#article}}
+        <form action="/qna/articles/{{id}}/edit" method="post">
             <input type="hidden" name="_method" value="PUT" />
 
-            {{#article}}
-                <div class="input-group">
-                    <label for="title">제목</label>
-                    <input type="text" id="title" name="title" value={{title}} required>
-                </div>
+            <div class="input-group">
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" value="{{title}}" required>
+            </div>
 
-                <div class="input-group">
-                    <label for="contents">내용</label>
-                    <textarea id="contents" name="contents" required>{{contents}}</textarea>
-                </div>
-            {{/article}}
+            <div class="input-group">
+                <label for="contents">내용</label>
+                <textarea id="contents" name="contents" required>{{contents}}</textarea>
+            </div>
 
             <div class="button-group">
                 <a href="/qna/list" class="btn btn-cancel">취소</a>
                 <button type="submit" class="btn btn-submit">수정완료</button>
             </div>
-
         </form>
+        {{/article}}
     </div>
 </div>
 

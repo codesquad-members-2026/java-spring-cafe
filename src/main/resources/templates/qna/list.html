@@ -35,6 +35,20 @@
             align-items: center;
         }
 
+        /* 💡 에러 메시지 UI 스타일 추가 */
+        .error-box {
+            width: 100%;
+            background-color: #ffe6e6; /* 옅은 붉은색 배경 */
+            color: #d93025;            /* 진한 붉은색 텍스트 */
+            border: 1px solid #f5c6c6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
         .list-header {
             width: 100%;
             display: flex;
@@ -115,6 +129,13 @@
 
 <div class="container">
     <div class="list-box">
+
+        {{#errorMessage}}
+        <div class="error-box">
+            {{errorMessage}}
+        </div>
+        {{/errorMessage}}
+
         <div class="list-header">
             <h2>Q&A Board</h2>
             <div class="header-buttons">
@@ -133,11 +154,11 @@
             </thead>
             <tbody>
             {{#articles}}
-                <tr class="article-row" onclick="location.href='/qna/articles/{{id}}'">
-                    <td>{{id}}</td>
-                    <td>{{writerLoginId}}</td>
-                    <td class="title-cell">{{title}}</td>
-                </tr>
+            <tr class="article-row" onclick="location.href='/qna/articles/{{id}}'">
+                <td>{{id}}</td>
+                <td>{{writerLoginId}}</td>
+                <td class="title-cell">{{title}}</td>
+            </tr>
             {{/articles}}
             </tbody>
         </table>

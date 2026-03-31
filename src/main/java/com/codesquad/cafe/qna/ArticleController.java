@@ -1,6 +1,7 @@
 package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
+import com.codesquad.cafe.exception.UnauthorizedAccessException;
 import com.codesquad.cafe.qna.dto.ArticleDetailsDTO;
 import com.codesquad.cafe.qna.dto.ArticleListDTO;
 import com.codesquad.cafe.qna.dto.ArticleWriteDTO;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequestMapping("/qna")
@@ -73,13 +73,12 @@ public class ArticleController {
             @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
 
         if(sessionUser == null){
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "로그인 후에 이용할 수 있습니다!");
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 후에 이용할 수 있습니다!");
             return "redirect:/user/login";
         }
 
         try {
-            ArticleDetailsDTO articleDetails = articleService.findArticleById(id);
+            ArticleDetailsDTO articleDetails = articleService.findArticleForDetails(id);
             model.addAttribute("article", articleDetails);
             return "qna/show";
         } catch (ArticleInfoCannnotBeFoundException e) {
@@ -93,33 +92,47 @@ public class ArticleController {
             Model model, @PathVariable Long id, RedirectAttributes redirectAttributes){
 
         if(sessionUser == null){
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "로그인 후에 이용할 수 있습니다!");
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인 후에 이용할 수 있습니다!");
             return "redirect:/user/login";
         }
 
         try {
-            ArticleDetailsDTO article = articleService.findArticleById(id);
+            ArticleDetailsDTO article = articleService.findArticleForEdit(id, sessionUser);
+            model.addAttribute("article", article);
+            return "qna/edit";
 
-            if(article.isWrittenBy(sessionUser)){
-                model.addAttribute("article", article);
-                return "qna/edit";
-            }
-
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "글쓴이만 수정할 수 있습니다.");
+        } catch (UnauthorizedAccessException ue) {
+            redirectAttributes.addFlashAttribute("errorMessage", ue.getMessage());
             return "redirect:/qna/articles/" + id;
-
-        } catch (ArticleInfoCannnotBeFoundException e) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "존재하지 않는 게시글입니다!");
+        } catch (ArticleInfoCannnotBeFoundException ae){
+            redirectAttributes.addFlashAttribute("errorMessage", ae.getMessage());
             return "redirect:/qna/list";
         }
     }
 
-    // TODO: 글 수정
-//    @PutMapping("/edit")
-//    public String edit(){
-//
-//    }
+    @PutMapping("/articles/{id}/edit")
+    public String edit(@SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+                       RedirectAttributes redirectAttributes, Model model, @PathVariable Long id,
+                       @Valid @ModelAttribute ArticleWriteDTO articleWriteDTO, BindingResult bindingResult) {
+
+        if(sessionUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage", "세션 정보가 없습니다.");
+            return "redirect:/user/login";
+        }
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("article", articleWriteDTO);
+            model.addAttribute("id", id);
+            model.addAttribute("errorMessage", "제목과 본문을 모두 적어야 합니다.");
+            return "qna/edit";
+        }
+
+        try {
+            articleService.editArticle(id, articleWriteDTO, sessionUser);
+            return "redirect:/qna/list";
+        } catch (ArticleInfoCannnotBeFoundException | UnauthorizedAccessException e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+            return "redirect:/qna/list";
+        }
+    }
 }

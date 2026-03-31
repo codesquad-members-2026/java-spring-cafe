@@ -16,6 +16,13 @@ public class ArticleWriteDTO {
         this.contents = contents;
     }
 
+    public String getTitle() {
+        return title;
+    }
+    public String getContents() {
+        return contents;
+    }
+
     public Article toEntity(User user) {
         return new Article(user, title, contents);
     }
