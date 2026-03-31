@@ -123,6 +123,17 @@
             background-color: #eee;
             color: #656464;
         }
+
+        .error-box {
+            background-color: #FFF2F2; /* 아주 연한 레드 배경 */
+            color: #D32F2F; /* 경고 느낌의 텍스트 컬러 */
+            border-left: 5px solid #D32F2F; /* 기존 블루 박스와 통일감 있는 사이드 엣지 */
+            padding: 15px 20px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -133,32 +144,32 @@
             <h2>Write a Post</h2>
             <a href="/" class="btn btn-submit">Home</a>
         </div>
+            <form action="/qna/write" method="post">
 
-        <form action="/qna/write" method="post">
-
-            {{#sessionUser}}
-                <div class="input-group">
-                    <label for="writer">작성자</label>
-                    <input type="text" id="writer" value={{loginId}} readonly>
+                {{#errorMessage}}
+                <div class="error-box">
+                    🚨 {{errorMessage}}
                 </div>
+                {{/errorMessage}}
 
                 <div class="input-group">
                     <label for="title">제목</label>
-                    <input type="text" id="title" name="title" placeholder="제목을 입력해 주세요" required>
+                    <input type="text" id="title" name="title" value="{{#article}}{{title}}{{/article}}"
+                           placeholder="제목을 입력해 주세요" required>
                 </div>
 
                 <div class="input-group">
                     <label for="contents">내용</label>
-                    <textarea id="contents" name="contents" placeholder="자유롭게 글을 작성해 주세요" required></textarea>
+                    <textarea id="contents" name="contents" placeholder="자유롭게 글을 작성해 주세요"
+                              required>{{#article}}{{contents}}{{/article}}</textarea>
                 </div>
-            {{/sessionUser}}
 
-            <div class="button-group">
-                <a href="/" class="btn btn-cancel">취소</a>
-                <button type="submit" class="btn btn-submit">작성완료</button>
-            </div>
+                <div class="button-group">
+                    <a href="/" class="btn btn-cancel">취소</a>
+                    <button type="submit" class="btn btn-submit">작성완료</button>
+                </div>
 
-        </form>
+            </form>
     </div>
 </div>
 

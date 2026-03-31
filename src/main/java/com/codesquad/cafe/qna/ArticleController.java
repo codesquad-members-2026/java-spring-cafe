@@ -1,9 +1,13 @@
 package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
+import com.codesquad.cafe.qna.dto.ArticleListDTO;
+import com.codesquad.cafe.qna.dto.ArticleWriteDTO;
 import com.codesquad.cafe.user.User;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,32 +26,41 @@ public class ArticleController {
 
     @GetMapping("/write")
     public String writeForm(
-            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
-            Model model, RedirectAttributes redirectAttributes) {
+            @SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+            RedirectAttributes redirectAttributes) {
 
-        if(loginUser == null){
+        if(sessionUser == null){
             redirectAttributes.addFlashAttribute("errorMessage",
                     "로그인 후에 이용할 수 있습니다!");
-            return "redirect:/qna/list";
+            return "redirect:/user/login";
         }
 
-        model.addAttribute("sessionUser", loginUser);
         return "qna/write";
     }
     @PostMapping("/write")
     public String write(
-            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
-            @ModelAttribute Article article) {
+            @SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+            Model model, @Valid @ModelAttribute ArticleWriteDTO articleWriteDTO,
+            BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 
-        article.setWriter(loginUser); // TODO: setter 메서드 사용은 위험 -> 추후 DTO를 활용
-        articleService.add(article);
+        if(sessionUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage", "세션 정보가 없습니다.");
+            return "redirect:/user/login";
+        }
 
+        if(bindingResult.hasErrors()){
+            model.addAttribute("article", articleWriteDTO);
+            model.addAttribute("errorMessage", "제목과 본문을 모두 적어야 합니다.");
+            return "qna/write";
+        }
+
+        articleService.add(articleWriteDTO.toEntity(sessionUser));
         return "redirect:/qna/list";
     }
 
     @GetMapping("/list")
     public String listForm(Model model) {
-        List<Article> articleList = articleService.getArticles();
+        List<ArticleListDTO> articleList = articleService.getArticleList();
         model.addAttribute("articles", articleList);
 
         return "qna/list";
@@ -55,10 +68,10 @@ public class ArticleController {
 
     @GetMapping("/articles/{id}")
     public String articleForm(
-            @SessionAttribute(name = "sessionUser", required = false) User loginUser,
+            @SessionAttribute(name = "sessionUser", required = false) User sessionUser,
             @PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
 
-        if(loginUser == null){
+        if(sessionUser == null){
             redirectAttributes.addFlashAttribute("errorMessage",
                     "로그인 후에 이용할 수 있습니다!");
             return "redirect:/qna/list";
