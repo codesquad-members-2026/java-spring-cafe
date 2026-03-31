@@ -1,6 +1,7 @@
 package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
+import com.codesquad.cafe.qna.dto.ArticleDetailsDTO;
 import com.codesquad.cafe.qna.dto.ArticleListDTO;
 import com.codesquad.cafe.qna.dto.ArticleWriteDTO;
 import com.codesquad.cafe.user.User;
@@ -74,12 +75,12 @@ public class ArticleController {
         if(sessionUser == null){
             redirectAttributes.addFlashAttribute("errorMessage",
                     "로그인 후에 이용할 수 있습니다!");
-            return "redirect:/qna/list";
+            return "redirect:/user/login";
         }
 
         try {
-            Article article = articleService.findArticleById(id);
-            model.addAttribute("article", article);
+            ArticleDetailsDTO articleDetails = articleService.findArticleById(id);
+            model.addAttribute("article", articleDetails);
             return "qna/show";
         } catch (ArticleInfoCannnotBeFoundException e) {
             return "redirect:/qna/list";
@@ -91,20 +92,25 @@ public class ArticleController {
             @SessionAttribute(name = "sessionUser", required = false) User sessionUser,
             Model model, @PathVariable Long id, RedirectAttributes redirectAttributes){
 
+        if(sessionUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "로그인 후에 이용할 수 있습니다!");
+            return "redirect:/user/login";
+        }
+
         try {
-            Article article = articleService.findArticleById(id);
-            System.out.println(article.getWriter().getLoginId());
-            if(Objects.equals(sessionUser.getId(), article.getWriter().getId())){ // TODO: 수정 필요
+            ArticleDetailsDTO article = articleService.findArticleById(id);
+
+            if(article.isWrittenBy(sessionUser)){
                 model.addAttribute("article", article);
                 return "qna/edit";
             }
 
             redirectAttributes.addFlashAttribute("errorMessage",
-                    "해당 글을 쓴 작성자만 수정할 수 있습니다!");
-            return "redirect:/qna/list";
+                    "글쓴이만 수정할 수 있습니다.");
+            return "redirect:/qna/articles/" + id;
 
         } catch (ArticleInfoCannnotBeFoundException e) {
-            // TODO: addAttribute() vs addFlashAttribute() --> session 과의 연결점
             redirectAttributes.addFlashAttribute("errorMessage",
                     "존재하지 않는 게시글입니다!");
             return "redirect:/qna/list";

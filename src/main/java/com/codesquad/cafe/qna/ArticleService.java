@@ -1,7 +1,9 @@
 package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
+import com.codesquad.cafe.qna.dto.ArticleDetailsDTO;
 import com.codesquad.cafe.qna.dto.ArticleListDTO;
+import com.codesquad.cafe.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +27,10 @@ public class ArticleService {
         jpaArticleRepository.save(article);
     }
 
-    public Article findArticleById(Long id) {
-        return jpaArticleRepository.findById(id)
+    public ArticleDetailsDTO findArticleById(Long id) {
+        return jpaArticleRepository.findArticleWithWriterById(id)
+                .map(article -> new ArticleDetailsDTO(article.getId(), article.getTitle(), article.getContents(),
+                                article.getWriter().getLoginId(), article.getWriter().getId()))
                 .orElseThrow(() -> new ArticleInfoCannnotBeFoundException("No article found with id" + id));
     }
 
@@ -36,9 +40,5 @@ public class ArticleService {
         return articleList.stream().map(article
                 -> new ArticleListDTO(article.getId(), article.getTitle(), article.getWriter().getLoginId()))
                 .toList();
-    }
-
-    public List<Article> getArticles() {
-        return jpaArticleRepository.findAll();
     }
 }

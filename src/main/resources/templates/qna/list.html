@@ -132,7 +132,6 @@
             </tr>
             </thead>
             <tbody>
-            <!-- LAZY를 사용하는 것이 아니라 contents를 가져오지 않는 것이 성능 향상에 더 도움이 됌 -->
             {{#articles}}
                 <tr class="article-row" onclick="location.href='/qna/articles/{{id}}'">
                     <td>{{id}}</td>
@@ -146,12 +145,4 @@
 </div>
 
 </body>
-
-<!--변경 예정-->
-{{#errorMessage}}
-<script>
-    alert("{{errorMessage}}");
-</script>
-{{/errorMessage}}
-
 </html>
