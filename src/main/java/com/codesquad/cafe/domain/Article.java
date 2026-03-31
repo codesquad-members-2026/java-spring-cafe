@@ -1,6 +1,8 @@
 package com.codesquad.cafe.domain;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 public class Article {
@@ -16,41 +18,35 @@ public class Article {
 
     @Column(length = 1000)
     private String contents;
-    private Long number;
 
 
-    public Long getNumber() {
-        return number;
-    }
+    @OneToMany(mappedBy = "article")
+    @OrderBy("id DESC")
+    private List<Reply> replies;
 
-    public void setNumber(Long number) {
-        this.number = number;
+    public List<Reply> getReplies() {
+        return replies;
     }
 
     public User getWriter() {
         return writer;
     }
-
     public void setWriter(User writer) {
         this.writer = writer;
     }
 
 
-
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
 
 
-
     public String getContents() {
         return contents;
     }
-
     public void setContents(String contents) {
         this.contents = contents;
     }
@@ -58,8 +54,5 @@ public class Article {
     public Long getId() {
         return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public void setId(Long id) {this.id = id; }
 }
