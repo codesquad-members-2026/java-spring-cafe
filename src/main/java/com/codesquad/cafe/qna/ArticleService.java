@@ -2,22 +2,23 @@ package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
 import com.codesquad.cafe.exception.UnauthorizedAccessException;
-import com.codesquad.cafe.qna.dto.ArticleDetailsDTO;
-import com.codesquad.cafe.qna.dto.ArticleListDTO;
-import com.codesquad.cafe.qna.dto.ArticleWriteDTO;
+import com.codesquad.cafe.qna.dto.*;
 import com.codesquad.cafe.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 @Transactional(readOnly=true)
 public class ArticleService {
     private final JpaArticleRepository jpaArticleRepository;
+    private final JpaCommentRepository jpaCommentRepository;
 
-    public ArticleService(JpaArticleRepository jpaArticleRepository) {
+    public ArticleService(JpaArticleRepository jpaArticleRepository, JpaCommentRepository jpaCommentRepository) {
         this.jpaArticleRepository = jpaArticleRepository;
+        this.jpaCommentRepository = jpaCommentRepository;
     }
 
     public Long size(){
@@ -61,6 +62,8 @@ public class ArticleService {
     public void deleteArticle(Long id, User sessionUser) {
         Article article = getArticleForUpdate(id, sessionUser);
 
+        jpaCommentRepository.deleteAllByArticle_Id(id);
+
         jpaArticleRepository.delete(article);
     }
 
@@ -73,5 +76,17 @@ public class ArticleService {
         }
 
         return article;
+    }
+
+    @Transactional
+    public void addComment(CommentWriteDTO commentWriteDTO, User sessionUser, Long articleId) {
+        Article article = jpaArticleRepository.findArticleWithWriterById(articleId)
+                .orElseThrow(() -> new ArticleInfoCannnotBeFoundException("존재하지 않는 게시글입니다!"));
+
+        jpaCommentRepository.save(commentWriteDTO.toEntity(LocalDateTime.now(), sessionUser, article));
+    }
+
+    public List<CommentDetailsDTO> findCommentList(Long articleId) {
+        return jpaCommentRepository.findByArticle_Id(articleId).stream().map(CommentDetailsDTO::new).toList();
     }
 }

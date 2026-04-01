@@ -2,9 +2,7 @@ package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
 import com.codesquad.cafe.exception.UnauthorizedAccessException;
-import com.codesquad.cafe.qna.dto.ArticleDetailsDTO;
-import com.codesquad.cafe.qna.dto.ArticleListDTO;
-import com.codesquad.cafe.qna.dto.ArticleWriteDTO;
+import com.codesquad.cafe.qna.dto.*;
 import com.codesquad.cafe.user.User;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -79,7 +77,9 @@ public class ArticleController {
 
         try {
             ArticleDetailsDTO articleDetails = articleService.findArticleForDetails(id);
+            List<CommentDetailsDTO> commentList = articleService.findCommentList(id);
             model.addAttribute("article", articleDetails);
+            model.addAttribute("comments", commentList);
             return "qna/show";
         } catch (ArticleInfoCannnotBeFoundException e) {
             return "redirect:/qna/list";
@@ -87,7 +87,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}/edit")
-    public String moveEditForm(
+    public String editForm(
             @SessionAttribute(name = "sessionUser", required = false) User sessionUser,
             Model model, @PathVariable Long id, RedirectAttributes redirectAttributes){
 
@@ -158,6 +158,31 @@ public class ArticleController {
         } catch (UnauthorizedAccessException ua){
             redirectAttributes.addFlashAttribute("errorMessage", ua.getMessage());
             return "redirect:/qna/articles/" + id;
+        }
+    }
+
+    @PostMapping("/articles/{id}/comments")
+    public String comment(@SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+                          RedirectAttributes redirectAttributes, @PathVariable Long id, Model model,
+                          @Valid @ModelAttribute CommentWriteDTO commentWriteDTO, BindingResult bindingResult) {
+
+        if(sessionUser == null){
+            redirectAttributes.addFlashAttribute("세션이 만료됐습니다.");
+            return "redirect:/user/login/";
+        }
+
+        if(bindingResult.hasErrors()){
+            model.addAttribute("errorMessage", "잘못된 형식입니다.");
+            return "redirect:/qna/articles/" + id;
+        }
+
+        try {
+            articleService.addComment(commentWriteDTO, sessionUser, id);
+            return "redirect:/qna/articles/" + id;
+        } catch (ArticleInfoCannnotBeFoundException ae){
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "게시글이 존재하지 않습니다.");
+            return "redirect:/qna/list";
         }
     }
 }

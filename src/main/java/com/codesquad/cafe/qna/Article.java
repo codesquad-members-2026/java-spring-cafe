@@ -3,6 +3,8 @@ package com.codesquad.cafe.qna;
 import com.codesquad.cafe.user.User;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "article")
 public class Article {
@@ -17,6 +19,9 @@ public class Article {
 
     private String title;
     private String contents;
+
+    @OneToMany
+    private List<Comment> comments;
 
     protected Article() {}
 
@@ -36,6 +41,7 @@ public class Article {
         return contents;
     }
     public User getWriter() {return writer;}
+    public List<Comment> getComments() {return comments;}
 
     public void updateTitleAndContents(String title, String contents) {
         this.title = title;

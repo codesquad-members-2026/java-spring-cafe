@@ -50,6 +50,7 @@
         .article-meta {
             display: flex;
             justify-content: space-between;
+            align-items: center;
             color: #888;
             font-size: 14px;
         }
@@ -57,6 +58,13 @@
         .article-writer {
             font-weight: bold;
             color: #4668CF;
+        }
+
+        /* 게시글 작성 시간 CSS 추가 */
+        .article-time {
+            color: #aaa;
+            margin-left: 10px;
+            font-size: 13px;
         }
 
         .article-content {
@@ -127,6 +135,114 @@
             from { opacity: 0; transform: translateX(10px); }
             to { opacity: 1; transform: translateX(0); }
         }
+
+        .comment-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .comment-title {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+            background-color: #f9f9fa;
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .comment-textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+            font-family: inherit;
+        }
+
+        .comment-textarea:focus {
+            outline: none;
+            border-color: #4668CF;
+        }
+
+        .comment-submit-row {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-comment-submit {
+            background-color: #4668CF;
+            color: white;
+            padding: 8px 16px;
+        }
+
+        .comment-list {
+            list-style: none;
+        }
+
+        .comment-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .comment-item:last-child {
+            border-bottom: none;
+        }
+
+        .comment-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        /* 댓글 작성자 & 시간 묶음 그룹 */
+        .comment-info-group {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+
+        .comment-item-writer {
+            font-weight: bold;
+            font-size: 14px;
+            color: #4668CF;
+        }
+
+        /* 댓글 작성 시간 CSS 추가 */
+        .comment-item-time {
+            font-size: 12px;
+            color: #999;
+        }
+
+        .comment-item-content {
+            font-size: 15px;
+            color: #444;
+            line-height: 1.5;
+            white-space: pre-wrap;
+        }
+
+        .btn-comment-delete {
+            background: none;
+            border: none;
+            color: #aaa;
+            font-size: 12px;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .btn-comment-delete:hover {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
@@ -138,7 +254,9 @@
             <h2 class="article-title">{{article.title}}</h2>
             <div class="article-meta">
                 <span class="article-writer">{{article.writerLoginId}}</span>
-                <span class="article-date">No. {{article.id}}</span>
+                <div>
+                    <span class="article-date">No. {{article.id}}</span>
+                </div>
             </div>
         </div>
 
@@ -161,6 +279,37 @@
                     <button type="submit" class="btn btn-delete">삭제</button>
                 </form>
             </div>
+        </div>
+
+        <div class="comment-section">
+            <h3 class="comment-title">💬 댓글</h3>
+
+            <form action="/qna/articles/{{article.id}}/comments" method="post" class="comment-form">
+                <textarea name="contents" class="comment-textarea"
+                          placeholder="타인을 존중하는 마음을 담아 댓글을 달아주세요!" required></textarea>
+                <div class="comment-submit-row">
+                    <button type="submit" class="btn btn-comment-submit">댓글 등록</button>
+                </div>
+            </form>
+
+            <ul class="comment-list">
+                {{#comments}}
+                <li class="comment-item">
+                    <div class="comment-item-header">
+                        <div class="comment-info-group">
+                            <span class="comment-item-writer">{{writerLoginId}}</span>
+                            <span class="comment-item-time">{{createdTime}}</span>
+                        </div>
+
+                        <form action="/qna/articles/{{article.id}}/comments/{{id}}/delete" method="post" style="margin: 0;">
+                            <input type="hidden" name="_method" value="DELETE" />
+                            <button type="submit" class="btn-comment-delete">삭제</button>
+                        </form>
+                    </div>
+                    <div class="comment-item-content">{{contents}}</div>
+                </li>
+                {{/comments}}
+            </ul>
         </div>
     </div>
 </div>
