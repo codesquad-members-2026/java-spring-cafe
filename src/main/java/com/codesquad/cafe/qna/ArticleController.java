@@ -129,10 +129,35 @@ public class ArticleController {
 
         try {
             articleService.editArticle(id, articleWriteDTO, sessionUser);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "성공적으로 " + id + "번 게시물을 수정했습니다!");
             return "redirect:/qna/list";
         } catch (ArticleInfoCannnotBeFoundException | UnauthorizedAccessException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/qna/list";
+        }
+    }
+
+    @DeleteMapping("/articles/{id}/delete")
+    public String delete(@SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+                         RedirectAttributes redirectAttributes, @PathVariable Long id) {
+
+        if(sessionUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage", "세션 정보가 없습니다.");
+            return "redirect:/user/login";
+        }
+
+        try {
+            articleService.deleteArticle(id, sessionUser);
+            redirectAttributes.addFlashAttribute("successMessage",
+                    "성공적으로 " + id + "번 게시물을 삭제했습니다!");
+            return "redirect:/qna/list";
+        } catch (ArticleInfoCannnotBeFoundException ae) {
+            redirectAttributes.addFlashAttribute("errorMessage", ae.getMessage());
+            return "redirect:/qna/list";
+        } catch (UnauthorizedAccessException ua){
+            redirectAttributes.addFlashAttribute("errorMessage", ua.getMessage());
+            return "redirect:/qna/articles/" + id;
         }
     }
 }

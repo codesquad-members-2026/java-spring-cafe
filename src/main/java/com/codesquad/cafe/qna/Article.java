@@ -42,6 +42,6 @@ public class Article {
         this.contents = contents;
     }
     public boolean isWrittenBy(User sessionUser){
-        return this.getId().equals(sessionUser.getId());
+        return this.getWriter().getId().equals(sessionUser.getId());
     }
 }

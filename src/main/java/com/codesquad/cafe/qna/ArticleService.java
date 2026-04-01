@@ -45,7 +45,7 @@ public class ArticleService {
     }
 
     public ArticleDetailsDTO findArticleForEdit(Long id, User sessionUser) {
-        Article article = getArticleForEdit(id, sessionUser);
+        Article article = getArticleForUpdate(id, sessionUser);
 
         return new ArticleDetailsDTO(article.getId(), article.getTitle(), article.getContents(),
                 article.getWriter().getLoginId(), article.getWriter().getId());
@@ -53,16 +53,23 @@ public class ArticleService {
 
     @Transactional
     public void editArticle(Long id, ArticleWriteDTO articleWriteDTO, User sessionUser) {
-        getArticleForEdit(id, sessionUser)
+        getArticleForUpdate(id, sessionUser)
                 .updateTitleAndContents(articleWriteDTO.getTitle(), articleWriteDTO.getContents());
     }
 
-    private Article getArticleForEdit(Long id, User sessionUser){
+    @Transactional
+    public void deleteArticle(Long id, User sessionUser) {
+        Article article = getArticleForUpdate(id, sessionUser);
+
+        jpaArticleRepository.delete(article);
+    }
+
+    private Article getArticleForUpdate(Long id, User sessionUser){
         Article article = jpaArticleRepository.findArticleWithWriterById(id)
                 .orElseThrow(() -> new ArticleInfoCannnotBeFoundException("존재하지 않는 게시글입니다!"));
 
         if(!article.isWrittenBy(sessionUser)){
-            throw new UnauthorizedAccessException("글쓴이만 수정할 수 있습니다.");
+            throw new UnauthorizedAccessException("권한이 없습니다.");
         }
 
         return article;

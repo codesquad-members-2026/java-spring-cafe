@@ -35,12 +35,24 @@
             align-items: center;
         }
 
-        /* 💡 에러 메시지 UI 스타일 추가 */
         .error-box {
             width: 100%;
-            background-color: #ffe6e6; /* 옅은 붉은색 배경 */
-            color: #d93025;            /* 진한 붉은색 텍스트 */
+            background-color: #ffe6e6;
+            color: #d93025;
             border: 1px solid #f5c6c6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .success-box {
+            width: 100%;
+            background-color: #caf3dd;
+            color: #33956B;
+            border: 1px solid #7de6b6;
             padding: 15px;
             border-radius: 5px;
             margin-bottom: 25px;
@@ -135,6 +147,12 @@
             {{errorMessage}}
         </div>
         {{/errorMessage}}
+
+        {{#successMessage}}
+        <div class="success-box">
+            {{successMessage}}
+        </div>
+        {{/successMessage}}
 
         <div class="list-header">
             <h2>Q&A Board</h2>
