@@ -140,6 +140,16 @@
         .btn-delete:hover {
             opacity: 0.85;
         }
+
+        .error-box {
+            margin-top: 1rem;
+            padding: 10px 14px;
+            background: #fff5f5;
+            border: 0.5px solid #f5c2c2;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            color: #c0392b;
+        }
     </style>
 </head>
 <body>
@@ -154,7 +164,7 @@
         <div class="post-header">
             <h1 class="post-title">{{title}}</h1>
             <div class="post-meta">
-                <span class="post-author">익명</span>
+                <span class="post-author">{{author}}</span>
                 <span>2025.03.19</span>
             </div>
         </div>
@@ -164,10 +174,19 @@
         </div>
 
         <div class="post-footer">
-            <a href="/questions/1/edit" class="btn btn-edit">수정</a>
-            <button class="btn btn-delete">삭제</button>
+            <a href="/questions/{{id}}/edit" class="btn btn-edit">수정</a>
+
+            <form method="post" action="/questions/{{id}}">
+                <input type="hidden" name="_method" value="DELETE">
+                <button class="btn btn-delete" type="submit">삭제</button>
+            </form>
         </div>
     </div>
+
+
+    {{#errorMessage}}
+        <div class="error-box">{{errorMessage}}</div>
+    {{/errorMessage}}
 </div>
 
 </body>
