@@ -1,0 +1,44 @@
+name: Assign Copilot Reviewer
+
+on:
+  pull_request:
+    types: [opened, ready_for_review]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  assign-copilot:
+    name: "Request Copilot Review"
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.base.ref != 'main' &&
+      github.event.pull_request.labels[0] != null
+
+    steps:
+      - name: Request Copilot as reviewer
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            const labels = pr.labels;
+
+            if (pr.base.ref === 'main') {
+              console.log('Skipping: PR targets main branch');
+              return;
+            }
+
+            if (!labels || labels.length === 0) {
+              console.log('Skipping: PR has no labels');
+              return;
+            }
+
+            await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: pr.number,
+              reviewers: ["Copilot"]
+            });
+            console.log(`Copilot requested as reviewer for PR #${pr.number}`);
