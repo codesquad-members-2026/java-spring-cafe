@@ -1,9 +1,14 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.exception.UnableToUpdateUserInfo;
+import com.codesquad.cafe.user.dto.UserUpdateDTO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserTest {
 
@@ -27,15 +32,18 @@ public class UserTest {
     }
 
     @Test
-    @DisplayName(" 각 요소에 공백이 하나라도 없다면 유저의 정보를 성공적으로 수정한다.")
+    @DisplayName("각 요소에 공백, 빈칸이 하나라도 없다면 유저의 정보를 성공적으로 수정한다.")
     public void updateUser_SuccessUpdate(){
         User origin = new User("admin", "xhCmjIIHA3%&YN*b", "젠슨", "황",
                 "nvida@gmail.com", "01049291779");
-        User correctUpdate = new User("admin", "", "재완", "이",
+        UserUpdateDTO correctUpdate =
+                new UserUpdateDTO(1L, "xhCmjIIHA3%&YN*b", "재완", "이",
                 "jjjjkuul@gmail.com", "01049291779");
         User expectedUser = new User("admin", "xhCmjIIHA3%&YN*b", "재완", "이",
                 "jjjjkuul@gmail.com", "01049291779");
 
+        ReflectionTestUtils.setField(origin, "id", 1L);
+        ReflectionTestUtils.setField(expectedUser, "id", 1L);
         origin.updateUser(correctUpdate);
 
         assertEquals(expectedUser, origin);
@@ -46,13 +54,15 @@ public class UserTest {
     public void updateUser_FailureUpdate(){
         User origin = new User("admin", "xhCmjIIHA3%&YN*b", "젠슨", "황",
                 "nvida@gmail.com", "01049291779");
-        User incorrectUpdate = new User("admin", " ", "비", "가",
+        UserUpdateDTO incorrectUpdate = new UserUpdateDTO(1L, " A  ", "비", "가",
                 "jjjkuul@naver.com", "01054849166");
         User expectedUser = new User("admin", "xhCmjIIHA3%&YN*b", "젠슨", "황",
                 "nvida@gmail.com", "01049291779");
 
-        origin.updateUser(incorrectUpdate);
+        ReflectionTestUtils.setField(origin, "id", 1L);
+        ReflectionTestUtils.setField(expectedUser, "id", 1L);
 
+        assertThrows(UnableToUpdateUserInfo.class, () -> origin.updateUser(incorrectUpdate));
         assertEquals(expectedUser, origin);
     }
 }

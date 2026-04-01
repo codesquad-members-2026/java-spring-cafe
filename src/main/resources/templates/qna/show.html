@@ -103,6 +103,30 @@
             color: #656464;
         }
 
+        .btn-edit {
+            background-color: #4668CF;
+            color: white;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .inline-error {
+            color: #e74c3c;
+            font-size: 13px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            padding-right: 5px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
     </style>
 </head>
 <body>
@@ -113,7 +137,7 @@
         <div class="article-header">
             <h2 class="article-title">{{article.title}}</h2>
             <div class="article-meta">
-                <span class="article-writer">익명</span>
+                <span class="article-writer">{{article.writerLoginId}}</span>
                 <span class="article-date">No. {{article.id}}</span>
             </div>
         </div>
@@ -125,8 +149,19 @@
                 <a href="/qna/list" class="btn btn-list">목록으로</a>
             </div>
 
-        </div>
+            <div class="right-btns">
+                {{#errorMessage}}
+                <span class="inline-error">🚨 {{errorMessage}}</span>
+                {{/errorMessage}}
 
+                <a href="/qna/articles/{{article.id}}/edit" class="btn btn-edit">수정</a>
+
+                <form action="/qna/articles/{{article.id}}/delete" method="post" style="margin: 0;">
+                    <input type="hidden" name="_method" value="DELETE" />
+                    <button type="submit" class="btn btn-delete">삭제</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>
 

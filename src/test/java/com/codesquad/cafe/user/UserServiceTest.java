@@ -45,6 +45,7 @@ public class UserServiceTest {
                 "nvidia@gmail.com", "01049291779");
         userService.addUser(user);
 
-        assertThrows(UserInfoCannotBeFoundException.class, () -> userService.findUserByIdAndPassword("admin", "admin"));
+        assertThrows(UserInfoCannotBeFoundException.class,
+                () -> userService.findUserByIdAndPassword("admin", "admin"));
     }
 }

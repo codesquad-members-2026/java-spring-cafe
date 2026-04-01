@@ -129,16 +129,34 @@
             border-color: #ccc;
         }
 
+        .error-box {
+            background-color: #FFF2F2;
+            color: #D32F2F;
+            border-left: 4px solid #D32F2F;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
     </style>
 </head>
 
 <body>
 <div class="container">
     <div class="box">
-
         <div class="login-box">
             <form action="/user/login" method="post" class="info-form">
                 <h2>Log in</h2>
+
+                {{#errorMessage}}
+                <div class="error-box">
+                    🚨 {{errorMessage}}
+                </div>
+                {{/errorMessage}}
+
                 <input id="inputId" name="loginId" type="text" placeholder="아이디" required>
                 <input id="inputPw" name="password" type="password" placeholder="비밀번호" required>
                 <button type="submit" class="btn-login">Login</button>

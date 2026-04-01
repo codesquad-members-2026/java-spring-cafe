@@ -1,5 +1,6 @@
 package com.codesquad.cafe.qna;
 
+import com.codesquad.cafe.user.User;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,12 +11,17 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "writer")
+    private User writer;
+
     private String title;
     private String contents;
 
     protected Article() {}
 
-    public Article(String title, String contents) {
+    public Article(User writer, String title, String contents) {
+        this.writer = writer;
         this.title = title;
         this.contents = contents;
     }
@@ -28,5 +34,14 @@ public class Article {
     }
     public String getContents() {
         return contents;
+    }
+    public User getWriter() {return writer;}
+
+    public void updateTitleAndContents(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
+    public boolean isWrittenBy(User sessionUser){
+        return this.getWriter().getId().equals(sessionUser.getId());
     }
 }

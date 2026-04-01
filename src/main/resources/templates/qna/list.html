@@ -35,6 +35,32 @@
             align-items: center;
         }
 
+        .error-box {
+            width: 100%;
+            background-color: #ffe6e6;
+            color: #d93025;
+            border: 1px solid #f5c6c6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .success-box {
+            width: 100%;
+            background-color: #caf3dd;
+            color: #33956B;
+            border: 1px solid #7de6b6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
         .list-header {
             width: 100%;
             display: flex;
@@ -115,10 +141,23 @@
 
 <div class="container">
     <div class="list-box">
+
+        {{#errorMessage}}
+        <div class="error-box">
+            {{errorMessage}}
+        </div>
+        {{/errorMessage}}
+
+        {{#successMessage}}
+        <div class="success-box">
+            {{successMessage}}
+        </div>
+        {{/successMessage}}
+
         <div class="list-header">
             <h2>Q&A Board</h2>
             <div class="header-buttons">
-                <a href="/qna/form" class="btn btn-write">글쓰기</a>
+                <a href="/qna/write" class="btn btn-write">글쓰기</a>
                 <a href="/" class="btn">Home</a>
             </div>
         </div>
@@ -133,11 +172,11 @@
             </thead>
             <tbody>
             {{#articles}}
-                <tr class="article-row" onclick="location.href='/qna/articles/{{id}}'">
-                    <td>{{id}}</td>
-                    <td>익명</td>
-                    <td class="title-cell">{{title}}</td>
-                </tr>
+            <tr class="article-row" onclick="location.href='/qna/articles/{{id}}'">
+                <td>{{id}}</td>
+                <td>{{writerLoginId}}</td>
+                <td class="title-cell">{{title}}</td>
+            </tr>
             {{/articles}}
             </tbody>
         </table>
