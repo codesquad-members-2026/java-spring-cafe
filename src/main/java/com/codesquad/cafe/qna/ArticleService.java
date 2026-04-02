@@ -1,7 +1,6 @@
 package com.codesquad.cafe.qna;
 
-import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
-import com.codesquad.cafe.exception.UnauthorizedAccessException;
+import com.codesquad.cafe.exception.*;
 import com.codesquad.cafe.qna.dto.*;
 import com.codesquad.cafe.user.User;
 import org.springframework.stereotype.Service;
@@ -88,5 +87,21 @@ public class ArticleService {
 
     public List<CommentDetailsDTO> findCommentList(Long articleId) {
         return jpaCommentRepository.findByArticle_Id(articleId).stream().map(CommentDetailsDTO::new).toList();
+    }
+
+    @Transactional
+    public void deleteComment(User sessionUser, Long articleId, Long commentId) {
+        Comment comment = jpaCommentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentInfoCannotBeFoundException("댓글 정보를 찾을 수 없습니다."));
+
+        if(!comment.isInArticle(articleId)){
+            throw new CommentDoNotExistInTheArticleException("게시글에 존재하지 않는 댓글입니다.");
+        }
+
+        if(!comment.isBelongToWriter(sessionUser)){
+            throw new UnableToDeleteCommentInfo("해당 댓글 삭제 권한이 없습니다.");
+        }
+
+        jpaCommentRepository.delete(comment);
     }
 }

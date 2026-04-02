@@ -301,7 +301,7 @@
                             <span class="comment-item-time">{{createdTime}}</span>
                         </div>
 
-                        <form action="/qna/articles/{{article.id}}/comments/{{id}}/delete" method="post" style="margin: 0;">
+                        <form action="/qna/articles/{{articleId}}/comments/{{commentId}}/delete" method="post" style="margin: 0;">
                             <input type="hidden" name="_method" value="DELETE" />
                             <button type="submit" class="btn-comment-delete">삭제</button>
                         </form>

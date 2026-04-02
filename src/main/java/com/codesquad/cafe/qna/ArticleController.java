@@ -1,7 +1,6 @@
 package com.codesquad.cafe.qna;
 
-import com.codesquad.cafe.exception.ArticleInfoCannnotBeFoundException;
-import com.codesquad.cafe.exception.UnauthorizedAccessException;
+import com.codesquad.cafe.exception.*;
 import com.codesquad.cafe.qna.dto.*;
 import com.codesquad.cafe.user.User;
 import jakarta.validation.Valid;
@@ -182,6 +181,29 @@ public class ArticleController {
         } catch (ArticleInfoCannnotBeFoundException ae){
             redirectAttributes.addFlashAttribute("successMessage",
                     "게시글이 존재하지 않습니다.");
+            return "redirect:/qna/list";
+        }
+    }
+
+    @DeleteMapping("/articles/{articleId}/comments/{commentId}/delete")
+    public String deleteComment(@SessionAttribute(name = "sessionUser", required = false) User sessionUser,
+                                RedirectAttributes redirectAttributes, @PathVariable Long articleId,
+                                @PathVariable Long commentId) {
+
+        if(sessionUser == null){
+            redirectAttributes.addFlashAttribute("errorMessage", "세션이 만료됐습니다.");
+            return "redirect:/user/login/";
+        }
+
+        try {
+            articleService.deleteComment(sessionUser, articleId, commentId);
+            return "redirect:/qna/articles/" + articleId;
+
+        } catch (CommentInfoCannotBeFoundException | UnableToDeleteCommentInfo ce){
+            redirectAttributes.addFlashAttribute("errorMessage", ce.getMessage());
+            return "redirect:/qna/articles/" + articleId;
+        } catch (CommentDoNotExistInTheArticleException ce){
+            redirectAttributes.addFlashAttribute("errorMessage", ce.getMessage());
             return "redirect:/qna/list";
         }
     }

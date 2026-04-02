@@ -48,4 +48,16 @@ public class Comment {
     public Article getArticle() {
         return article;
     }
+
+    // TODO: 객체 비교 더 공부
+    public boolean isBelongToWriter(User target) {
+        if(this.writer == null || target == null)
+            return false;
+
+        return this.writer.getId().equals(target.getId());
+    }
+
+    public boolean isInArticle(Long articleId) {
+        return this.article.getId().equals(articleId);
+    }
 }
