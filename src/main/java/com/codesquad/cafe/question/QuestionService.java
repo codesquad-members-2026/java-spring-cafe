@@ -1,5 +1,6 @@
 package com.codesquad.cafe.question;
 
+import com.codesquad.cafe.answer.dto.AnswerDetail;
 import com.codesquad.cafe.global.exception.NotOwnerException;
 import com.codesquad.cafe.question.dto.QuestionDetail;
 import com.codesquad.cafe.question.dto.QuestionSummary;
@@ -35,7 +36,11 @@ public class QuestionService {
 
     public QuestionDetail getDetail(Long questionId) {
         Question question = repository.findById(questionId).get();
-        return QuestionDetail.from(question);
+
+        List<AnswerDetail> answers = question.getAnswers().stream()
+                .map(AnswerDetail::from)
+                .toList();
+        return QuestionDetail.from(question, answers);
     }
 
     public void validateOwner(Long questionId, Long loginUserId) {

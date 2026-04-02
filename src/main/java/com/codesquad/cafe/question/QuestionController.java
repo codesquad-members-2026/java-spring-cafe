@@ -44,13 +44,11 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}")
-    public String getQuestionById(@PathVariable Long questionId, Model model) {
+    public String getQuestionById(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
+                                  @PathVariable Long questionId, Model model) {
+        model.addAttribute("loginUser", loginUser);
         QuestionDetail question = questionService.getDetail(questionId);
-
-        model.addAttribute("title", question.getTitle());
-        model.addAttribute("content", question.getContent());
-        model.addAttribute("author", question.getAuthor());
-        model.addAttribute("id", questionId);
+        model.addAttribute("question", question);
         return "/question/questions-detail";
     }
 

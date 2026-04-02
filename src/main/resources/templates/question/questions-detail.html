@@ -160,6 +160,7 @@
         목록으로
     </a>
 
+    {{#question}}
     <div class="card">
         <div class="post-header">
             <h1 class="post-title">{{title}}</h1>
@@ -182,7 +183,9 @@
             </form>
         </div>
     </div>
+    {{/question}}
 
+    {{> answer/answers}}
 
     {{#errorMessage}}
         <div class="error-box">{{errorMessage}}</div>
