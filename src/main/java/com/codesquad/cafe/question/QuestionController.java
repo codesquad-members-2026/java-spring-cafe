@@ -48,7 +48,7 @@ public class QuestionController {
         QuestionDetail question = questionService.getDetail(questionId);
 
         model.addAttribute("title", question.getTitle());
-        model.addAttribute("contents", question.getContents());
+        model.addAttribute("content", question.getContent());
         model.addAttribute("author", question.getAuthor());
         model.addAttribute("id", questionId);
         return "/question/questions-detail";
@@ -63,7 +63,7 @@ public class QuestionController {
         QuestionDetail question = questionService.getDetail(questionId);
         model.addAttribute("questionId", questionId);
         model.addAttribute("title", question.getTitle());
-        model.addAttribute("contents", question.getContents());
+        model.addAttribute("content", question.getContent());
         return "/question/editForm";
     }
 

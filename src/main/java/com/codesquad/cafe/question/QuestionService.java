@@ -52,7 +52,7 @@ public class QuestionService {
         validateOwner(questionId, loginUserId);
         Question question = repository.findById(questionId).get();
         question.setTitle(updatedQuestion.getTitle());
-        question.setContents(updatedQuestion.getContents());
+        question.setContent(updatedQuestion.getContent());
     }
 
     @Transactional

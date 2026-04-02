@@ -1,4 +1,4 @@
-package com.codesquad.cafe.question;
+package com.codesquad.cafe.answer;
 
 import com.codesquad.cafe.user.User;
 import jakarta.persistence.Entity;
@@ -11,12 +11,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "questions")
-public class Question {
+@Table(name = "answers")
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -27,12 +26,8 @@ public class Question {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -43,11 +38,11 @@ public class Question {
         this.content = content;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
     public User getAuthor() {
         return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

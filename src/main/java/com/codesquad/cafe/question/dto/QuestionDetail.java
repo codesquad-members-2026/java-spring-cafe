@@ -1,15 +1,17 @@
 package com.codesquad.cafe.question.dto;
 
 import com.codesquad.cafe.question.Question;
+import java.util.List;
 
 public class QuestionDetail {
     public String title;
-    public String contents;
+    public String content;
     public String author;
+    //public List<AnswerDetail> answers;
 
-    private QuestionDetail(String title, String contents, String author) {
+    private QuestionDetail(String title, String content, String author) {
         this.title = title;
-        this.contents = contents;
+        this.content = content;
         this.author = author;
     }
 
@@ -17,8 +19,8 @@ public class QuestionDetail {
         return title;
     }
 
-    public String getContents() {
-        return contents;
+    public String getContent() {
+        return content;
     }
 
     public String getAuthor() {
@@ -27,6 +29,6 @@ public class QuestionDetail {
 
     public static QuestionDetail from(Question question) {
         return new QuestionDetail(question.getTitle(),
-                question.getContents(), question.getAuthor().getName());
+                question.getContent(), question.getAuthor().getName());
     }
 }

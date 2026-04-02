@@ -1,0 +1,194 @@
+<style>
+    .answers-section {
+        margin-top: 1.5rem;
+    }
+
+    .answers-header {
+        font-size: 13px;
+        color: var(--text-hint);
+        margin-bottom: 0.75rem;
+        padding: 0 2px;
+    }
+
+    .answers-header strong {
+        color: var(--text-secondary);
+        font-weight: 500;
+    }
+
+    .answer-item {
+        display: flex;
+        gap: 14px;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 0.5px solid var(--border-color);
+    }
+
+    .answer-item:last-child {
+        border-bottom: none;
+    }
+
+    .answer-avatar {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        border-radius: 50%;
+        background: #e8e8e4;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-top: 1px;
+    }
+
+    .answer-body {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .answer-meta {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+        margin-bottom: 6px;
+    }
+
+    .answer-author {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .answer-date {
+        font-size: 12px;
+        color: var(--text-hint);
+    }
+
+    .answer-content {
+        font-size: 14px;
+        color: var(--text-secondary);
+        line-height: 1.65;
+        word-break: break-word;
+    }
+
+    .answer-delete-btn {
+        align-self: flex-start;
+        margin-top: 2px;
+        height: 28px;
+        padding: 0 10px;
+        background: transparent;
+        border: 0.5px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 12px;
+        color: var(--text-hint);
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+        white-space: nowrap;
+    }
+
+    .answer-delete-btn:hover {
+        color: #c0392b;
+        border-color: #f5c2c2;
+    }
+
+    .answers-empty {
+        padding: 2.5rem 1rem;
+        text-align: center;
+        font-size: 14px;
+        color: var(--text-hint);
+    }
+
+    .answer-form {
+        margin-top: 0.75rem;
+        padding: 1.25rem 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .answer-textarea {
+        width: 100%;
+        resize: none;
+        background: var(--bg-input);
+        border: 0.5px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 12px 14px;
+        font-size: 14px;
+        font-family: 'DM Sans', sans-serif;
+        color: var(--text-primary);
+        line-height: 1.6;
+        transition: border-color 0.15s;
+        outline: none;
+    }
+
+    .answer-textarea::placeholder {
+        color: var(--text-hint);
+    }
+
+    .answer-textarea:focus {
+        border-color: #aaa;
+        background: var(--bg-card);
+    }
+
+    .answer-form-footer {
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .answer-submit-btn {
+        height: 34px;
+        padding: 0 18px;
+        background: var(--text-primary);
+        color: #ffffff;
+        border: none;
+        border-radius: var(--radius-md);
+        font-size: 13px;
+        font-weight: 500;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: opacity 0.15s;
+    }
+
+    .answer-submit-btn:hover {
+        opacity: 0.75;
+    }
+</style>
+
+<div class="answers-section">
+    <div class="answers-header">댓글 <strong>{{answerCount}}</strong></div>
+
+    <div class="card">
+        {{#answers}}
+            <div class="answer-item">
+                <div class="answer-avatar">{{authorInitial}}</div>
+                <div class="answer-body">
+                    <div class="answer-meta">
+                        <span class="answer-author">{{author}}</span>
+                        <span class="answer-date">{{createdAt}}</span>
+                    </div>
+                    <p class="answer-content">{{content}}</p>
+                </div>
+                {{#isOwner}}
+                    <form method="post" action="/questions/{{questionId}}/answers/{{id}}">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="answer-delete-btn">삭제</button>
+                    </form>
+                {{/isOwner}}
+            </div>
+        {{/answers}}
+
+        {{^answers}}
+            <div class="answers-empty">아직 댓글이 없습니다</div>
+        {{/answers}}
+    </div>
+
+    {{#loginUser}}
+        <form method="post" action="/questions/{{questionId}}/answers" class="card answer-form">
+            <textarea class="answer-textarea" name="content" placeholder="댓글을 입력하세요" rows="3"></textarea>
+            <div class="answer-form-footer">
+                <button type="submit" class="answer-submit-btn">등록</button>
+            </div>
+        </form>
+    {{/loginUser}}
+</div>
