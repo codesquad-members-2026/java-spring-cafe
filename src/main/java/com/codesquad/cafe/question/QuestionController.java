@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/questions")
@@ -57,14 +56,9 @@ public class QuestionController {
 
     @GetMapping("/{questionId}/edit")
     public String editForm(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
-                           @PathVariable Long questionId, Model model, RedirectAttributes redirectAttributes) {
+                           @PathVariable Long questionId, Model model) {
 
-        try {
-            questionService.validateOwner(questionId, loginUser.getId());
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/questions/" + questionId;
-        }
+        questionService.validateOwner(questionId, loginUser.getId());
 
         QuestionDetail question = questionService.getDetail(questionId);
         model.addAttribute("questionId", questionId);
@@ -76,25 +70,15 @@ public class QuestionController {
     @PutMapping("/{questionId}")
     public String editQuestion(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                                @PathVariable Long questionId, @ModelAttribute Question question) {
-        try {
-            questionService.update(questionId, loginUser.getId(), question);
-        } catch (Exception e) {
-            //수정 권한 없음
-            return "redirect:/questions/" + questionId;
-        }
+        questionService.update(questionId, loginUser.getId(), question);
 
         return "redirect:/questions/" + questionId;
     }
 
     @DeleteMapping("/{questionId}")
     public String delete(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
-                         @PathVariable Long questionId, RedirectAttributes redirectAttributes) {
-        try {
-            questionService.delete(questionId, loginUser.getId());
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/questions/" + questionId;
-        }
+                         @PathVariable Long questionId) {
+        questionService.delete(questionId, loginUser.getId());
 
         return "redirect:/questions";
     }

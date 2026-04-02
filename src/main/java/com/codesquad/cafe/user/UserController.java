@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/users")
@@ -43,16 +42,9 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String email,
-                        @RequestParam String password, HttpSession session,
-                        RedirectAttributes redirectAttributes) {
-
-        try {
-            session.setAttribute("loginUser",  userService.login(email, password));
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/users/login";
-        }
+    public String login(@RequestParam String email, @RequestParam String password,
+                        HttpSession session) {
+        session.setAttribute("loginUser",  userService.login(email, password));
 
         return "redirect:/users";
     }
@@ -65,15 +57,9 @@ public class UserController {
     }
 
     @GetMapping("/{ownerId}")
-    public String getUserById(@PathVariable Long ownerId,
-                              @SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
-                              RedirectAttributes redirectAttributes, Model model) {
-        try {
-            userService.validateOwner(loginUser.getId(), ownerId);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/users";
-        }
+    public String getUserById(@PathVariable Long ownerId, Model model,
+                              @SessionAttribute(name = "loginUser", required = false) LoginUser loginUser) {
+        userService.validateOwner(loginUser.getId(), ownerId);
 
         User user = userService.get(ownerId);
 

@@ -1,5 +1,6 @@
 package com.codesquad.cafe.question;
 
+import com.codesquad.cafe.global.exception.NotOwnerException;
 import com.codesquad.cafe.question.dto.QuestionDetail;
 import com.codesquad.cafe.question.dto.QuestionSummary;
 import com.codesquad.cafe.user.User;
@@ -42,7 +43,7 @@ public class QuestionService {
         Long authorId = question.getAuthor().getId();
 
         if (!authorId.equals(loginUserId)) {
-            throw new IllegalStateException("게시글 수정 권한이 없음");
+            throw new NotOwnerException();
         }
     }
 

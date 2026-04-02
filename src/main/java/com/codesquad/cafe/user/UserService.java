@@ -1,5 +1,7 @@
 package com.codesquad.cafe.user;
 
+import com.codesquad.cafe.global.exception.LoginFailedException;
+import com.codesquad.cafe.global.exception.NotOwnerException;
 import com.codesquad.cafe.user.dto.LoginUser;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -26,10 +28,10 @@ public class UserService {
 
     public LoginUser login(String email, String password) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(()-> new IllegalArgumentException("이메일 혹은 비밀번호가 잘못되었습니다."));
+                .orElseThrow(LoginFailedException::new);
 
         if (!user.getPassword().equals(password)) {
-            throw new IllegalArgumentException("이메일 혹은 비밀번호가 잘못되었습니다.");
+            throw new LoginFailedException();
         }
 
         return new LoginUser(user.getId(), user.getName());
@@ -37,7 +39,7 @@ public class UserService {
 
     public void validateOwner(Long loginUserId, Long ownerId) {
         if (!loginUserId.equals(ownerId)) {
-            throw new IllegalArgumentException("해당 글을 조회할 권한이 없습니다.");
+            throw new NotOwnerException();
         }
     }
 }
