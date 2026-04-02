@@ -1,7 +1,5 @@
 package com.codesquad.cafe.question;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,44 +23,27 @@ public class QuestionController {
     }
 
     @GetMapping("")
-    public String getQuestions(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            model.addAttribute("loginUser", session.getAttribute("loginUser"));
-        }
+    public String getQuestions(@SessionAttribute(name = "loginUser", required = false) Long loginUserId, Model model) {
+        model.addAttribute("loginUser", loginUserId);
 
         model.addAttribute("questions", questionService.getAll());
         return "/question/questions";
     }
 
     @GetMapping("/create")
-    public String createForm(@SessionAttribute(name = "loginUser", required = false) Long loginUserId) {
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
+    public String createForm() {
         return "redirect:/question/form.html";
     }
 
     @PostMapping("/create")
     public String create(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
                          @ModelAttribute Question question) {
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
         questionService.save(loginUserId, question);
         return "redirect:/questions";
     }
 
     @GetMapping("/{questionId}")
-    public String getQuestionById(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
-                                  @PathVariable Long questionId, Model model) {
-
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
+    public String getQuestionById(@PathVariable Long questionId, Model model) {
         QuestionDetail question = questionService.getDetail(questionId);
 
         model.addAttribute("title", question.getTitle());
@@ -75,10 +56,6 @@ public class QuestionController {
     @GetMapping("/{questionId}/edit")
     public String editForm(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
                            @PathVariable Long questionId, Model model, RedirectAttributes redirectAttributes) {
-
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
 
         try {
             questionService.validateOwner(questionId, loginUserId);
@@ -97,13 +74,10 @@ public class QuestionController {
     @PutMapping("/{questionId}")
     public String editQuestion(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
                                @PathVariable Long questionId, @ModelAttribute Question question) {
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
         try {
             questionService.update(questionId, loginUserId, question);
         } catch (Exception e) {
+            //수정 권한 없음
             return "redirect:/questions/" + questionId;
         }
 
@@ -113,11 +87,6 @@ public class QuestionController {
     @DeleteMapping("/{questionId}")
     public String delete(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
                          @PathVariable Long questionId, RedirectAttributes redirectAttributes) {
-
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
         try {
             questionService.delete(questionId, loginUserId);
         } catch (Exception e) {

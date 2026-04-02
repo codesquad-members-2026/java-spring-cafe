@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -23,12 +24,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String getUsers(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            model.addAttribute("loginUser", session.getAttribute("loginUser"));
-        }
+    public String getUsers(@SessionAttribute(name = "loginUser", required = false) Long loginUserId, Model model) {
+        model.addAttribute("loginUser", loginUserId);
 
         model.addAttribute("users", userService.getAll());
         return "/user/users";
@@ -47,12 +44,12 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(@RequestParam String email,
-                        @RequestParam String password, HttpServletRequest request,
+                        @RequestParam String password, HttpSession session,
                         RedirectAttributes redirectAttributes) {
 
         try {
             User user = userService.login(email, password);
-            request.getSession().setAttribute("loginUser", user.getId());
+            session.setAttribute("loginUser", user.getId());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/users/login";
@@ -62,24 +59,16 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
+    public String logout(HttpSession session) {
         session.invalidate();
 
         return "redirect:/users";
     }
 
     @GetMapping("/{ownerId}")
-    public String getUserById(@PathVariable Long ownerId, Model model, HttpServletRequest request,
-                              RedirectAttributes redirectAttributes) {
-
-        HttpSession session = request.getSession(false);
-
-        if (session == null || session.getAttribute("loginUser") == null) {
-            return "redirect:/users/login";
-        }
-
-        Long loginUserId = (Long) session.getAttribute("loginUser");
+    public String getUserById(@PathVariable Long ownerId,
+                              @SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+                              RedirectAttributes redirectAttributes, Model model) {
         try {
             userService.validateOwner(loginUserId, ownerId);
         } catch (Exception e) {
