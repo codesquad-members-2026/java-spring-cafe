@@ -2,9 +2,11 @@ package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
+@SQLRestriction("is_activated = true")
 @Entity
 @Table(name = "comment")
 public class Comment {
@@ -14,6 +16,9 @@ public class Comment {
 
     private String contents;
     private LocalDateTime createdTime;
+
+    @Column(name = "is_activated")
+    private boolean isActivated;
 
     @ManyToOne
     @JoinColumn(name = "writer")
@@ -25,12 +30,12 @@ public class Comment {
 
     private Comment(){}
     
-    // TODO: 왜 엔터티로 DB에 저장할 때는 LocalDateTime 형식에 저장해야 하는가?: 나중에 시간 객체여야 3일 전 글 보기, 최신순 정렬 등으로 변주를 줄 수 있어서
     public Comment(String contents, LocalDateTime createdTime, User writer, Article article) {
         this.contents = contents;
         this.createdTime = createdTime;
         this.writer = writer;
         this.article = article;
+        this.isActivated = true;
     }
 
     public Long getId() {
@@ -49,15 +54,14 @@ public class Comment {
         return article;
     }
 
-    // TODO: 객체 비교 더 공부
     public boolean isBelongToWriter(User target) {
         if(this.writer == null || target == null)
             return false;
 
         return this.writer.getId().equals(target.getId());
     }
-
     public boolean isInArticle(Long articleId) {
         return this.article.getId().equals(articleId);
     }
+    public void switchToDeletedState(){this.isActivated = false;}
 }

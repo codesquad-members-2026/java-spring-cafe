@@ -66,8 +66,11 @@ public class ArticleService {
             throw new UnabletoDeleteArticleInfo("타인의 댓글이 존재한다면 게시글을 삭제할 수 없습니다.");
         }
 
-        jpaCommentRepository.deleteAllByArticle_Id(articleId);
         article.switchToDeletedState();
+
+        // 주의: 해당 코드 이후의 로직은 벌크 연산의 clearAutomatically = true 옵션으로 영속성 컨텍스트가 초기화됩니다.
+        // 더티체킹 누락을 방지하기 위해, 반드시 엔터티 상태 변경 로직이 벌크 연산보다 먼저 실행되어야 합니다.
+        jpaCommentRepository.deactivatedCommentsByArticleId(articleId);
     }
 
     private Article getArticleForUpdate(Long id, User sessionUser){
@@ -106,6 +109,6 @@ public class ArticleService {
             throw new UnableToDeleteCommentInfo("해당 댓글 삭제 권한이 없습니다.");
         }
 
-        jpaCommentRepository.delete(comment);
+        comment.switchToDeletedState();
     }
 }

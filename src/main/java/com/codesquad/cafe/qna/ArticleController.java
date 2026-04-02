@@ -150,7 +150,7 @@ public class ArticleController {
             articleService.deleteArticle(id, sessionUser);
             redirectAttributes.addFlashAttribute("successMessage",
                     "성공적으로 " + id + "번 게시물을 삭제했습니다!");
-            return "redirect:/qna/list";
+            return "redirect:/qna/articles/" + id;
         } catch (ArticleInfoCannnotBeFoundException ae) {
             redirectAttributes.addFlashAttribute("errorMessage", ae.getMessage());
             return "redirect:/qna/list";
