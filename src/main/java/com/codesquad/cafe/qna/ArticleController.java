@@ -58,7 +58,7 @@ public class ArticleController {
 
     @GetMapping("/list")
     public String listForm(Model model) {
-        List<ArticleListDTO> articleList = articleService.getArticleList();
+        List<ArticleDetailsDTO> articleList = articleService.getArticleList();
         model.addAttribute("articles", articleList);
 
         return "qna/list";
@@ -154,8 +154,8 @@ public class ArticleController {
         } catch (ArticleInfoCannnotBeFoundException ae) {
             redirectAttributes.addFlashAttribute("errorMessage", ae.getMessage());
             return "redirect:/qna/list";
-        } catch (UnauthorizedAccessException ua){
-            redirectAttributes.addFlashAttribute("errorMessage", ua.getMessage());
+        } catch (UnauthorizedAccessException | UnabletoDeleteArticleInfo e){
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/qna/articles/" + id;
         }
     }

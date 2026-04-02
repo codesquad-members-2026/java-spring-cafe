@@ -28,12 +28,13 @@ public class ArticleService {
     public void add(Article article) {
         jpaArticleRepository.save(article);
     }
-
-    public List<ArticleListDTO> getArticleList(){
+    
+    public List<ArticleDetailsDTO> getArticleList(){
         List<Article> articleList = jpaArticleRepository.findAllWithWriter();
 
-        return articleList.stream().map(article
-                        -> new ArticleListDTO(article.getId(), article.getTitle(), article.getWriter().getLoginId()))
+        return articleList.stream()
+                .map(article -> new ArticleDetailsDTO(article.getId(), article.getTitle(), article.getContents(),
+                        article.getWriter().getLoginId(), article.getWriter().getId()))
                 .toList();
     }
 
@@ -58,12 +59,15 @@ public class ArticleService {
     }
 
     @Transactional
-    public void deleteArticle(Long id, User sessionUser) {
-        Article article = getArticleForUpdate(id, sessionUser);
+    public void deleteArticle(Long articleId, User sessionUser) {
+        Article article = getArticleForUpdate(articleId, sessionUser);
 
-        jpaCommentRepository.deleteAllByArticle_Id(id);
+        if(article.hasOtherUsersComments(sessionUser)){
+            throw new UnabletoDeleteArticleInfo("타인의 댓글이 존재한다면 게시글을 삭제할 수 없습니다.");
+        }
 
-        jpaArticleRepository.delete(article);
+        jpaCommentRepository.deleteAllByArticle_Id(articleId);
+        article.switchToDeletedState();
     }
 
     private Article getArticleForUpdate(Long id, User sessionUser){

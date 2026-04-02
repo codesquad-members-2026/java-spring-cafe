@@ -2,9 +2,12 @@ package com.codesquad.cafe.qna;
 
 import com.codesquad.cafe.user.User;
 import jakarta.persistence.*;
+import org.hibernate.annotations.SQLRestriction;
 
+import java.util.ArrayList;
 import java.util.List;
 
+@SQLRestriction("is_activated = true")
 @Entity
 @Table(name = "article")
 public class Article {
@@ -20,8 +23,12 @@ public class Article {
     private String title;
     private String contents;
 
-    @OneToMany
-    private List<Comment> comments;
+    @Column(name = "is_activated")
+    private Boolean isActive;
+
+    // TODO: 어떤 원리로 작동하지
+    @OneToMany(mappedBy = "article")
+    private List<Comment> comments = new ArrayList<>();
 
     protected Article() {}
 
@@ -29,6 +36,7 @@ public class Article {
         this.writer = writer;
         this.title = title;
         this.contents = contents;
+        this.isActive = true;
     }
 
     public Long getId() {
@@ -41,7 +49,6 @@ public class Article {
         return contents;
     }
     public User getWriter() {return writer;}
-    public List<Comment> getComments() {return comments;}
 
     public void updateTitleAndContents(String title, String contents) {
         this.title = title;
@@ -49,5 +56,12 @@ public class Article {
     }
     public boolean isWrittenBy(User sessionUser){
         return this.getWriter().getId().equals(sessionUser.getId());
+    }
+    public boolean hasOtherUsersComments(User sessionUser) {
+        return comments.stream()
+                .anyMatch(comment -> !comment.getWriter().getId().equals(sessionUser.getId()));
+    }
+    public void switchToDeletedState() {
+        this.isActive = false;
     }
 }

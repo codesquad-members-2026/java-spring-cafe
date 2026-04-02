@@ -5,6 +5,8 @@ import com.codesquad.cafe.qna.Comment;
 import java.time.format.DateTimeFormatter;
 
 public class CommentDetailsDTO {
+    private static final DateTimeFormatter COMMENT_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private Long commentId;
     private String contents;
     private String createdTime;
@@ -15,7 +17,7 @@ public class CommentDetailsDTO {
     public CommentDetailsDTO(Comment comment) {
         this.commentId = comment.getId();
         this.contents = comment.getContents();
-        this.createdTime = comment.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.createdTime = comment.getCreatedTime().format(COMMENT_TIME_FORMATTER);
         this.writerLoginId = comment.getWriter().getLoginId();
         this.articleId = comment.getArticle().getId();
     }
