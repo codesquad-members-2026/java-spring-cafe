@@ -30,7 +30,7 @@
             background: var(--bg-page);
             font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
         }
 
         .container {
@@ -39,6 +39,85 @@
             margin: 0 auto;
         }
 
+        /* ── Navbar ── */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+        }
+
+        .brand {
+            font-family: 'DM Serif Display', serif;
+            font-size: 20px;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .nav-link {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0 8px;
+            transition: color 0.15s;
+        }
+
+        .nav-link:hover { color: var(--text-primary); }
+
+        .nav-sep {
+            width: 1px;
+            height: 14px;
+            background: var(--border-color);
+            margin: 0 4px;
+        }
+
+        .greeting {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 0 6px;
+        }
+
+        .greeting strong {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        .login-btn, .logout-btn {
+            height: 32px;
+            padding: 0 14px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            transition: opacity 0.15s;
+        }
+
+        .login-btn {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 0.5px solid var(--border-color);
+        }
+
+        .logout-btn {
+            background: var(--bg-card);
+            color: #c0392b;
+            border: 0.5px solid #f5c2c2;
+        }
+
+        .login-btn:hover, .logout-btn:hover { opacity: 0.75; }
+
+        /* ── Page header ── */
         .page-header {
             display: flex;
             align-items: flex-end;
@@ -59,12 +138,7 @@
             margin-top: 4px;
         }
 
-        .btn-group {
-            display: flex;
-            gap: 8px;
-        }
-
-        .write-btn, .nav-btn, .login-btn, .logout-btn {
+        .write-btn {
             height: 36px;
             padding: 0 16px;
             border: none;
@@ -76,33 +150,12 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
+            background: var(--text-primary);
+            color: #ffffff;
             transition: opacity 0.15s;
         }
 
-        .write-btn {
-            background: var(--text-primary);
-            color: #ffffff;
-        }
-
-        .nav-btn {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 0.5px solid var(--border-color);
-        }
-
-        .login-btn {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 0.5px solid var(--border-color);
-        }
-
-        .logout-btn {
-            background: var(--bg-card);
-            color: #c0392b;
-            border: 0.5px solid #f5c2c2;
-        }
-
-        .write-btn:hover, .nav-btn:hover, .login-btn:hover, .logout-btn:hover { opacity: 0.75; }
+        .write-btn:hover { opacity: 0.75; }
 
         .card {
             background: var(--bg-card);
@@ -170,23 +223,30 @@
 <body>
 
 <div class="container">
-    <div class="page-header">
-        <div>
-            <h1>게시글</h1>
-            <p>전체 게시글을 확인합니다</p>
-        </div>
-        <div class="btn-group">
-            <a href="/questions/create" class="write-btn">글쓰기</a>
-            <a href="/users" class="nav-btn">전체 회원</a>
+    <nav class="navbar">
+        <a href="/" class="brand">Cafe</a>
+        <div class="nav-actions">
+            <a href="/users" class="nav-link">전체 회원</a>
             {{#loginUser}}
+                <div class="nav-sep"></div>
+                <span class="greeting"><strong>{{name}}</strong>님</span>
                 <form action="/users/logout" method="post">
                     <button type="submit" class="logout-btn">로그아웃</button>
                 </form>
             {{/loginUser}}
             {{^loginUser}}
+                <div class="nav-sep"></div>
                 <a href="/users/login" class="login-btn">로그인</a>
             {{/loginUser}}
         </div>
+    </nav>
+
+    <div class="page-header">
+        <div>
+            <h1>게시글</h1>
+            <p>전체 게시글을 확인합니다</p>
+        </div>
+        <a href="/questions/create" class="write-btn">글쓰기</a>
     </div>
 
     <div class="card">

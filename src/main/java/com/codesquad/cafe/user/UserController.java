@@ -1,6 +1,6 @@
 package com.codesquad.cafe.user;
 
-import jakarta.servlet.http.HttpServletRequest;
+import com.codesquad.cafe.user.dto.LoginUser;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String getUsers(@SessionAttribute(name = "loginUser", required = false) Long loginUserId, Model model) {
+    public String getUsers(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUserId, Model model) {
         model.addAttribute("loginUser", loginUserId);
 
         model.addAttribute("users", userService.getAll());
@@ -48,8 +48,7 @@ public class UserController {
                         RedirectAttributes redirectAttributes) {
 
         try {
-            User user = userService.login(email, password);
-            session.setAttribute("loginUser", user.getId());
+            session.setAttribute("loginUser",  userService.login(email, password));
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/users/login";
@@ -67,10 +66,10 @@ public class UserController {
 
     @GetMapping("/{ownerId}")
     public String getUserById(@PathVariable Long ownerId,
-                              @SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+                              @SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                               RedirectAttributes redirectAttributes, Model model) {
         try {
-            userService.validateOwner(loginUserId, ownerId);
+            userService.validateOwner(loginUser.getId(), ownerId);
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/users";

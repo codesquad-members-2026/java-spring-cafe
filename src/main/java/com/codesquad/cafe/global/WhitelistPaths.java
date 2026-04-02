@@ -8,6 +8,6 @@ public abstract class WhitelistPaths {
     };
 
     public static final String[] PUBLIC_PAGES = {
-            "/users/login", "/user/form.html", "/users", "/questions"
+            "/", "/users/login", "/user/form.html", "/users", "/questions"
     };
 }

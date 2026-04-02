@@ -1,4 +1,6 @@
-package com.codesquad.cafe.question;
+package com.codesquad.cafe.question.dto;
+
+import com.codesquad.cafe.question.Question;
 
 public class QuestionDetail {
     public String title;

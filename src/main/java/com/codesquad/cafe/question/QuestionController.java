@@ -1,5 +1,7 @@
 package com.codesquad.cafe.question;
 
+import com.codesquad.cafe.question.dto.QuestionDetail;
+import com.codesquad.cafe.user.dto.LoginUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +25,8 @@ public class QuestionController {
     }
 
     @GetMapping("")
-    public String getQuestions(@SessionAttribute(name = "loginUser", required = false) Long loginUserId, Model model) {
-        model.addAttribute("loginUser", loginUserId);
+    public String getQuestions(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
 
         model.addAttribute("questions", questionService.getAll());
         return "/question/questions";
@@ -36,9 +38,9 @@ public class QuestionController {
     }
 
     @PostMapping("/create")
-    public String create(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String create(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                          @ModelAttribute Question question) {
-        questionService.save(loginUserId, question);
+        questionService.save(loginUser.getId(), question);
         return "redirect:/questions";
     }
 
@@ -54,11 +56,11 @@ public class QuestionController {
     }
 
     @GetMapping("/{questionId}/edit")
-    public String editForm(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String editForm(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                            @PathVariable Long questionId, Model model, RedirectAttributes redirectAttributes) {
 
         try {
-            questionService.validateOwner(questionId, loginUserId);
+            questionService.validateOwner(questionId, loginUser.getId());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/questions/" + questionId;
@@ -72,10 +74,10 @@ public class QuestionController {
     }
 
     @PutMapping("/{questionId}")
-    public String editQuestion(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String editQuestion(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                                @PathVariable Long questionId, @ModelAttribute Question question) {
         try {
-            questionService.update(questionId, loginUserId, question);
+            questionService.update(questionId, loginUser.getId(), question);
         } catch (Exception e) {
             //수정 권한 없음
             return "redirect:/questions/" + questionId;
@@ -85,10 +87,10 @@ public class QuestionController {
     }
 
     @DeleteMapping("/{questionId}")
-    public String delete(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String delete(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                          @PathVariable Long questionId, RedirectAttributes redirectAttributes) {
         try {
-            questionService.delete(questionId, loginUserId);
+            questionService.delete(questionId, loginUser.getId());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
             return "redirect:/questions/" + questionId;

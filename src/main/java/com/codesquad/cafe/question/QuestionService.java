@@ -1,5 +1,7 @@
 package com.codesquad.cafe.question;
 
+import com.codesquad.cafe.question.dto.QuestionDetail;
+import com.codesquad.cafe.question.dto.QuestionSummary;
 import com.codesquad.cafe.user.User;
 import com.codesquad.cafe.user.UserService;
 import jakarta.transaction.Transactional;
