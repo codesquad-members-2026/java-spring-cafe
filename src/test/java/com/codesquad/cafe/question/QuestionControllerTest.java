@@ -37,7 +37,7 @@ public class QuestionControllerTest {
         // given
         Question question = new Question();
         question.setTitle("hello");
-        question.setContents("world");
+        question.setContent("world");
 
         given(questionService.get(1)).willReturn(question);
 

@@ -1,7 +1,13 @@
 package com.codesquad.cafe.question;
 
+import com.codesquad.cafe.answer.Answer;
+import com.codesquad.cafe.answer.dto.AnswerDetail;
+import com.codesquad.cafe.global.exception.NotOwnerException;
+import com.codesquad.cafe.question.dto.QuestionDetail;
+import com.codesquad.cafe.question.dto.QuestionSummary;
 import com.codesquad.cafe.user.User;
 import com.codesquad.cafe.user.UserService;
+import com.codesquad.cafe.user.dto.LoginUser;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -30,9 +36,13 @@ public class QuestionService {
                 .toList();
     }
 
-    public QuestionDetail getDetail(Long questionId) {
+    public QuestionDetail getDetail(Long loginUserId, Long questionId) {
         Question question = repository.findById(questionId).get();
-        return QuestionDetail.from(question);
+
+        List<AnswerDetail> answers = question.getAnswers().stream()
+                .map((Answer answer) -> AnswerDetail.from(answer, loginUserId))
+                .toList();
+        return QuestionDetail.from(question, answers);
     }
 
     public void validateOwner(Long questionId, Long loginUserId) {
@@ -40,7 +50,7 @@ public class QuestionService {
         Long authorId = question.getAuthor().getId();
 
         if (!authorId.equals(loginUserId)) {
-            throw new IllegalStateException("게시글 수정 권한이 없음");
+            throw new NotOwnerException();
         }
     }
 
@@ -49,7 +59,7 @@ public class QuestionService {
         validateOwner(questionId, loginUserId);
         Question question = repository.findById(questionId).get();
         question.setTitle(updatedQuestion.getTitle());
-        question.setContents(updatedQuestion.getContents());
+        question.setContent(updatedQuestion.getContent());
     }
 
     @Transactional

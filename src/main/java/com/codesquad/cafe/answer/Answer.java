@@ -1,7 +1,6 @@
-package com.codesquad.cafe.question;
+package com.codesquad.cafe.answer;
 
-import com.codesquad.cafe.answer.Answer;
-import com.codesquad.cafe.answer.dto.AnswerDetail;
+import com.codesquad.cafe.question.Question;
 import com.codesquad.cafe.user.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,49 +9,38 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "questions")
-public class Question {
+@Table(name = "answers")
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User author;
 
-    @OneToMany(mappedBy = "question")
-    private List<Answer> answers = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question_id")
+    private Question question;
 
-    public List<Answer> getAnswers() {
-        return answers;
+    public Question getQuestion() {
+        return question;
     }
 
-    public void setAnswers(List<Answer> answers) {
-        this.answers = answers;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setQuestion(Question question) {
+        this.question = question;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -63,11 +51,11 @@ public class Question {
         this.content = content;
     }
 
-    public void setAuthor(User author) {
-        this.author = author;
-    }
-
     public User getAuthor() {
         return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
     }
 }

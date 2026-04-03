@@ -19,11 +19,11 @@ class QuestionServiceTest {
 
         question1 = new Question();
         question1.setTitle("hello");
-        question1.setContents("world!");
+        question1.setContent("world!");
 
         question2 = new Question();
         question2.setTitle("hello hello");
-        question2.setContents("world world");
+        question2.setContent("world world");
     }
 
     @Test

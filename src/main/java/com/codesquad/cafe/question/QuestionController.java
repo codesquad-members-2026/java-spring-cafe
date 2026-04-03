@@ -1,7 +1,7 @@
 package com.codesquad.cafe.question;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import com.codesquad.cafe.question.dto.QuestionDetail;
+import com.codesquad.cafe.user.dto.LoginUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/questions")
@@ -25,105 +24,59 @@ public class QuestionController {
     }
 
     @GetMapping("")
-    public String getQuestions(HttpServletRequest request, Model model) {
-        HttpSession session = request.getSession(false);
-
-        if (session != null) {
-            model.addAttribute("loginUser", session.getAttribute("loginUser"));
-        }
+    public String getQuestions(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
 
         model.addAttribute("questions", questionService.getAll());
         return "/question/questions";
     }
 
     @GetMapping("/create")
-    public String createForm(@SessionAttribute(name = "loginUser", required = false) Long loginUserId) {
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
+    public String createForm() {
         return "redirect:/question/form.html";
     }
 
     @PostMapping("/create")
-    public String create(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String create(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                          @ModelAttribute Question question) {
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
-        questionService.save(loginUserId, question);
+        questionService.save(loginUser.getId(), question);
         return "redirect:/questions";
     }
 
     @GetMapping("/{questionId}")
-    public String getQuestionById(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String getQuestionById(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                                   @PathVariable Long questionId, Model model) {
-
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-        QuestionDetail question = questionService.getDetail(questionId);
-
-        model.addAttribute("title", question.getTitle());
-        model.addAttribute("contents", question.getContents());
-        model.addAttribute("author", question.getAuthor());
-        model.addAttribute("id", questionId);
+        model.addAttribute("loginUser", loginUser);
+        QuestionDetail question = questionService.getDetail(loginUser.getId(), questionId);
+        model.addAttribute("question", question);
         return "/question/questions-detail";
     }
 
     @GetMapping("/{questionId}/edit")
-    public String editForm(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
-                           @PathVariable Long questionId, Model model, RedirectAttributes redirectAttributes) {
+    public String editForm(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
+                           @PathVariable Long questionId, Model model) {
 
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
+        questionService.validateOwner(questionId, loginUser.getId());
 
-        try {
-            questionService.validateOwner(questionId, loginUserId);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/questions/" + questionId;
-        }
-
-        QuestionDetail question = questionService.getDetail(questionId);
+        QuestionDetail question = questionService.getDetail(loginUser.getId(), questionId);
         model.addAttribute("questionId", questionId);
         model.addAttribute("title", question.getTitle());
-        model.addAttribute("contents", question.getContents());
+        model.addAttribute("content", question.getContent());
         return "/question/editForm";
     }
 
     @PutMapping("/{questionId}")
-    public String editQuestion(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
+    public String editQuestion(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                                @PathVariable Long questionId, @ModelAttribute Question question) {
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
-        try {
-            questionService.update(questionId, loginUserId, question);
-        } catch (Exception e) {
-            return "redirect:/questions/" + questionId;
-        }
+        questionService.update(questionId, loginUser.getId(), question);
 
         return "redirect:/questions/" + questionId;
     }
 
     @DeleteMapping("/{questionId}")
-    public String delete(@SessionAttribute(name = "loginUser", required = false) Long loginUserId,
-                         @PathVariable Long questionId, RedirectAttributes redirectAttributes) {
-
-        if (loginUserId == null) {
-            return "redirect:/users/login";
-        }
-
-        try {
-            questionService.delete(questionId, loginUserId);
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
-            return "redirect:/questions/" + questionId;
-        }
+    public String delete(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
+                         @PathVariable Long questionId) {
+        questionService.delete(questionId, loginUser.getId());
 
         return "redirect:/questions";
     }
