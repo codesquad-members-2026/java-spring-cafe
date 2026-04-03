@@ -25,6 +25,9 @@
     }
 
     .answer-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
         margin-bottom: 6px;
     }
 
@@ -102,6 +105,28 @@
     .answer-submit-btn:hover {
         opacity: 0.75;
     }
+
+    .answer-delete-form {
+        margin: 0;
+    }
+
+    .answer-delete-btn {
+        height: 24px;
+        padding: 0 10px;
+        background: transparent;
+        color: var(--text-hint);
+        border: 0.5px solid var(--border-color);
+        border-radius: var(--radius-md);
+        font-size: 12px;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+    }
+
+    .answer-delete-btn:hover {
+        color: #e05252;
+        border-color: #e05252;
+    }
 </style>
 
 {{#question}}
@@ -113,6 +138,12 @@
             <div class="answer-item">
                 <div class="answer-meta">
                     <span class="answer-author">{{author}}</span>
+                    {{#isOwner}}
+                        <form class="answer-delete-form" action="/questions/{{questionId}}/answers/{{id}}" method="post">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit" class="answer-delete-btn">삭제</button>
+                        </form>
+                    {{/isOwner}}
                 </div>
                 <p class="answer-content">{{content}}</p>
             </div>

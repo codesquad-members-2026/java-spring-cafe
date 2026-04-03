@@ -23,8 +23,8 @@ public class UserController {
     }
 
     @GetMapping("")
-    public String getUsers(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUserId, Model model) {
-        model.addAttribute("loginUser", loginUserId);
+    public String getUsers(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser, Model model) {
+        model.addAttribute("loginUser", loginUser);
 
         model.addAttribute("users", userService.getAll());
         return "/user/users";

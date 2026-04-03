@@ -25,6 +25,10 @@ public class QuestionDetail {
         return id;
     }
 
+    public Long getQuestionId() {
+        return id;
+    }
+
     public String getTitle() {
         return title;
     }

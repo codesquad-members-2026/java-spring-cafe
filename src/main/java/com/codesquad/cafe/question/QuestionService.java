@@ -1,11 +1,13 @@
 package com.codesquad.cafe.question;
 
+import com.codesquad.cafe.answer.Answer;
 import com.codesquad.cafe.answer.dto.AnswerDetail;
 import com.codesquad.cafe.global.exception.NotOwnerException;
 import com.codesquad.cafe.question.dto.QuestionDetail;
 import com.codesquad.cafe.question.dto.QuestionSummary;
 import com.codesquad.cafe.user.User;
 import com.codesquad.cafe.user.UserService;
+import com.codesquad.cafe.user.dto.LoginUser;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -34,11 +36,11 @@ public class QuestionService {
                 .toList();
     }
 
-    public QuestionDetail getDetail(Long questionId) {
+    public QuestionDetail getDetail(Long loginUserId, Long questionId) {
         Question question = repository.findById(questionId).get();
 
         List<AnswerDetail> answers = question.getAnswers().stream()
-                .map(AnswerDetail::from)
+                .map((Answer answer) -> AnswerDetail.from(answer, loginUserId))
                 .toList();
         return QuestionDetail.from(question, answers);
     }

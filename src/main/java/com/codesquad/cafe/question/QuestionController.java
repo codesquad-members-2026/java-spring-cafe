@@ -47,7 +47,7 @@ public class QuestionController {
     public String getQuestionById(@SessionAttribute(name = "loginUser", required = false) LoginUser loginUser,
                                   @PathVariable Long questionId, Model model) {
         model.addAttribute("loginUser", loginUser);
-        QuestionDetail question = questionService.getDetail(questionId);
+        QuestionDetail question = questionService.getDetail(loginUser.getId(), questionId);
         model.addAttribute("question", question);
         return "/question/questions-detail";
     }
@@ -58,7 +58,7 @@ public class QuestionController {
 
         questionService.validateOwner(questionId, loginUser.getId());
 
-        QuestionDetail question = questionService.getDetail(questionId);
+        QuestionDetail question = questionService.getDetail(loginUser.getId(), questionId);
         model.addAttribute("questionId", questionId);
         model.addAttribute("title", question.getTitle());
         model.addAttribute("content", question.getContent());

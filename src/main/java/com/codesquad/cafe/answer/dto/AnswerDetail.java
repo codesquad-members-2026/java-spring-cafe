@@ -6,11 +6,13 @@ public class AnswerDetail {
     public Long id;
     public String content;
     public String author;
+    public boolean isOwner;
 
-    private AnswerDetail(Long id, String content, String author) {
+    private AnswerDetail(Long id, String content, String author,boolean isOwner) {
         this.id = id;
         this.content = content;
         this.author = author;
+        this.isOwner = isOwner;
     }
 
     public Long getId() {
@@ -25,9 +27,8 @@ public class AnswerDetail {
         return author;
     }
 
-    public static AnswerDetail from(Answer answer) {
+    public static AnswerDetail from(Answer answer,Long loginUserId) {
         return new AnswerDetail(answer.getId(), answer.getContent(),
-                answer.getAuthor().getName());
+                answer.getAuthor().getName(), answer.getAuthor().getId().equals(loginUserId));
     }
-
 }
