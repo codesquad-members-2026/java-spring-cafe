@@ -1,7 +1,5 @@
 package com.codesquad.cafe.qna.dto;
 
-import com.codesquad.cafe.user.User;
-
 public class ArticleDetailsDTO {
     private Long id;
     private String title;
@@ -9,15 +7,12 @@ public class ArticleDetailsDTO {
     private String writerLoginId;
     private Long writerId;
 
-    public ArticleDetailsDTO(Long id, String title, String contents, String writerLoginId, Long writerId) {
+    public ArticleDetailsDTO(Long id, String title, String contents,
+                             String writerLoginId, Long writerId) {
         this.id = id;
         this.title = title;
         this.contents = contents;
         this.writerLoginId = writerLoginId;
         this.writerId = writerId;
-    }
-
-    public boolean isWrittenBy(User sessionUser){
-        return writerId.equals(sessionUser.getId());
     }
 }
